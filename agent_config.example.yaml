@@ -1,0 +1,27 @@
+# Copy this file to agent_config.yaml and fill in the agent_id + api_key for each
+# of the 6 External Agents created on Band (Section 7.3). Never commit
+# agent_config.yaml.
+
+intake:
+  agent_id: "<uuid>"
+  api_key: "<key>"
+
+patient_profile:
+  agent_id: "<uuid>"
+  api_key: "<key>"
+
+structural:
+  agent_id: "<uuid>"
+  api_key: "<key>"
+
+pkpd:
+  agent_id: "<uuid>"
+  api_key: "<key>"
+
+evidence_rag:
+  agent_id: "<uuid>"
+  api_key: "<key>"
+
+compliance:
+  agent_id: "<uuid>"
+  api_key: "<key>"

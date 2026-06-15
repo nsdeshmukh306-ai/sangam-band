@@ -1,0 +1,21 @@
+{
+  "drug": "Metformin",
+  "herb": "Karela (Bitter Gourd)",
+  "findings": [
+    {
+      "summary": "Small clinical trials of bitter gourd preparations in type 2 diabetes report modest additional reductions in fasting glucose when taken alongside standard oral hypoglycemic agents, raising the possibility of an additive glucose-lowering effect.",
+      "citation": "Fuangchan et al., J Ethnopharmacol 2011",
+      "severity": "moderate"
+    },
+    {
+      "summary": "No direct pharmacokinetic interaction between metformin and Momordica charantia constituents has been demonstrated; metformin is not metabolized by major cytochrome P450 enzymes and is not a known substrate for charantin or related compounds.",
+      "citation": "Internal pharmacology synthesis based on standard metformin ADME data",
+      "severity": "low"
+    },
+    {
+      "summary": "Case reports describe symptomatic hypoglycemia in patients combining concentrated bitter gourd juice with sulfonylureas or metformin, particularly at high or unmeasured juice doses.",
+      "citation": "Krawinkel & Keding, Nutr Rev 2006",
+      "severity": "moderate"
+    }
+  ]
+}

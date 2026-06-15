@@ -1,0 +1,21 @@
+{
+  "drug": "Digoxin",
+  "herb": "Yashtimadhu (Licorice)",
+  "findings": [
+    {
+      "summary": "Case reports document digoxin toxicity emerging in patients consuming licorice-containing products, attributed to licorice-induced hypokalemia potentiating digoxin's inhibitory effect on cardiac Na+/K+-ATPase.",
+      "citation": "Eichhorn & Hubert, Wien Klin Wochenschr 2016",
+      "severity": "high"
+    },
+    {
+      "summary": "Pharmacokinetic studies indicate glycyrrhetinic acid, the active licorice metabolite, can modulate P-glycoprotein activity, potentially altering absorption and tissue distribution of P-gp substrate drugs such as digoxin.",
+      "citation": "Wang et al., Eur J Pharm Sci 2017",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Chronic licorice ingestion at moderate-to-high doses has repeatedly been linked to pseudohyperaldosteronism, with hypokalemia, hypertension, and edema reported across multiple case series.",
+      "citation": "Omar et al., CMAJ 2012",
+      "severity": "high"
+    }
+  ]
+}

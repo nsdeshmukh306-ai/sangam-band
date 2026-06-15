@@ -1,0 +1,61 @@
+{
+  "_readme": "Curated illustrative binding-affinity (delta_g_kcal_mol) lookup for @StructuralBio's lookup_docking(drug_compound, herb_compound) tool. Values are plausible illustrative figures for the hackathon demo, not real docking run outputs. 'mechanism' is 'inhibition' (more negative delta_g => stronger CYP/P-gp inhibition => reduced clearance), 'induction' (PXR/CAR-mediated transcriptional induction => increased clearance, opposite kinetic direction from inhibition), or 'negligible' (weak/no expected effect). Pairs not listed here should be reported by lookup_docking as {\"status\": \"no_data\"}.",
+  "pairs": [
+    {
+      "drug_compound": "Warfarin",
+      "herb_compound": "Guggulsterone Z",
+      "target": "CYP2C9",
+      "delta_g_kcal_mol": -8.4,
+      "mechanism": "inhibition",
+      "confidence": "high",
+      "basis": "lookup",
+      "notes": "Guggulsterones show documented in vitro inhibition of CYP2C9-mediated metabolism, the dominant clearance pathway for S-warfarin."
+    },
+    {
+      "drug_compound": "Warfarin",
+      "herb_compound": "Guggulsterone E",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -7.2,
+      "mechanism": "inhibition",
+      "confidence": "high",
+      "basis": "lookup",
+      "notes": "Secondary CYP3A4 inhibition contributes to reduced R-warfarin clearance, compounding the CYP2C9 effect on S-warfarin."
+    },
+    {
+      "drug_compound": "Digoxin",
+      "herb_compound": "Glycyrrhetinic acid",
+      "target": "P-gp",
+      "delta_g_kcal_mol": -7.6,
+      "mechanism": "inhibition",
+      "confidence": "high",
+      "basis": "lookup",
+      "notes": "Glycyrrhetinic acid (the active licorice metabolite) inhibits intestinal/renal P-glycoprotein, the principal transporter for digoxin disposition. Note: the dominant clinical risk for this pair is licorice-induced hypokalemia potentiating digoxin's cardiac effect (a pharmacodynamic mechanism, captured in evidence_corpus rather than this structural lookup)."
+    },
+    {
+      "drug_compound": "Metformin",
+      "herb_compound": "Charantin",
+      "status": "no_data",
+      "notes": "No structural binding data available. Metformin is not a substrate of major CYP enzymes and has negligible plasma protein binding, so a CYP/P-gp/albumin docking estimate is not mechanistically meaningful here. The interaction with bitter gourd constituents is pharmacodynamic (additive glucose lowering), not structural -- @StructuralBio should report this honestly rather than inventing a delta_g."
+    },
+    {
+      "drug_compound": "Tacrolimus",
+      "herb_compound": "Hyperforin",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -9.1,
+      "mechanism": "induction",
+      "confidence": "high",
+      "basis": "lookup",
+      "notes": "Hyperforin is a potent PXR agonist; this delta_g represents PXR/CYP3A4 ligand binding that drives transcriptional upregulation of CYP3A4 and P-gp, increasing tacrolimus clearance (opposite kinetic direction from a direct inhibitor)."
+    },
+    {
+      "drug_compound": "Acetaminophen",
+      "herb_compound": "Eugenol",
+      "target": "CYP2E1",
+      "delta_g_kcal_mol": -4.2,
+      "mechanism": "negligible",
+      "confidence": "high",
+      "basis": "lookup",
+      "notes": "Weak binding affinity, well below the threshold for clinically meaningful enzyme modulation at typical dietary/supplemental tulsi exposure."
+    }
+  ]
+}

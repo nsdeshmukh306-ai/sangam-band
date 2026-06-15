@@ -1,0 +1,21 @@
+{
+  "drug": "Tacrolimus",
+  "herb": "St. John's Wort",
+  "findings": [
+    {
+      "summary": "Multiple case reports and pharmacokinetic studies document substantial drops in tacrolimus trough levels, in some cases precipitating acute transplant rejection, after solid-organ transplant recipients began taking St. John's Wort.",
+      "citation": "Mai et al., Ann Intern Med 2000",
+      "severity": "high"
+    },
+    {
+      "summary": "Hyperforin, the principal active constituent of St. John's Wort, is a potent ligand for the pregnane X receptor (PXR), driving transcriptional upregulation of CYP3A4 and P-glycoprotein expression.",
+      "citation": "Moore et al., PNAS 2000",
+      "severity": "high"
+    },
+    {
+      "summary": "Transplant pharmacy guidance consistently lists St. John's Wort as contraindicated in patients on calcineurin inhibitors (tacrolimus, cyclosporine) because of the well-established risk of subtherapeutic drug levels and rejection.",
+      "citation": "Transplant pharmacy consensus guidance, summarized",
+      "severity": "high"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "drug": "Paracetamol",
+  "herb": "Tulsi",
+  "findings": [
+    {
+      "summary": "Tulsi (Ocimum sanctum) extracts have been studied for hepatoprotective and antioxidant properties, with no clinical reports of altered acetaminophen pharmacokinetics at typical culinary or supplemental tea doses.",
+      "citation": "Cohen, J Ayurveda Integr Med 2014",
+      "severity": "low"
+    },
+    {
+      "summary": "Eugenol, a major constituent of tulsi, shows only weak in vitro modulation of certain CYP enzymes, and only at concentrations far exceeding what is achievable through normal dietary or tea consumption.",
+      "citation": "Pandit et al., Xenobiotica 2018",
+      "severity": "low"
+    },
+    {
+      "summary": "A review of available pharmacovigilance literature found no documented case reports of a clinically significant interaction between Ocimum sanctum preparations and acetaminophen.",
+      "citation": "Internal pharmacovigilance literature review",
+      "severity": "low"
+    }
+  ]
+}

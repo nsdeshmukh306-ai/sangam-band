@@ -1,0 +1,27 @@
+{
+  "_readme": "Rule-based lookup for @PatientProfile's compute_pgx_baseline(age, egfr, cyp2c9_genotype, cyp3a4_status) tool. The overall clearance_modifier is the product of the matched genotype/status/band modifiers (rounded to 2 decimals); risk_flags is the union of all non-null 'flag' values from the matched entries.",
+  "cyp2c9_genotypes": {
+    "*1/*1": {"clearance_modifier": 1.0, "label": "Normal metabolizer", "flag": null},
+    "*1/*2": {"clearance_modifier": 0.8, "label": "Intermediate metabolizer", "flag": "intermediate_cyp2c9_metabolizer"},
+    "*1/*3": {"clearance_modifier": 0.65, "label": "Intermediate metabolizer", "flag": "intermediate_cyp2c9_metabolizer"},
+    "*2/*2": {"clearance_modifier": 0.4, "label": "Poor metabolizer", "flag": "poor_cyp2c9_metabolizer"},
+    "*2/*3": {"clearance_modifier": 0.35, "label": "Poor metabolizer", "flag": "poor_cyp2c9_metabolizer"},
+    "*3/*3": {"clearance_modifier": 0.2, "label": "Poor metabolizer", "flag": "poor_cyp2c9_metabolizer"}
+  },
+  "cyp3a4_status": {
+    "normal": {"clearance_modifier": 1.0, "label": "Normal CYP3A4 activity", "flag": null},
+    "reduced": {"clearance_modifier": 0.75, "label": "Reduced CYP3A4 activity (e.g. *22 carrier)", "flag": "reduced_cyp3a4_activity"},
+    "increased": {"clearance_modifier": 1.3, "label": "Increased/induced CYP3A4 activity", "flag": "increased_cyp3a4_activity"}
+  },
+  "egfr_bands": [
+    {"min": 90, "max": null, "label": "normal", "clearance_modifier": 1.0, "flag": null},
+    {"min": 60, "max": 89, "label": "mild_impairment", "clearance_modifier": 0.9, "flag": "mild_renal_impairment"},
+    {"min": 30, "max": 59, "label": "moderate_impairment", "clearance_modifier": 0.7, "flag": "moderate_renal_impairment"},
+    {"min": 15, "max": 29, "label": "severe_impairment", "clearance_modifier": 0.5, "flag": "severe_renal_impairment"},
+    {"min": 0, "max": 14, "label": "kidney_failure", "clearance_modifier": 0.3, "flag": "kidney_failure"}
+  ],
+  "age_bands": [
+    {"min": 0, "max": 64, "label": "adult", "clearance_modifier": 1.0, "flag": null},
+    {"min": 65, "max": 200, "label": "older_adult", "clearance_modifier": 0.9, "flag": "advanced_age"}
+  ]
+}

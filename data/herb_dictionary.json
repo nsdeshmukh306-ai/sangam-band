@@ -1,0 +1,38 @@
+{
+  "_readme": "Curated local dictionary used by @Intake's lookup_herb tool. Keys are lowercase, underscore-separated common/Ayurvedic names. 'active_compounds' lists the constituent names used as lookup keys into docking_lookup.json.",
+  "guggulu": {
+    "common_name": "Guggulu",
+    "aliases": ["Guggul", "Guggulu", "Indian Bdellium", "Mukul Myrrh Tree"],
+    "latin_binomial": "Commiphora wightii",
+    "active_compounds": ["Guggulsterone E", "Guggulsterone Z"],
+    "traditional_use": "Lipid-lowering and anti-inflammatory resin extract, commonly used in Ayurveda for hyperlipidemia and joint conditions."
+  },
+  "yashtimadhu": {
+    "common_name": "Yashtimadhu (Licorice)",
+    "aliases": ["Licorice", "Liquorice", "Mulethi", "Licorice Root", "Yashtimadhu"],
+    "latin_binomial": "Glycyrrhiza glabra",
+    "active_compounds": ["Glycyrrhizin", "Glycyrrhetinic acid"],
+    "traditional_use": "Demulcent root used for cough, acid reflux, and as a general adaptogen/rasayana."
+  },
+  "karela": {
+    "common_name": "Karela (Bitter Gourd)",
+    "aliases": ["Bitter Gourd", "Bitter Melon", "Karela", "Momordica"],
+    "latin_binomial": "Momordica charantia",
+    "active_compounds": ["Charantin", "Momordicin", "Polypeptide-p"],
+    "traditional_use": "Traditional anti-diabetic vegetable/juice used to support healthy blood glucose levels."
+  },
+  "st_johns_wort": {
+    "common_name": "St. John's Wort",
+    "aliases": ["St. John's Wort", "SJW", "Hypericum", "Hypericum perforatum"],
+    "latin_binomial": "Hypericum perforatum",
+    "active_compounds": ["Hyperforin", "Hypericin"],
+    "traditional_use": "Western herbal supplement widely sold for mood support; included here for its well-documented cross-system interaction profile relevant to Indian transplant patients who may self-medicate with imported supplements."
+  },
+  "tulsi": {
+    "common_name": "Tulsi (Holy Basil)",
+    "aliases": ["Holy Basil", "Tulsi", "Ocimum sanctum", "Ocimum tenuiflorum"],
+    "latin_binomial": "Ocimum sanctum",
+    "active_compounds": ["Eugenol", "Ursolic acid", "Rosmarinic acid"],
+    "traditional_use": "Widely consumed adaptogen/rasayana herb for respiratory and immune support, often taken as tea."
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "_readme": "5 demo case studies spanning the risk spectrum (Section 4). 'sample_message' is the literal text to post in the Sangam Case Room to kick off a run. 'pk_params' are simplified one-compartment oral PK parameters (illustrative only, not clinically validated) consumed by @PKPD's simulate_pk tool.",
+  "cases": [
+    {
+      "id": "case_1_warfarin_guggulu",
+      "title": "Warfarin + Guggulu",
+      "drugs": [
+        {"name": "Warfarin", "compound": "Warfarin", "dose_mg": 5, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Guggulu", "dose": "500 mg standardized extract, twice daily"}
+      ],
+      "patient": {
+        "age": 68,
+        "sex": "F",
+        "egfr": 55,
+        "cyp2c9_genotype": "*1/*3",
+        "cyp3a4_status": "normal"
+      },
+      "pk_params": {
+        "dose_mg": 5,
+        "ka_per_hr": 1.0,
+        "ke_baseline_per_hr": 0.0173,
+        "v_l": 10
+      },
+      "mechanism": "Guggulsterones inhibit CYP2C9 (and to a lesser extent CYP3A4), reducing warfarin clearance and increasing anticoagulant exposure -> elevated bleeding risk.",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 68F on Warfarin 5mg once daily (CYP2C9 *1/*3, CYP3A4 normal, eGFR 55) has started taking Guggulu 500mg twice daily for cholesterol. Please assess for interactions."
+    },
+    {
+      "id": "case_2_digoxin_licorice",
+      "title": "Digoxin + Yashtimadhu (Licorice)",
+      "drugs": [
+        {"name": "Digoxin", "compound": "Digoxin", "dose_mg": 0.25, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Yashtimadhu", "dose": "1 g powdered root, twice daily"}
+      ],
+      "patient": {
+        "age": 72,
+        "sex": "M",
+        "egfr": 48,
+        "cyp2c9_genotype": "*1/*1",
+        "cyp3a4_status": "normal"
+      },
+      "pk_params": {
+        "dose_mg": 0.25,
+        "ka_per_hr": 0.5,
+        "ke_baseline_per_hr": 0.0145,
+        "v_l": 500
+      },
+      "mechanism": "Glycyrrhizin/glycyrrhetinic acid from licorice causes hypokalemia (pseudoaldosteronism), which potentiates digoxin's effect on cardiac Na+/K+-ATPase; glycyrrhetinic acid also inhibits P-gp, the main digoxin transporter -> digoxin toxicity risk.",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 72M on Digoxin 0.25mg once daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 48) has started taking Yashtimadhu (licorice root) 1g twice daily for acidity. Please assess for interactions."
+    },
+    {
+      "id": "case_3_metformin_karela",
+      "title": "Metformin + Karela (Bitter Gourd)",
+      "drugs": [
+        {"name": "Metformin", "compound": "Metformin", "dose_mg": 500, "frequency": "twice daily"}
+      ],
+      "herbs": [
+        {"name": "Karela", "dose": "100 mL fresh juice, once daily"}
+      ],
+      "patient": {
+        "age": 55,
+        "sex": "F",
+        "egfr": 75,
+        "cyp2c9_genotype": "*1/*1",
+        "cyp3a4_status": "normal"
+      },
+      "pk_params": {
+        "dose_mg": 500,
+        "ka_per_hr": 1.0,
+        "ke_baseline_per_hr": 0.139,
+        "v_l": 100
+      },
+      "mechanism": "Bitter gourd constituents (charantin, polypeptide-p) lower blood glucose via mechanisms independent of metformin, producing an additive pharmacodynamic glucose-lowering effect rather than a pharmacokinetic interaction.",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 55F on Metformin 500mg twice daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 75) has started drinking 100mL fresh karela (bitter gourd) juice once daily. Please assess for interactions."
+    },
+    {
+      "id": "case_4_tacrolimus_sjw",
+      "title": "Tacrolimus + St. John's Wort",
+      "drugs": [
+        {"name": "Tacrolimus", "compound": "Tacrolimus", "dose_mg": 2, "frequency": "twice daily"}
+      ],
+      "herbs": [
+        {"name": "St. John's Wort", "dose": "300 mg standardized extract, three times daily"}
+      ],
+      "patient": {
+        "age": 45,
+        "sex": "M",
+        "egfr": 85,
+        "cyp2c9_genotype": "*1/*1",
+        "cyp3a4_status": "reduced"
+      },
+      "pk_params": {
+        "dose_mg": 2,
+        "ka_per_hr": 0.5,
+        "ke_baseline_per_hr": 0.0578,
+        "v_l": 850
+      },
+      "mechanism": "Hyperforin in St. John's Wort is a potent PXR agonist that induces CYP3A4 (and P-gp), substantially lowering tacrolimus blood levels in a transplant patient who is already a reduced CYP3A4 metabolizer -> risk of subtherapeutic levels and organ rejection.",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 45M post-kidney-transplant on Tacrolimus 2mg twice daily (CYP2C9 *1/*1, CYP3A4 reduced, eGFR 85) has started self-medicating with St. John's Wort 300mg three times daily for low mood. Please assess for interactions."
+    },
+    {
+      "id": "case_5_paracetamol_tulsi",
+      "title": "Paracetamol + Tulsi",
+      "drugs": [
+        {"name": "Paracetamol", "compound": "Acetaminophen", "dose_mg": 500, "frequency": "as needed, up to three times daily"}
+      ],
+      "herbs": [
+        {"name": "Tulsi", "dose": "2 cups tulsi tea, daily"}
+      ],
+      "patient": {
+        "age": 30,
+        "sex": "F",
+        "egfr": 100,
+        "cyp2c9_genotype": "*1/*1",
+        "cyp3a4_status": "normal"
+      },
+      "pk_params": {
+        "dose_mg": 500,
+        "ka_per_hr": 1.4,
+        "ke_baseline_per_hr": 0.277,
+        "v_l": 50
+      },
+      "mechanism": "Tulsi constituents (eugenol, ursolic acid, rosmarinic acid) show no clinically meaningful modulation of acetaminophen's metabolism at typical dietary/supplemental exposure.",
+      "expected_tier": "GREEN",
+      "sample_message": "@Intake @PatientProfile New case: 30F (CYP2C9 *1/*1, CYP3A4 normal, eGFR 100) occasionally takes Paracetamol 500mg for headaches and drinks 2 cups of tulsi tea daily. Please assess for interactions."
+    }
+  ]
+}

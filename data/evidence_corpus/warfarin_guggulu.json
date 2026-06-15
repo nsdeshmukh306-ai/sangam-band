@@ -1,0 +1,21 @@
+{
+  "drug": "Warfarin",
+  "herb": "Guggulu",
+  "findings": [
+    {
+      "summary": "Case reports describe rising INR and bleeding events in patients stabilized on warfarin shortly after they began taking guggul-containing lipid-lowering supplements, consistent with reduced warfarin clearance.",
+      "citation": "Yang et al., J Clin Pharm Ther 2012",
+      "severity": "high"
+    },
+    {
+      "summary": "In vitro enzyme assays show guggulsterones inhibit CYP2C9-mediated metabolism of model substrates, supporting a pharmacokinetic basis for increased anticoagulant exposure when guggul is co-administered with warfarin.",
+      "citation": "Brobst et al., Drug Metab Dispos 2004",
+      "severity": "high"
+    },
+    {
+      "summary": "Traditional Ayurvedic pharmacology texts describe guggulu as having a 'heating' (ushna) potency and caution against combining it with therapies intended to reduce bleeding tendency, an early empirical echo of the modern interaction concern.",
+      "citation": "Traditional Dravyaguna pharmacology commentary, summarized",
+      "severity": "moderate"
+    }
+  ]
+}

@@ -89,12 +89,17 @@ adapter = LangGraphAdapter(llm=llm, checkpointer=InMemorySaver(), custom_section
 This is the same `LangGraphAdapter` shown in Band's SDK overview (its quick example
 uses `ChatOpenAI(model="gpt-4o")`) — `ChatOpenAI` natively supports any
 OpenAI-compatible endpoint via `base_url`, and DeepSeek's API is OpenAI-compatible.
-**[VERIFY AGAINST DOCS]**: confirm `band-sdk[langgraph]` pulls in `langchain-openai`,
-and confirm DeepSeek's current base URL / model names at
-`https://api-docs.deepseek.com`. Use `deepseek-reasoner` for `@StructuralBio` and
-`@ComplianceGuard` (the two agents doing the most multi-step reasoning/escalation
-logic) and `deepseek-chat` for the rest, to balance quality, cost, and latency —
-adjust if `deepseek-reasoner` proves too slow for a live demo.
+Use `deepseek-reasoner` for `@StructuralBio` and `@ComplianceGuard` (the two agents
+doing the most multi-step reasoning/escalation logic) and `deepseek-chat` for the
+rest, to balance quality, cost, and latency — adjust if `deepseek-reasoner` proves
+too slow for a live demo.
+
+**[VERIFIED — Phase 0, see `docs/architecture.md`]**: `band-sdk` (v1.0.0, PyPI)
+installs via `uv add "band-sdk[langgraph]"`; `langchain-openai` is added as an
+explicit direct dependency in `pyproject.toml` rather than relying on it being
+transitive. DeepSeek's base URL `https://api.deepseek.com` is confirmed.
+`deepseek-chat`/`deepseek-reasoner` are slated for deprecation 2026-07-24 (after
+this hackathon's deadline), so they remain valid for this build.
 
 Each agent is registered on Band as an "External Agent" (Section 7).
 
@@ -149,6 +154,12 @@ Each agent is registered on Band as an "External Agent" (Section 7).
   - **The system prompt must state this is a simplified illustrative PK model, not
     validated for clinical decisions** — this disclaimer must also propagate into
     the final verdict (regulatory honesty, Track 3 framing).
+  - **Induction vs. inhibition**: `data/docking_lookup.json` entries carry a
+    `"mechanism"` field (`"inhibition" | "induction" | "negligible"`). For
+    `"induction"` (Case 4, Tacrolimus + St. John's Wort), apply the same
+    `clamp((-delta_g - 6) / 4, 0, 0.7)` magnitude as an *increase* to `ke_patient`
+    (`* (1 + induction_fraction)`) rather than a decrease — see
+    `docs/architecture.md` for the full rationale.
 - **Output**: `{"step": "pkpd", "auc_pct_change": 42.0, "concentration_curve": [...]}`
   then `@EvidenceRAG @ComplianceGuard`.
 
@@ -288,9 +299,9 @@ sangam-band/
 ### 6.1 Environment variables (`.env`)
 ```
 DEEPSEEK_API_KEY=sk-...
-THENVOI_WS_URL=...        # [VERIFY AGAINST DOCS — default may be fine]
-THENVOI_REST_URL=...      # [VERIFY AGAINST DOCS]
-BAND_USER_API_KEY=...     # personal/account-level key for orchestrator REST calls — [VERIFY: docs.band.ai/getting-started/setup]
+THENVOI_REST_URL=https://app.band.ai/                              # [VERIFIED Phase 0]
+THENVOI_WS_URL=wss://app.band.ai/api/v1/socket/websocket           # [VERIFIED Phase 0]
+BAND_USER_API_KEY=...     # personal/account-level key for orchestrator REST calls — [VERIFY: docs.band.ai/getting-started/setup, deferred to Phase 3]
 AIML_API_KEY=...          # optional, for partner-prize integration
 FEATHERLESS_API_KEY=...   # optional, for partner-prize integration
 ```
@@ -422,24 +433,27 @@ Consumer tab; the frontend then polls until a `FINAL_VERDICT` json block appears
 
 ## 10. Things Claude Code must verify before/while building (do not assume)
 
-- `THENVOI_WS_URL` / `THENVOI_REST_URL` defaults and whether they're required —
-  check `docs.band.ai/integrations/sdks/tutorials/setup` and
-  `/integrations/sdks/tutorials/environment-variables`.
+- ~~`THENVOI_WS_URL` / `THENVOI_REST_URL` defaults~~ — **VERIFIED Phase 0**:
+  `THENVOI_REST_URL=https://app.band.ai/`,
+  `THENVOI_WS_URL=wss://app.band.ai/api/v1/socket/websocket`. See
+  `docs/architecture.md`.
+- ~~Current DeepSeek model ids and base URL~~ — **VERIFIED Phase 0**:
+  `base_url="https://api.deepseek.com"`; `deepseek-chat`/`deepseek-reasoner` valid
+  until 2026-07-24 deprecation (after our deadline). `band-sdk[langgraph]` confirmed
+  on PyPI; `langchain-openai` pinned explicitly as a direct dependency. See
+  `docs/architecture.md`.
 - Exact REST endpoints + auth for: listing room messages (`GET /me/chats/{id}/messages`),
   fetching an agent's own context (`GET /agent/chats/{id}/context`), and creating/
   posting to a room as the account owner (for the orchestrator) — check
-  `docs.band.ai/api/introduction`.
+  `docs.band.ai/api/introduction`. **Deferred to Phase 3.**
 - Exact tool name for adding a participant to a room
   (`add_participant_service` vs `thenvoi_add_participant`) and whether a human
   participant can be added by `agent_id`/email — check
   `docs.band.ai/core-concepts/chat-rooms` and `/core-concepts/contacts`.
-- Current DeepSeek model ids and base URL accepted via `ChatOpenAI` (`deepseek-chat`,
-  `deepseek-reasoner`, `base_url="https://api.deepseek.com"`) — confirm at
-  `https://api-docs.deepseek.com`, and confirm `band-sdk[langgraph]` installs
-  `langchain-openai` so this works out of the box.
+  **Deferred to Phase 2** (`@ComplianceGuard` escalation).
 - Whether `band-sdk` has a generic OpenAI-compatible adapter with a `base_url` param
   for AI/ML API / Featherless — check `docs.band.ai/integrations/sdks/overview` and
-  `/integrations/adapters`.
+  `/integrations/adapters`. **Deferred to Phase 2/4, optional stretch.**
 
 When any of these differ from the spec, update this file and proceed — don't block on
 a guess; implement the closest documented equivalent and note the deviation in
