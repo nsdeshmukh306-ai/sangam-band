@@ -76,7 +76,7 @@ where `ChatOpenAI` is pointed at DeepSeek's OpenAI-compatible endpoint:
 ```python
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import InMemorySaver
-from thenvoi.adapters import LangGraphAdapter
+from band.adapters import LangGraphAdapter
 
 llm = ChatOpenAI(
     model="deepseek-chat",                 # or "deepseek-reasoner" for harder reasoning steps
@@ -175,16 +175,17 @@ Each agent is registered on Band as an "External Agent" (Section 7).
 ### 3.6 `@ComplianceGuard` — Regulatory Synthesis & Escalation Agent
 - **Job**: Wait until it has received intake, patient profile, structural, PK/PD, and
   evidence messages for the case (it can track this with its own
-  `thenvoi_send_event`/state, or simply re-read room context via
+  `band_send_event`/state, or simply re-read room context via
   `GET /agent/chats/{id}/context` **[VERIFY AGAINST DOCS]**). Then:
   1. Compute a confidence-weighted risk tier: `GREEN | YELLOW | RED`.
   2. **If confidence is low** (e.g., `@StructuralBio` returned `"basis": "analogy"`
      AND `@EvidenceRAG` found no direct evidence): `@mention @StructuralBio` again,
      asking it to widen the analogy search — a genuine second round.
   3. **If risk tier is RED** (or still low-confidence after the second round): use
-     `add_participant_service`/`thenvoi_add_participant` to bring a human
+     the `band_add_participant` tool (**VERIFIED Phase 1** — part of
+     `band.CHAT_TOOL_NAMES`, see `docs/architecture.md`) to bring a human
      `@Clinician` participant into the room and `@mention` them with the case
-     summary for sign-off — **[VERIFY AGAINST DOCS]** for exact tool name/usage.
+     summary for sign-off.
   4. Post the final structured verdict:
      ```json
      {"step": "FINAL_VERDICT", "risk_tier": "RED", "confidence": 0.82,
@@ -287,7 +288,8 @@ sangam-band/
 ## 6. Tech stack & dependencies
 
 - **Python 3.11**, `uv` package manager.
-- `band-sdk[langgraph]` — agent runtime (`thenvoi` package namespace).
+- `band-sdk[langgraph]` — agent runtime. **Importable package is `band`, not
+  `thenvoi`** (corrected Phase 1, see `docs/architecture.md`).
 - `langchain-openai`, `langgraph` — LLM client; `ChatOpenAI` pointed at DeepSeek via
   `base_url="https://api.deepseek.com"` for all 6 agents (`DEEPSEEK_API_KEY`).
 - `chromadb` — local vector store for `@EvidenceRAG`.
@@ -299,8 +301,8 @@ sangam-band/
 ### 6.1 Environment variables (`.env`)
 ```
 DEEPSEEK_API_KEY=sk-...
-THENVOI_REST_URL=https://app.band.ai/                              # [VERIFIED Phase 0]
-THENVOI_WS_URL=wss://app.band.ai/api/v1/socket/websocket           # [VERIFIED Phase 0]
+BAND_REST_URL=             # optional override; default https://app.band.ai (VERIFIED Phase 1)
+BAND_WS_URL=               # optional override; default wss://app.band.ai/api/v1/socket/websocket (VERIFIED Phase 1)
 BAND_USER_API_KEY=...     # personal/account-level key for orchestrator REST calls — [VERIFY: docs.band.ai/getting-started/setup, deferred to Phase 3]
 AIML_API_KEY=...          # optional, for partner-prize integration
 FEATHERLESS_API_KEY=...   # optional, for partner-prize integration
@@ -433,24 +435,30 @@ Consumer tab; the frontend then polls until a `FINAL_VERDICT` json block appears
 
 ## 10. Things Claude Code must verify before/while building (do not assume)
 
-- ~~`THENVOI_WS_URL` / `THENVOI_REST_URL` defaults~~ — **VERIFIED Phase 0**:
-  `THENVOI_REST_URL=https://app.band.ai/`,
-  `THENVOI_WS_URL=wss://app.band.ai/api/v1/socket/websocket`. See
-  `docs/architecture.md`.
+- ~~`BAND_WS_URL` / `BAND_REST_URL` defaults~~ — **VERIFIED Phase 1** (by inspecting
+  the installed `band-sdk` package): `Agent.create`'s own defaults are
+  `rest_url="https://app.band.ai"` (no trailing slash) and
+  `ws_url="wss://app.band.ai/api/v1/socket/websocket"`. `.env`/`.env.example` leave
+  these blank/optional now. See `docs/architecture.md`.
 - ~~Current DeepSeek model ids and base URL~~ — **VERIFIED Phase 0**:
   `base_url="https://api.deepseek.com"`; `deepseek-chat`/`deepseek-reasoner` valid
   until 2026-07-24 deprecation (after our deadline). `band-sdk[langgraph]` confirmed
   on PyPI; `langchain-openai` pinned explicitly as a direct dependency. See
   `docs/architecture.md`.
+- ~~Package import namespace (`thenvoi` vs `band`)~~ — **CORRECTED Phase 1**: the
+  installed `band-sdk` package imports as `band` (`from band import Agent`,
+  `from band.adapters import LangGraphAdapter`, `from band.config import
+  load_agent_config`). All references to `thenvoi`/`thenvoi.*` throughout this spec
+  were wrong and have been corrected. See `docs/architecture.md`.
+- ~~Exact tool name for adding a participant to a room~~ — **VERIFIED Phase 1**:
+  `band.CHAT_TOOL_NAMES` (and `ALL_TOOL_NAMES`/`BASE_TOOL_NAMES`) include
+  `"band_add_participant"` / `"band_remove_participant"`. See
+  `docs/architecture.md`. **Phase 2** (`@ComplianceGuard` escalation) will use
+  `band_add_participant`.
 - Exact REST endpoints + auth for: listing room messages (`GET /me/chats/{id}/messages`),
   fetching an agent's own context (`GET /agent/chats/{id}/context`), and creating/
   posting to a room as the account owner (for the orchestrator) — check
   `docs.band.ai/api/introduction`. **Deferred to Phase 3.**
-- Exact tool name for adding a participant to a room
-  (`add_participant_service` vs `thenvoi_add_participant`) and whether a human
-  participant can be added by `agent_id`/email — check
-  `docs.band.ai/core-concepts/chat-rooms` and `/core-concepts/contacts`.
-  **Deferred to Phase 2** (`@ComplianceGuard` escalation).
 - Whether `band-sdk` has a generic OpenAI-compatible adapter with a `base_url` param
   for AI/ML API / Featherless — check `docs.band.ai/integrations/sdks/overview` and
   `/integrations/adapters`. **Deferred to Phase 2/4, optional stretch.**

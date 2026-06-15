@@ -3310,7 +3310,7 @@ dependencies = [
     { name = "streamlit" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "pytest" },
 ]
@@ -3322,14 +3322,15 @@ requires-dist = [
     { name = "langchain-openai" },
     { name = "numpy" },
     { name = "plotly" },
-    { name = "pytest", marker = "extra == 'dev'" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "requests" },
     { name = "scipy" },
     { name = "streamlit" },
 ]
-provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest" }]
 
 [[package]]
 name = "scipy"
