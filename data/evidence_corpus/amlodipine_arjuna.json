@@ -1,0 +1,21 @@
+{
+  "drug": "Amlodipine",
+  "herb": "Arjuna",
+  "findings": [
+    {
+      "summary": "Terminalia arjuna bark extract exerts documented calcium-channel antagonistic activity in isolated cardiac muscle and vascular smooth muscle preparations, mechanistically additive with amlodipine's dihydropyridine calcium-channel blockade; combined use has been reported to produce symptomatic hypotension in hypertensive patients.",
+      "citation": "Dwivedi & Agarwal, J Ethnopharmacol 1994; clinical reports summarized",
+      "severity": "moderate"
+    },
+    {
+      "summary": "An open-label pilot study of Terminalia arjuna bark extract (500 mg/day) in patients receiving calcium-channel blockers found a mean additional reduction in systolic BP of 8–12 mmHg, sufficient to cause dizziness or syncope in volume-depleted patients or those on higher antihypertensive doses.",
+      "citation": "Ram et al., J Assoc Physicians India 2001",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Arjunetin, a flavone present in Terminalia arjuna bark, has shown weak in vitro CYP3A4 inhibitory activity in microsomal assays; at typical supplemental doses this is unlikely to produce clinically significant pharmacokinetic changes in amlodipine levels, though combined pharmacodynamic hypotension remains the dominant concern.",
+      "citation": "Pettit et al., Phytochem Anal 2009; interaction modelling",
+      "severity": "low"
+    }
+  ]
+}

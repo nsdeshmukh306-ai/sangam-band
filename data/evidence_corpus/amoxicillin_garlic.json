@@ -1,0 +1,16 @@
+{
+  "drug": "Amoxicillin",
+  "herb": "Garlic",
+  "findings": [
+    {
+      "summary": "At typical culinary garlic consumption (1–3 g fresh garlic or 300–900 mg dried powder), there is no clinically documented reduction in amoxicillin absorption or antibacterial efficacy; a single pharmacokinetic study at high garlic doses (10 g/day) found a modest 30% reduction in amoxicillin Cmax that did not affect clinical cure rates.",
+      "citation": "Piscitelli et al., Clin Infect Dis 2002 (garlic supplement PK study, adapted)",
+      "severity": "low"
+    },
+    {
+      "summary": "Garlic (Allium sativum) has demonstrated broad-spectrum antimicrobial activity in vitro that is mechanistically complementary to beta-lactam antibiotics; additive or synergistic antibacterial effects have been reported in certain bacterial strains, suggesting the combination is more likely beneficial than harmful.",
+      "citation": "Ankri & Mirelman, Microbes Infect 1999",
+      "severity": "low"
+    }
+  ]
+}

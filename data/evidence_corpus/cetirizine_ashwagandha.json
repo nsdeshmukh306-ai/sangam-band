@@ -1,0 +1,11 @@
+{
+  "drug": "Cetirizine",
+  "herb": "Ashwagandha",
+  "findings": [
+    {
+      "summary": "Cetirizine is primarily renally excreted (60–70%) and undergoes minimal hepatic CYP-mediated metabolism; Withania somnifera root extract lacks documented pharmacokinetic interactions with renally-eliminated drugs, and no case reports or clinical studies identify a meaningful pharmacokinetic interaction between cetirizine and Ashwagandha.",
+      "citation": "Natural Medicines Database (accessed 2024); cetirizine pharmacokinetics review",
+      "severity": "low"
+    }
+  ]
+}

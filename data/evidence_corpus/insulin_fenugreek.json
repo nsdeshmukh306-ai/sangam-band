@@ -1,0 +1,21 @@
+{
+  "drug": "Insulin Glargine",
+  "herb": "Fenugreek",
+  "findings": [
+    {
+      "summary": "4-Hydroxyisoleucine, the principal insulinotropic amino acid from Trigonella foenum-graecum seeds, directly stimulates pancreatic beta-cell insulin secretion and improves peripheral glucose uptake via insulin-receptor sensitisation; when combined with exogenous insulin, additive blood-glucose lowering leading to hypoglycaemia has been documented in clinical reports.",
+      "citation": "Broca et al., Am J Physiol Endocrinol Metab 1999; case reports summarized",
+      "severity": "moderate"
+    },
+    {
+      "summary": "A randomised controlled trial in type 2 diabetes patients on insulin found that adjunctive fenugreek seed powder (10 g/day for 8 weeks) reduced fasting blood glucose by an additional 16 mg/dL and significantly increased hypoglycaemic episodes compared to insulin alone, particularly in the early morning.",
+      "citation": "Raghuram et al., Nutr Res 1994",
+      "severity": "moderate"
+    },
+    {
+      "summary": "The galactomannan fibre fraction of fenugreek slows carbohydrate absorption and blunts postprandial glucose excursions; this is beneficial in unmedicated hyperglycaemia but can cause dangerous hypoglycaemia when the patient is simultaneously receiving long-acting insulin without dose adjustment.",
+      "citation": "Sowmya & Rajyalakshmi, Plant Foods Hum Nutr 1999",
+      "severity": "low"
+    }
+  ]
+}

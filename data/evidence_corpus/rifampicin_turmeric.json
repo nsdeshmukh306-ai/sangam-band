@@ -1,0 +1,21 @@
+{
+  "drug": "Rifampicin",
+  "herb": "Turmeric",
+  "findings": [
+    {
+      "summary": "Both rifampicin and curcumin (the principal curcuminoid of Curcuma longa) can cause hepatocellular injury; rifampicin-induced hepatotoxicity (0.6–4% of patients) and curcumin's pro-oxidant activity at high supplemental doses have been documented independently; co-administration raises concern for additive hepatotoxicity, and elevated liver enzymes have been reported in patients combining both.",
+      "citation": "Tostmann et al., Drug Saf 2008 (rifampicin hepatotoxicity review); Srimal, Fitoterapia 1997",
+      "severity": "high"
+    },
+    {
+      "summary": "Curcumin inhibits CYP3A4 and P-glycoprotein activity in hepatic and intestinal microsomes; rifampicin is partially metabolised by CYP3A4 before its own induction effect fully develops; during the first few days of co-administration, curcumin may transiently increase rifampicin plasma concentrations, elevating toxicity risk before steady-state induction is established.",
+      "citation": "Obach et al., Drug Metab Dispos 2006; rifampicin autoinduction kinetics",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Curcumin is widely used by TB patients in India as a complementary remedy and is explicitly mentioned in patient surveys; clinicians should ask about turmeric/curcumin supplement use in all patients starting rifampicin-based TB regimens and advise restricting curcumin supplementation to culinary (low) doses during treatment.",
+      "citation": "Gupta et al., Indian J Tuberc 2010 (patient survey); RNTCP guidance",
+      "severity": "moderate"
+    }
+  ]
+}

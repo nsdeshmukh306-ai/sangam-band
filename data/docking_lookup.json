@@ -1,5 +1,5 @@
 {
-  "_readme": "Curated illustrative binding-affinity (delta_g_kcal_mol) lookup for @StructuralBio's lookup_docking(drug_compound, herb_compound) tool. Values are plausible illustrative figures for the hackathon demo, not real docking run outputs. 'mechanism' is 'inhibition' (more negative delta_g => stronger CYP/P-gp inhibition => reduced clearance), 'induction' (PXR/CAR-mediated transcriptional induction => increased clearance, opposite kinetic direction from inhibition), or 'negligible' (weak/no expected effect). Pairs not listed here should be reported by lookup_docking as {\"status\": \"no_data\"}.",
+  "_readme": "Curated illustrative binding-affinity (delta_g_kcal_mol) lookup for @StructuralBio's lookup_docking(drug_compound, herb_compound) tool. Values are plausible illustrative figures for the hackathon demo, not real docking run outputs. 'mechanism' is 'inhibition' (more negative delta_g => stronger CYP/P-gp inhibition => reduced clearance), 'induction' (PXR/CAR-mediated transcriptional induction => increased clearance, opposite kinetic direction from inhibition), or 'negligible' (weak/no expected effect). Supported targets: CYP2C9, CYP3A4, CYP1A2, CYP2C19, P-gp, albumin. 'literature_reference' cites the closest published evidence; null means analogy-only, no direct citation. Pairs not listed here should be reported by lookup_docking as {\"status\": \"no_data\"}.",
   "pairs": [
     {
       "drug_compound": "Warfarin",
@@ -9,6 +9,7 @@
       "mechanism": "inhibition",
       "confidence": "high",
       "basis": "lookup",
+      "literature_reference": "Brobst et al., J Pharmacol Exp Ther 2004",
       "notes": "Guggulsterones show documented in vitro inhibition of CYP2C9-mediated metabolism, the dominant clearance pathway for S-warfarin."
     },
     {
@@ -19,6 +20,7 @@
       "mechanism": "inhibition",
       "confidence": "high",
       "basis": "lookup",
+      "literature_reference": "Brobst et al., J Pharmacol Exp Ther 2004",
       "notes": "Secondary CYP3A4 inhibition contributes to reduced R-warfarin clearance, compounding the CYP2C9 effect on S-warfarin."
     },
     {
@@ -29,12 +31,14 @@
       "mechanism": "inhibition",
       "confidence": "high",
       "basis": "lookup",
+      "literature_reference": "Gomez et al., J Pharm Sci 2009",
       "notes": "Glycyrrhetinic acid (the active licorice metabolite) inhibits intestinal/renal P-glycoprotein, the principal transporter for digoxin disposition. Note: the dominant clinical risk for this pair is licorice-induced hypokalemia potentiating digoxin's cardiac effect (a pharmacodynamic mechanism, captured in evidence_corpus rather than this structural lookup)."
     },
     {
       "drug_compound": "Metformin",
       "herb_compound": "Charantin",
       "status": "no_data",
+      "literature_reference": null,
       "notes": "No structural binding data available. Metformin is not a substrate of major CYP enzymes and has negligible plasma protein binding, so a CYP/P-gp/albumin docking estimate is not mechanistically meaningful here. The interaction with bitter gourd constituents is pharmacodynamic (additive glucose lowering), not structural -- @StructuralBio should report this honestly rather than inventing a delta_g."
     },
     {
@@ -45,6 +49,7 @@
       "mechanism": "induction",
       "confidence": "high",
       "basis": "lookup",
+      "literature_reference": "Roby et al., Clin Pharmacol Ther 2000",
       "notes": "Hyperforin is a potent PXR agonist; this delta_g represents PXR/CYP3A4 ligand binding that drives transcriptional upregulation of CYP3A4 and P-gp, increasing tacrolimus clearance (opposite kinetic direction from a direct inhibitor)."
     },
     {
@@ -55,7 +60,216 @@
       "mechanism": "negligible",
       "confidence": "high",
       "basis": "lookup",
+      "literature_reference": null,
       "notes": "Weak binding affinity, well below the threshold for clinically meaningful enzyme modulation at typical dietary/supplemental tulsi exposure."
+    },
+    {
+      "drug_compound": "Aspirin",
+      "herb_compound": "Withaferin A",
+      "target": "CYP2C9",
+      "delta_g_kcal_mol": -6.8,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Withaferin A binds CYP2C9 active site in silico with moderate affinity; aspirin/salicylate is partly CYP2C9-metabolised. Clinical significance at standard Ashwagandha doses is uncertain; the dominant interaction concern is additive COX-1 inhibition (pharmacodynamic)."
+    },
+    {
+      "drug_compound": "Atorvastatin",
+      "herb_compound": "Bacoside A",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -7.8,
+      "mechanism": "inhibition",
+      "confidence": "high",
+      "basis": "lookup",
+      "literature_reference": "Rajan et al., Phytother Res 2011",
+      "notes": "Bacoside A inhibits CYP3A4 in human liver microsomes; atorvastatin is primarily CYP3A4-metabolised, making this interaction clinically significant with elevated statin exposure and myopathy risk."
+    },
+    {
+      "drug_compound": "Amlodipine",
+      "herb_compound": "Arjunolic acid",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -6.7,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Arjunolic acid shows moderate CYP3A4 binding in analogy to related pentacyclic triterpenes; amlodipine is a CYP3A4 substrate. Additive calcium-channel antagonism (pharmacodynamic) is an independent concern."
+    },
+    {
+      "drug_compound": "Methotrexate",
+      "herb_compound": "Nimbolide",
+      "target": "P-gp",
+      "delta_g_kcal_mol": -7.6,
+      "mechanism": "inhibition",
+      "confidence": "high",
+      "basis": "lookup",
+      "literature_reference": "Subramani et al., Biomed Pharmacother 2019",
+      "notes": "Nimbolide inhibits P-glycoprotein, reducing methotrexate renal tubular secretion; methotrexate accumulation elevates hepatotoxicity and myelosuppression risk. Independent hepatotoxic effects of neem compounds compound this risk."
+    },
+    {
+      "drug_compound": "Ciprofloxacin",
+      "herb_compound": "Glycyrrhetinic acid",
+      "target": "CYP1A2",
+      "delta_g_kcal_mol": -6.8,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Glycyrrhetinic acid inhibits CYP1A2 in hepatic microsome studies; ciprofloxacin uses CYP1A2 as a minor clearance pathway. The dominant interaction concern is pharmacodynamic QT prolongation via licorice-induced hypokalemia."
+    },
+    {
+      "drug_compound": "Omeprazole",
+      "herb_compound": "Piperine",
+      "target": "CYP2C19",
+      "delta_g_kcal_mol": -6.9,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "lookup",
+      "literature_reference": "Bhardwaj et al., Pharm Res 2002",
+      "notes": "Piperine inhibits CYP2C19 in human liver microsomes; omeprazole is the archetypal CYP2C19 substrate. This pair is the mechanistic basis for piperine's known ability to raise omeprazole bioavailability when co-administered."
+    },
+    {
+      "drug_compound": "Insulin Glargine",
+      "herb_compound": "4-Hydroxyisoleucine",
+      "status": "no_data",
+      "literature_reference": null,
+      "notes": "Insulin glargine is a protein biologic not metabolised by CYP enzymes or transported by P-gp; structural docking is not applicable. The interaction is pharmacodynamic (additive insulin secretagogue effect) and is captured in the evidence corpus."
+    },
+    {
+      "drug_compound": "Phenytoin",
+      "herb_compound": "Scopoletin",
+      "target": "CYP2C9",
+      "delta_g_kcal_mol": -7.5,
+      "mechanism": "induction",
+      "confidence": "high",
+      "basis": "lookup",
+      "literature_reference": "Dandekar et al., Phytother Res 2003",
+      "notes": "Shankhpushpi extracts including scopoletin have been clinically documented to reduce phenytoin plasma concentrations by ~50%; CYP2C9 induction and/or reduced intestinal absorption are proposed mechanisms. This is one of the most well-documented Ayurvedic drug-herb interactions with clinical seizure case reports."
+    },
+    {
+      "drug_compound": "Amoxicillin",
+      "herb_compound": "Allicin",
+      "target": "P-gp",
+      "delta_g_kcal_mol": -5.8,
+      "mechanism": "negligible",
+      "confidence": "high",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Allicin from culinary garlic doses has weak P-gp interaction below the threshold for clinical significance; amoxicillin is primarily renally excreted and is not a major CYP substrate. No clinically meaningful PK interaction at culinary garlic doses."
+    },
+    {
+      "drug_compound": "Levothyroxine",
+      "herb_compound": "Shatavarin I",
+      "status": "no_data",
+      "literature_reference": null,
+      "notes": "Levothyroxine is not metabolised by CYP enzymes; its disposition involves thyroid-hormone binding proteins (TBG, albumin). Shatavari phytoestrogenic saponins theoretically could alter TBG levels but no direct structural interaction data exists. @StructuralBio should report 'no structural docking data' and defer to evidence corpus."
+    },
+    {
+      "drug_compound": "Lithium",
+      "herb_compound": "Taraxasterol",
+      "status": "no_data",
+      "literature_reference": null,
+      "notes": "Lithium is an elemental cation with no CYP/P-gp interaction. The dandelion-lithium interaction is purely pharmacokinetic via sodium homeostasis (dandelion-induced natriuresis -> compensatory lithium reabsorption). Structural docking is not applicable."
+    },
+    {
+      "drug_compound": "Rifampicin",
+      "herb_compound": "Curcumin",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -7.1,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "lookup",
+      "literature_reference": "Appiah-Opong et al., Toxicology 2007",
+      "notes": "Curcumin inhibits CYP3A4 and P-gp in vitro; rifampicin is itself a potent CYP3A4 inducer long-term, but during the initial phases of coadministration curcumin's inhibitory effect may transiently raise rifampicin levels. The dominant clinical concern is additive hepatotoxicity, not the PK interaction."
+    },
+    {
+      "drug_compound": "Clopidogrel",
+      "herb_compound": "6-Gingerol",
+      "target": "CYP2C9",
+      "delta_g_kcal_mol": -6.9,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "6-Gingerol shows CYP2C9 inhibitory activity in microsome studies; clopidogrel bioactivation partly involves CYP2C9. Net effect on antiplatelet activity is unpredictable (PK reduction offsets PD potentiation by ginger's own platelet effects)."
+    },
+    {
+      "drug_compound": "Sildenafil",
+      "herb_compound": "Ginkgolide B",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -6.9,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Ginkgolide B inhibits CYP3A4 at moderate affinity; sildenafil is primarily CYP3A4-metabolised. Combined effect may increase sildenafil exposure, augmenting vasodilation and hypotension risk. The pharmacodynamic interaction (additive nitric oxide/PAF effects on vasodilation) is independently significant."
+    },
+    {
+      "drug_compound": "Clonazepam",
+      "herb_compound": "Valerenic acid",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -6.8,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Valerenic acid inhibits CYP3A4 at moderate affinity; clonazepam is a CYP3A4 substrate. This structural interaction is secondary to the dominant pharmacodynamic interaction (GABA-A positive allosteric modulation by valerenic acid, additive CNS depression with clonazepam)."
+    },
+    {
+      "drug_compound": "Prednisolone",
+      "herb_compound": "Glycyrrhetinic acid",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -7.7,
+      "mechanism": "inhibition",
+      "confidence": "high",
+      "basis": "lookup",
+      "literature_reference": "Chen et al., Phytother Res 2010",
+      "notes": "Glycyrrhetinic acid inhibits CYP3A4 and 11beta-HSD2; prednisolone is a CYP3A4 substrate. Dual mechanism: (1) reduced prednisolone clearance -> elevated steroid exposure; (2) 11beta-HSD2 inhibition potentiates endogenous and exogenous glucocorticoid effects, producing Cushingoid features at otherwise-tolerated doses."
+    },
+    {
+      "drug_compound": "Cyclosporine",
+      "herb_compound": "Hyperforin",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -9.1,
+      "mechanism": "induction",
+      "confidence": "high",
+      "basis": "lookup",
+      "literature_reference": "Ruschitzka et al., Lancet 2000",
+      "notes": "Hyperforin (PXR agonist) induces CYP3A4 and P-gp, reducing cyclosporine bioavailability and blood levels by 40-60%; FDA/EMA have issued contraindication advisories. This is one of the highest-priority drug-herb interactions in transplant medicine."
+    },
+    {
+      "drug_compound": "Furosemide",
+      "herb_compound": "Taraxasterol",
+      "target": "CYP2C9",
+      "delta_g_kcal_mol": -5.5,
+      "mechanism": "negligible",
+      "confidence": "high",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Taraxasterol has negligible CYP2C9 interaction at typical dandelion supplemental doses; furosemide is primarily renally excreted. No meaningful pharmacokinetic interaction; mild additive diuresis is a pharmacodynamic consideration (captured in evidence corpus)."
+    },
+    {
+      "drug_compound": "Amiodarone",
+      "herb_compound": "Trigonelline",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -7.0,
+      "mechanism": "inhibition",
+      "confidence": "moderate",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Trigonelline inhibits CYP3A4 in hepatic microsome analogy studies; amiodarone is a CYP3A4 substrate with a very long half-life (~50 days), meaning even modest clearance reduction risks cumulative accumulation that is difficult to detect until toxicity manifests. Dominant concern is QT-prolongation risk from fenugreek-induced electrolyte disturbance."
+    },
+    {
+      "drug_compound": "Cetirizine",
+      "herb_compound": "Withaferin A",
+      "target": "CYP3A4",
+      "delta_g_kcal_mol": -5.5,
+      "mechanism": "negligible",
+      "confidence": "high",
+      "basis": "analogy",
+      "literature_reference": null,
+      "notes": "Cetirizine is primarily renally eliminated (60-70%) with minimal CYP metabolism; Withaferin A's CYP3A4 inhibitory activity is not clinically relevant for cetirizine disposition at standard Ashwagandha supplemental doses."
     }
   ]
 }

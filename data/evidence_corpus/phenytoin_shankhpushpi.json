@@ -1,0 +1,21 @@
+{
+  "drug": "Phenytoin",
+  "herb": "Shankhpushpi",
+  "findings": [
+    {
+      "summary": "A pharmacokinetic study in epileptic patients found that Shankhpushpi (Convolvulus pluricaulis) syrup co-administered with phenytoin significantly reduced phenytoin plasma trough concentrations by 50–58%, associated with breakthrough seizures in two of six patients studied; the authors attributed the reduction to CYP2C9 induction and possible drug-herb chelation in the GI tract.",
+      "citation": "Dandekar et al., J Ethnopharmacol 1992",
+      "severity": "high"
+    },
+    {
+      "summary": "Phenytoin has a narrow therapeutic index (target trough 10–20 mcg/mL); a 50% reduction in AUC places most patients below the minimum effective concentration, resulting in loss of seizure control with potentially life-threatening consequences including status epilepticus.",
+      "citation": "Perucca, Pharmacol Ther 2014 (phenytoin TDM review)",
+      "severity": "high"
+    },
+    {
+      "summary": "Multiple Ayurvedic combination formulations containing Shankhpushpi (including Mentat and Memorin) are commercially available in India and are commonly self-prescribed by epilepsy patients for cognitive support; clinicians should routinely ask about these supplements when monitoring phenytoin levels.",
+      "citation": "Gupta et al., Curr Drug Metab 2012",
+      "severity": "moderate"
+    }
+  ]
+}

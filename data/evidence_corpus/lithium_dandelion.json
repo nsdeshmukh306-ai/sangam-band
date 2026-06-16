@@ -1,0 +1,21 @@
+{
+  "drug": "Lithium",
+  "herb": "Dandelion",
+  "findings": [
+    {
+      "summary": "Dandelion (Taraxacum officinale) exerts a mild natriuretic and diuretic effect through its taraxacin and potassium content; sodium depletion from diuresis promotes compensatory proximal tubular reabsorption of lithium, a well-established mechanism by which diuretic agents raise lithium plasma concentrations and can precipitate toxicity.",
+      "citation": "Finley et al., J Clin Psychiatry 1995 (diuretic-lithium interaction review); Taraxacum pharmacology",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Lithium has a narrow therapeutic index (target serum level 0.6–1.2 mmol/L); even modest increases in tubular reabsorption can produce serum levels in the toxic range (>1.5 mmol/L) associated with tremor, confusion, cardiac arrhythmia, and renal damage; patients combining lithium with any diuretic agent including herbal diuretics should be closely monitored.",
+      "citation": "Grandjean & Aubry, CNS Drugs 2009",
+      "severity": "moderate"
+    },
+    {
+      "summary": "No specific case report of dandelion-induced lithium toxicity was identified in published literature; the interaction is extrapolated from the class effect of thiazide and loop diuretics on lithium renal handling; dandelion's diuretic potency is substantially weaker than pharmaceutical diuretics, so the clinical magnitude is expected to be modest.",
+      "citation": "Clare et al., J Altern Complement Med 2009 (dandelion diuretic trial)",
+      "severity": "low"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "drug": "Amiodarone",
+  "herb": "Fenugreek",
+  "findings": [
+    {
+      "summary": "Amiodarone is a class III antiarrhythmic with intrinsic QT-prolonging activity; fenugreek-induced changes in electrolyte balance (particularly hyponatraemia reported at high seed doses) can further prolong the QT interval, potentially triggering torsades de pointes in patients with underlying cardiac disease or electrolyte vulnerability.",
+      "citation": "Roden, N Engl J Med 2004 (drug-induced QT review); Singh et al., electrolyte data",
+      "severity": "high"
+    },
+    {
+      "summary": "Trigonelline from fenugreek inhibits CYP3A4 in vitro; amiodarone is a CYP3A4 substrate, and reduced amiodarone clearance combined with its already-exceptional half-life (40–55 days) risks cumulative drug accumulation that would be difficult to detect clinically until toxicity manifests.",
+      "citation": "Patel et al., Phytother Res 2016; amiodarone pharmacokinetics review",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Amiodarone itself inhibits CYP2C9, CYP3A4, and other metabolic enzymes; in patients with atrial fibrillation (the primary amiodarone indication), electrolyte disturbances from any source — including herbal diuretics and hypoglycaemic agents like fenugreek — can precipitate recurrent arrhythmias and increase the risk of amiodarone-related thyroid, pulmonary, and hepatic adverse effects.",
+      "citation": "Zimetbaum, N Engl J Med 2007 (amiodarone pharmacology review)",
+      "severity": "moderate"
+    }
+  ]
+}

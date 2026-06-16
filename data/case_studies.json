@@ -1,5 +1,5 @@
 {
-  "_readme": "5 demo case studies spanning the risk spectrum (Section 4). 'sample_message' is the literal text to post in the Sangam Case Room to kick off a run. 'pk_params' are simplified one-compartment oral PK parameters (illustrative only, not clinically validated) consumed by @PKPD's simulate_pk tool.",
+  "_readme": "25 drug-herb case studies spanning the risk spectrum (RED/YELLOW/GREEN). 'sample_message' is the literal text to post in the Sangam Case Room. 'pk_params' are simplified one-compartment oral PK parameters (illustrative only, not clinically validated). Cases 1-5 are original demo cases; cases 6-25 expand to production coverage of Indian polypharmacy patterns.",
   "cases": [
     {
       "id": "case_1_warfarin_guggulu",
@@ -11,18 +11,9 @@
         {"name": "Guggulu", "dose": "500 mg standardized extract, twice daily"}
       ],
       "patient": {
-        "age": 68,
-        "sex": "F",
-        "egfr": 55,
-        "cyp2c9_genotype": "*1/*3",
-        "cyp3a4_status": "normal"
+        "age": 68, "sex": "F", "egfr": 55, "cyp2c9_genotype": "*1/*3", "cyp3a4_status": "normal"
       },
-      "pk_params": {
-        "dose_mg": 5,
-        "ka_per_hr": 1.0,
-        "ke_baseline_per_hr": 0.0173,
-        "v_l": 10
-      },
+      "pk_params": {"dose_mg": 5, "ka_per_hr": 1.0, "ke_baseline_per_hr": 0.0173, "v_l": 10},
       "mechanism": "Guggulsterones inhibit CYP2C9 (and to a lesser extent CYP3A4), reducing warfarin clearance and increasing anticoagulant exposure -> elevated bleeding risk.",
       "expected_tier": "RED",
       "sample_message": "@Intake @PatientProfile New case: 68F on Warfarin 5mg once daily (CYP2C9 *1/*3, CYP3A4 normal, eGFR 55) has started taking Guggulu 500mg twice daily for cholesterol. Please assess for interactions."
@@ -37,18 +28,9 @@
         {"name": "Yashtimadhu", "dose": "1 g powdered root, twice daily"}
       ],
       "patient": {
-        "age": 72,
-        "sex": "M",
-        "egfr": 48,
-        "cyp2c9_genotype": "*1/*1",
-        "cyp3a4_status": "normal"
+        "age": 72, "sex": "M", "egfr": 48, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
       },
-      "pk_params": {
-        "dose_mg": 0.25,
-        "ka_per_hr": 0.5,
-        "ke_baseline_per_hr": 0.0145,
-        "v_l": 500
-      },
+      "pk_params": {"dose_mg": 0.25, "ka_per_hr": 0.5, "ke_baseline_per_hr": 0.0145, "v_l": 500},
       "mechanism": "Glycyrrhizin/glycyrrhetinic acid from licorice causes hypokalemia (pseudoaldosteronism), which potentiates digoxin's effect on cardiac Na+/K+-ATPase; glycyrrhetinic acid also inhibits P-gp, the main digoxin transporter -> digoxin toxicity risk.",
       "expected_tier": "RED",
       "sample_message": "@Intake @PatientProfile New case: 72M on Digoxin 0.25mg once daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 48) has started taking Yashtimadhu (licorice root) 1g twice daily for acidity. Please assess for interactions."
@@ -63,18 +45,9 @@
         {"name": "Karela", "dose": "100 mL fresh juice, once daily"}
       ],
       "patient": {
-        "age": 55,
-        "sex": "F",
-        "egfr": 75,
-        "cyp2c9_genotype": "*1/*1",
-        "cyp3a4_status": "normal"
+        "age": 55, "sex": "F", "egfr": 75, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
       },
-      "pk_params": {
-        "dose_mg": 500,
-        "ka_per_hr": 1.0,
-        "ke_baseline_per_hr": 0.139,
-        "v_l": 100
-      },
+      "pk_params": {"dose_mg": 500, "ka_per_hr": 1.0, "ke_baseline_per_hr": 0.139, "v_l": 100},
       "mechanism": "Bitter gourd constituents (charantin, polypeptide-p) lower blood glucose via mechanisms independent of metformin, producing an additive pharmacodynamic glucose-lowering effect rather than a pharmacokinetic interaction.",
       "expected_tier": "YELLOW",
       "sample_message": "@Intake @PatientProfile New case: 55F on Metformin 500mg twice daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 75) has started drinking 100mL fresh karela (bitter gourd) juice once daily. Please assess for interactions."
@@ -89,18 +62,9 @@
         {"name": "St. John's Wort", "dose": "300 mg standardized extract, three times daily"}
       ],
       "patient": {
-        "age": 45,
-        "sex": "M",
-        "egfr": 85,
-        "cyp2c9_genotype": "*1/*1",
-        "cyp3a4_status": "reduced"
+        "age": 45, "sex": "M", "egfr": 85, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "reduced"
       },
-      "pk_params": {
-        "dose_mg": 2,
-        "ka_per_hr": 0.5,
-        "ke_baseline_per_hr": 0.0578,
-        "v_l": 850
-      },
+      "pk_params": {"dose_mg": 2, "ka_per_hr": 0.5, "ke_baseline_per_hr": 0.0578, "v_l": 850},
       "mechanism": "Hyperforin in St. John's Wort is a potent PXR agonist that induces CYP3A4 (and P-gp), substantially lowering tacrolimus blood levels in a transplant patient who is already a reduced CYP3A4 metabolizer -> risk of subtherapeutic levels and organ rejection.",
       "expected_tier": "RED",
       "sample_message": "@Intake @PatientProfile New case: 45M post-kidney-transplant on Tacrolimus 2mg twice daily (CYP2C9 *1/*1, CYP3A4 reduced, eGFR 85) has started self-medicating with St. John's Wort 300mg three times daily for low mood. Please assess for interactions."
@@ -115,21 +79,352 @@
         {"name": "Tulsi", "dose": "2 cups tulsi tea, daily"}
       ],
       "patient": {
-        "age": 30,
-        "sex": "F",
-        "egfr": 100,
-        "cyp2c9_genotype": "*1/*1",
-        "cyp3a4_status": "normal"
+        "age": 30, "sex": "F", "egfr": 100, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
       },
-      "pk_params": {
-        "dose_mg": 500,
-        "ka_per_hr": 1.4,
-        "ke_baseline_per_hr": 0.277,
-        "v_l": 50
-      },
+      "pk_params": {"dose_mg": 500, "ka_per_hr": 1.4, "ke_baseline_per_hr": 0.277, "v_l": 50},
       "mechanism": "Tulsi constituents (eugenol, ursolic acid, rosmarinic acid) show no clinically meaningful modulation of acetaminophen's metabolism at typical dietary/supplemental exposure.",
       "expected_tier": "GREEN",
       "sample_message": "@Intake @PatientProfile New case: 30F (CYP2C9 *1/*1, CYP3A4 normal, eGFR 100) occasionally takes Paracetamol 500mg for headaches and drinks 2 cups of tulsi tea daily. Please assess for interactions."
+    },
+    {
+      "id": "case_6_aspirin_ashwagandha",
+      "title": "Aspirin + Ashwagandha",
+      "drugs": [
+        {"name": "Aspirin", "compound": "Aspirin", "dose_mg": 75, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Ashwagandha", "dose": "300 mg root extract, twice daily"}
+      ],
+      "patient": {
+        "age": 62, "sex": "M", "egfr": 72, "cyp2c9_genotype": "*1/*2", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 75, "ka_per_hr": 2.5, "ke_baseline_per_hr": 0.277, "v_l": 10},
+      "mechanism": "Withaferin A from Ashwagandha inhibits COX-1 and platelet thromboxane synthesis, additive with aspirin's antiplatelet mechanism; mild analogy-based CYP2C9 inhibition (salicylate minor clearance pathway) may modestly increase aspirin exposure, elevating bleeding risk. (Tier calc: delta_g=-6.8 CYP2C9 inhibition -> ccf=-0.20 -> AUC +25%; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 62M on Aspirin 75mg once daily for coronary artery disease (CYP2C9 *1/*2, CYP3A4 normal, eGFR 72) has been taking Ashwagandha 300mg twice daily for stress and fatigue. Please assess for interactions."
+    },
+    {
+      "id": "case_7_atorvastatin_brahmi",
+      "title": "Atorvastatin + Brahmi",
+      "drugs": [
+        {"name": "Atorvastatin", "compound": "Atorvastatin", "dose_mg": 40, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Brahmi", "dose": "300 mg standardized extract (45% bacosides), twice daily"}
+      ],
+      "patient": {
+        "age": 55, "sex": "M", "egfr": 82, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 40, "ka_per_hr": 1.2, "ke_baseline_per_hr": 0.0495, "v_l": 381},
+      "mechanism": "Bacoside A in Brahmi inhibits CYP3A4 in hepatic microsomes; atorvastatin is primarily metabolised by CYP3A4. Elevated statin AUC substantially increases risk of myopathy and rhabdomyolysis. (Tier calc: delta_g=-7.8 CYP3A4 inhibition -> ccf=-0.45 -> |ccf|=0.45>=0.4 + high confidence -> RED; 1x high evidence confirms)",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 55M on Atorvastatin 40mg once daily for hypercholesterolemia (CYP2C9 *1/*1, CYP3A4 normal, eGFR 82) has started taking Brahmi (Bacopa monnieri) 300mg twice daily for memory enhancement. Please assess for interactions."
+    },
+    {
+      "id": "case_8_amlodipine_arjuna",
+      "title": "Amlodipine + Arjuna",
+      "drugs": [
+        {"name": "Amlodipine", "compound": "Amlodipine", "dose_mg": 5, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Arjuna", "dose": "500 mg bark powder, twice daily"}
+      ],
+      "patient": {
+        "age": 58, "sex": "F", "egfr": 78, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 5, "ka_per_hr": 0.2, "ke_baseline_per_hr": 0.0173, "v_l": 1000},
+      "mechanism": "Terminalia arjuna bark exerts calcium-channel antagonism in myocardium and vasculature, additive with amlodipine's antihypertensive mechanism. Arjunolic acid has analogy-based CYP3A4 inhibition that may modestly increase amlodipine exposure. (Tier calc: delta_g=-6.7 CYP3A4 inhibition -> ccf=-0.175 -> AUC +21%; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 58F on Amlodipine 5mg once daily for hypertension (CYP2C9 *1/*1, CYP3A4 normal, eGFR 78) has added Arjuna (Terminalia arjuna) 500mg bark powder twice daily on Ayurvedic recommendation for heart health. Please assess for interactions."
+    },
+    {
+      "id": "case_9_methotrexate_neem",
+      "title": "Methotrexate + Neem",
+      "drugs": [
+        {"name": "Methotrexate", "compound": "Methotrexate", "dose_mg": 15, "frequency": "once weekly"}
+      ],
+      "herbs": [
+        {"name": "Neem", "dose": "500 mg leaf extract, once daily"}
+      ],
+      "patient": {
+        "age": 45, "sex": "F", "egfr": 65, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 15, "ka_per_hr": 1.5, "ke_baseline_per_hr": 0.0866, "v_l": 40},
+      "mechanism": "Nimbolide inhibits P-glycoprotein, reducing methotrexate renal tubular secretion and increasing intracellular accumulation. Both methotrexate and neem compounds are independently hepatotoxic; co-administration elevates hepatotoxicity risk substantially. (Tier calc: delta_g=-7.6 P-gp inhibition -> ccf=-0.40 -> |ccf|=0.40>=0.4 + high confidence -> RED; 1x high evidence confirms)",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 45F on Methotrexate 15mg once weekly for rheumatoid arthritis (CYP2C9 *1/*1, CYP3A4 normal, eGFR 65) has started taking Neem (Azadirachta indica) 500mg leaf extract daily for skin conditions and blood purification. Please assess for interactions."
+    },
+    {
+      "id": "case_10_ciprofloxacin_licorice",
+      "title": "Ciprofloxacin + Licorice",
+      "drugs": [
+        {"name": "Ciprofloxacin", "compound": "Ciprofloxacin", "dose_mg": 500, "frequency": "twice daily"}
+      ],
+      "herbs": [
+        {"name": "Yashtimadhu (Licorice)", "dose": "3 g root powder, twice daily"}
+      ],
+      "patient": {
+        "age": 48, "sex": "M", "egfr": 80, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 500, "ka_per_hr": 1.5, "ke_baseline_per_hr": 0.139, "v_l": 150},
+      "mechanism": "Glycyrrhetinic acid inhibits CYP1A2, a partial clearance pathway for ciprofloxacin, modestly increasing fluoroquinolone exposure. Licorice-induced hypokalemia further potentiates ciprofloxacin's QT-prolonging tendency. (Tier calc: delta_g=-6.8 CYP1A2 inhibition -> ccf=-0.20 -> AUC +25%; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 48M on Ciprofloxacin 500mg twice daily for a urinary tract infection (CYP2C9 *1/*1, CYP3A4 normal, eGFR 80) has been taking Yashtimadhu (licorice root) 3g powder twice daily for chronic acidity. Please assess for interactions."
+    },
+    {
+      "id": "case_11_omeprazole_black_pepper",
+      "title": "Omeprazole + Black Pepper (Piperine)",
+      "drugs": [
+        {"name": "Omeprazole", "compound": "Omeprazole", "dose_mg": 20, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Black Pepper", "dose": "10 mg piperine supplement (BioPerine), once daily"}
+      ],
+      "patient": {
+        "age": 52, "sex": "M", "egfr": 90, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 20, "ka_per_hr": 1.0, "ke_baseline_per_hr": 0.866, "v_l": 21},
+      "mechanism": "Piperine is a potent CYP2C19 inhibitor; omeprazole is primarily metabolised by CYP2C19. Increased omeprazole exposure enhances acid suppression but raises risk of long-term PPI adverse effects (hypomagnesaemia, C. difficile, fracture risk). (Tier calc: delta_g=-6.9 CYP2C19 inhibition -> ccf=-0.225 -> AUC +29%; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 52M on Omeprazole 20mg once daily for GERD (CYP2C9 *1/*1, CYP3A4 normal, eGFR 90) has been taking a daily supplement containing 10mg piperine (BioPerine, from Black Pepper) for enhanced nutrient absorption. Please assess for interactions."
+    },
+    {
+      "id": "case_12_insulin_fenugreek",
+      "title": "Insulin Glargine + Fenugreek",
+      "drugs": [
+        {"name": "Insulin Glargine", "compound": "Insulin Glargine", "dose_mg": 10, "frequency": "once daily at bedtime"}
+      ],
+      "herbs": [
+        {"name": "Fenugreek", "dose": "10 g seed powder, with breakfast daily"}
+      ],
+      "patient": {
+        "age": 60, "sex": "M", "egfr": 68, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 10, "ka_per_hr": 0.1, "ke_baseline_per_hr": 0.023, "v_l": 13},
+      "mechanism": "4-Hydroxyisoleucine from fenugreek directly stimulates insulin secretion and improves peripheral glucose uptake, additive with exogenous insulin. Galactomannan fibre blunts postprandial glucose excursions. Risk: combined hypoglycaemia, especially fasting. (Tier calc: structural 'none' basis -> ccf=0 -> AUC +0%; 2x moderate evidence from RCT and case data -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 60M with type 2 diabetes on Insulin Glargine 10 IU once daily at bedtime (CYP2C9 *1/*1, CYP3A4 normal, eGFR 68) has started taking 10g fenugreek seed powder with breakfast on Ayurvedic advice for blood sugar control. Please assess for interactions."
+    },
+    {
+      "id": "case_13_phenytoin_shankhpushpi",
+      "title": "Phenytoin + Shankhpushpi",
+      "drugs": [
+        {"name": "Phenytoin", "compound": "Phenytoin", "dose_mg": 200, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Shankhpushpi", "dose": "10 mL syrup (standardized), twice daily"}
+      ],
+      "patient": {
+        "age": 35, "sex": "M", "egfr": 90, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 200, "ka_per_hr": 0.5, "ke_baseline_per_hr": 0.023, "v_l": 50},
+      "mechanism": "Shankhpushpi (Convolvulus pluricaulis) reduces phenytoin plasma levels by approximately 50%, attributed to CYP2C9 induction and possibly reduced GI absorption; breakthrough seizures documented in clinical study. (Tier calc: delta_g=-7.5 CYP2C9 induction -> ccf=+0.375 -> AUC -27%; 2x high evidence (seizure cases) -> RED by rule 1)",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 35M with epilepsy on Phenytoin 200mg once daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 90) has started taking Shankhpushpi syrup 10mL twice daily prescribed by an Ayurvedic practitioner for memory enhancement. Please assess for interactions."
+    },
+    {
+      "id": "case_14_amoxicillin_garlic",
+      "title": "Amoxicillin + Garlic",
+      "drugs": [
+        {"name": "Amoxicillin", "compound": "Amoxicillin", "dose_mg": 500, "frequency": "three times daily"}
+      ],
+      "herbs": [
+        {"name": "Garlic", "dose": "1 clove fresh garlic daily (culinary dose)"}
+      ],
+      "patient": {
+        "age": 32, "sex": "M", "egfr": 100, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 500, "ka_per_hr": 2.0, "ke_baseline_per_hr": 0.693, "v_l": 18},
+      "mechanism": "Allicin from garlic has weak P-gp effects at high supplemental doses; at typical culinary exposure, no clinically significant pharmacokinetic interaction with amoxicillin occurs. Garlic's antimicrobial activity is complementary rather than antagonistic. (Tier calc: delta_g=-5.8 P-gp -> magnitude=0 below threshold -> ccf=0; evidence all 'low' -> GREEN)",
+      "expected_tier": "GREEN",
+      "sample_message": "@Intake @PatientProfile New case: 32M on Amoxicillin 500mg three times daily for a community-acquired infection (CYP2C9 *1/*1, CYP3A4 normal, eGFR 100) regularly consumes one clove of raw garlic daily as part of his diet. Please assess for interactions."
+    },
+    {
+      "id": "case_15_levothyroxine_shatavari",
+      "title": "Levothyroxine + Shatavari",
+      "drugs": [
+        {"name": "Levothyroxine", "compound": "Levothyroxine", "dose_mg": 0.1, "frequency": "once daily, fasting"}
+      ],
+      "herbs": [
+        {"name": "Shatavari", "dose": "500 mg root extract, twice daily"}
+      ],
+      "patient": {
+        "age": 42, "sex": "F", "egfr": 92, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 0.1, "ka_per_hr": 0.5, "ke_baseline_per_hr": 0.00413, "v_l": 14},
+      "mechanism": "Shatavari's phytoestrogenic saponins theoretically could alter thyroid-binding globulin levels, but published evidence for this specific combination is absent; no pharmacokinetic interaction has been documented. Risk is theoretical only. (Tier calc: no structural target -> ccf=0; evidence all 'low' -> GREEN)",
+      "expected_tier": "GREEN",
+      "sample_message": "@Intake @PatientProfile New case: 42F with hypothyroidism on Levothyroxine 100mcg once daily fasting (CYP2C9 *1/*1, CYP3A4 normal, eGFR 92) has been prescribed Shatavari (Asparagus racemosus) 500mg twice daily by an Ayurvedic doctor for hormonal balance. Please assess for interactions."
+    },
+    {
+      "id": "case_16_lithium_dandelion",
+      "title": "Lithium + Dandelion",
+      "drugs": [
+        {"name": "Lithium Carbonate", "compound": "Lithium", "dose_mg": 450, "frequency": "twice daily"}
+      ],
+      "herbs": [
+        {"name": "Dandelion", "dose": "500 mg leaf extract, twice daily"}
+      ],
+      "patient": {
+        "age": 38, "sex": "M", "egfr": 88, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 450, "ka_per_hr": 0.5, "ke_baseline_per_hr": 0.023, "v_l": 50},
+      "mechanism": "Dandelion's natriuretic/diuretic effect can reduce serum sodium, promoting compensatory proximal tubular reabsorption of lithium and raising plasma lithium levels. Lithium has a narrow therapeutic index; even modest accumulation can cause toxicity. (Tier calc: structural 'none' basis -> ccf=0; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 38M with bipolar disorder on Lithium Carbonate 450mg twice daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 88) has been taking Dandelion leaf extract 500mg twice daily as a 'liver detox' supplement. Please assess for interactions."
+    },
+    {
+      "id": "case_17_rifampicin_turmeric",
+      "title": "Rifampicin + Turmeric (Curcumin)",
+      "drugs": [
+        {"name": "Rifampicin", "compound": "Rifampicin", "dose_mg": 600, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Turmeric", "dose": "1000 mg curcumin extract (95%), once daily"}
+      ],
+      "patient": {
+        "age": 35, "sex": "M", "egfr": 72, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 600, "ka_per_hr": 1.5, "ke_baseline_per_hr": 0.173, "v_l": 45},
+      "mechanism": "Curcumin inhibits CYP3A4 and P-gp, potentially raising rifampicin exposure during the early induction phase. More critically, both are independently hepatotoxic; co-administration during TB treatment substantially elevates hepatotoxicity risk. (Tier calc: delta_g=-7.1 CYP3A4 inhibition -> ccf=-0.275 -> AUC +38%; 1x high evidence (hepatotoxicity) -> RED by rule 1)",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 35M on Rifampicin 600mg once daily for pulmonary tuberculosis (CYP2C9 *1/*1, CYP3A4 normal, eGFR 72) has been self-administering Turmeric curcumin extract 1000mg daily on advice from family for immune support during TB treatment. Please assess for interactions."
+    },
+    {
+      "id": "case_18_clopidogrel_ginger",
+      "title": "Clopidogrel + Ginger",
+      "drugs": [
+        {"name": "Clopidogrel", "compound": "Clopidogrel", "dose_mg": 75, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Ginger", "dose": "2 g dried ginger supplement, twice daily"}
+      ],
+      "patient": {
+        "age": 63, "sex": "M", "egfr": 65, "cyp2c9_genotype": "*1/*2", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 75, "ka_per_hr": 1.5, "ke_baseline_per_hr": 0.1155, "v_l": 100},
+      "mechanism": "6-Gingerol inhibits platelet TXA2 synthesis, additive with clopidogrel's ADP-receptor blockade -> combined bleeding risk. Concurrent CYP2C9 inhibition by shogaol may also reduce clopidogrel bioactivation, creating an unpredictable net effect on platelet function. (Tier calc: delta_g=-6.9 CYP2C9 inhibition -> ccf=-0.225 -> AUC +29%; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 63M post-MI on Clopidogrel 75mg once daily (CYP2C9 *1/*2, CYP3A4 normal, eGFR 65) has been taking 2g dried ginger supplement twice daily for knee joint pain. Please assess for interactions."
+    },
+    {
+      "id": "case_19_sildenafil_ginkgo",
+      "title": "Sildenafil + Ginkgo biloba",
+      "drugs": [
+        {"name": "Sildenafil", "compound": "Sildenafil", "dose_mg": 50, "frequency": "as needed"}
+      ],
+      "herbs": [
+        {"name": "Ginkgo biloba", "dose": "120 mg standardized extract (24% ginkgoflavone glycosides), once daily"}
+      ],
+      "patient": {
+        "age": 55, "sex": "M", "egfr": 85, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 50, "ka_per_hr": 1.5, "ke_baseline_per_hr": 0.173, "v_l": 105},
+      "mechanism": "Ginkgo biloba enhances endothelial nitric oxide production and exerts PAF-antagonist antiplatelet effects; combined with sildenafil's PDE5-mediated vasodilation -> additive hypotension and bleeding risk, particularly in elderly or cardiovascular-compromised patients. (Tier calc: delta_g=-6.9 CYP3A4 inhibition -> ccf=-0.225 -> AUC +29%; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 55M using Sildenafil 50mg as needed for erectile dysfunction (CYP2C9 *1/*1, CYP3A4 normal, eGFR 85) has been taking Ginkgo biloba 120mg standardized extract daily for memory and circulation. Please assess for interactions."
+    },
+    {
+      "id": "case_20_clonazepam_valerian",
+      "title": "Clonazepam + Valerian",
+      "drugs": [
+        {"name": "Clonazepam", "compound": "Clonazepam", "dose_mg": 1, "frequency": "once daily at bedtime"}
+      ],
+      "herbs": [
+        {"name": "Valerian", "dose": "450 mg root extract, at bedtime"}
+      ],
+      "patient": {
+        "age": 45, "sex": "F", "egfr": 95, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 1, "ka_per_hr": 2.0, "ke_baseline_per_hr": 0.023, "v_l": 224},
+      "mechanism": "Valerenic acid is a positive allosteric modulator of GABA-A receptors — the same target as benzodiazepines. Pharmacodynamic additivity with clonazepam -> enhanced sedation, psychomotor impairment, and respiratory depression risk at higher combined doses. (Tier calc: delta_g=-6.8 CYP3A4 inhibition -> ccf=-0.20 -> AUC +25%; 2x moderate evidence -> YELLOW)",
+      "expected_tier": "YELLOW",
+      "sample_message": "@Intake @PatientProfile New case: 45F with anxiety disorder on Clonazepam 1mg once daily at bedtime (CYP2C9 *1/*1, CYP3A4 normal, eGFR 95) has started self-prescribing Valerian root extract 450mg at bedtime for sleep. Please assess for interactions."
+    },
+    {
+      "id": "case_21_prednisolone_licorice",
+      "title": "Prednisolone + Yashtimadhu (Licorice)",
+      "drugs": [
+        {"name": "Prednisolone", "compound": "Prednisolone", "dose_mg": 10, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Yashtimadhu", "dose": "3 g root powder, twice daily"}
+      ],
+      "patient": {
+        "age": 50, "sex": "F", "egfr": 72, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 10, "ka_per_hr": 2.0, "ke_baseline_per_hr": 0.0866, "v_l": 49},
+      "mechanism": "Glycyrrhetinic acid inhibits 11beta-HSD2, potentiating glucocorticoid effects, and inhibits CYP3A4, reducing prednisolone clearance. Combined effect: Cushingoid features, fluid retention, hypokalemia, and hypertension at normally tolerated prednisolone doses. (Tier calc: delta_g=-7.7 CYP3A4 inhibition -> ccf=-0.425 -> |ccf|=0.425>=0.4 + high confidence -> RED; 2x high evidence confirms)",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 50F with rheumatoid arthritis on Prednisolone 10mg once daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 72) has been taking Yashtimadhu (licorice) 3g root powder twice daily for GERD symptoms. Please assess for interactions."
+    },
+    {
+      "id": "case_22_cyclosporine_sjw",
+      "title": "Cyclosporine + St. John's Wort",
+      "drugs": [
+        {"name": "Cyclosporine", "compound": "Cyclosporine", "dose_mg": 150, "frequency": "twice daily"}
+      ],
+      "herbs": [
+        {"name": "St. John's Wort", "dose": "300 mg standardized extract, twice daily"}
+      ],
+      "patient": {
+        "age": 40, "sex": "M", "egfr": 60, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 150, "ka_per_hr": 0.3, "ke_baseline_per_hr": 0.0462, "v_l": 350},
+      "mechanism": "Hyperforin (PXR agonist) induces CYP3A4 and P-gp, reducing cyclosporine bioavailability and blood levels by 40-60%; FDA/EMA contraindicated — confirmed acute organ rejection cases. (Tier calc: delta_g=-9.1 CYP3A4 induction -> ccf=+0.70 (clamped) -> AUC -41%; 3x high evidence -> RED by rule 1)",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 40M post-renal-transplant on Cyclosporine 150mg twice daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 60) has started taking St. John's Wort 300mg twice daily for depression after transplant. Please assess for interactions."
+    },
+    {
+      "id": "case_23_furosemide_dandelion",
+      "title": "Furosemide + Dandelion",
+      "drugs": [
+        {"name": "Furosemide", "compound": "Furosemide", "dose_mg": 40, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Dandelion", "dose": "250 mg leaf extract, once daily"}
+      ],
+      "patient": {
+        "age": 65, "sex": "F", "egfr": 58, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 40, "ka_per_hr": 1.2, "ke_baseline_per_hr": 0.231, "v_l": 14},
+      "mechanism": "Dandelion has mild diuretic properties but its potency is negligible compared to furosemide (a high-ceiling loop diuretic); at typical supplemental doses the additive diuretic effect is clinically insignificant. No pharmacokinetic interaction. (Tier calc: delta_g below threshold -> ccf=0; evidence all 'low' -> GREEN)",
+      "expected_tier": "GREEN",
+      "sample_message": "@Intake @PatientProfile New case: 65F with mild heart failure on Furosemide 40mg once daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 58) has been drinking dandelion leaf tea (250mg extract equivalent) daily as a traditional kidney tonic. Please assess for interactions."
+    },
+    {
+      "id": "case_24_amiodarone_fenugreek",
+      "title": "Amiodarone + Fenugreek",
+      "drugs": [
+        {"name": "Amiodarone", "compound": "Amiodarone", "dose_mg": 200, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Fenugreek", "dose": "15 g seed powder, once daily"}
+      ],
+      "patient": {
+        "age": 70, "sex": "M", "egfr": 52, "cyp2c9_genotype": "*1/*3", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 200, "ka_per_hr": 0.2, "ke_baseline_per_hr": 0.01155, "v_l": 100},
+      "mechanism": "Fenugreek-induced electrolyte imbalance (natriuresis, potential hyponatraemia) can further prolong QT interval, synergistic with amiodarone's intrinsic QT-prolonging activity -> risk of torsades de pointes. Trigonelline also inhibits CYP3A4, potentially increasing amiodarone accumulation. (Tier calc: delta_g=-7.0 CYP3A4 inhibition -> ccf=-0.25; 1x high evidence (QT/torsades risk) -> RED by rule 1)",
+      "expected_tier": "RED",
+      "sample_message": "@Intake @PatientProfile New case: 70M with persistent atrial fibrillation on Amiodarone 200mg once daily (CYP2C9 *1/*3, CYP3A4 normal, eGFR 52) has been taking 15g fenugreek seed powder daily for blood sugar and cholesterol management. Please assess for interactions."
+    },
+    {
+      "id": "case_25_cetirizine_ashwagandha",
+      "title": "Cetirizine + Ashwagandha",
+      "drugs": [
+        {"name": "Cetirizine", "compound": "Cetirizine", "dose_mg": 10, "frequency": "once daily"}
+      ],
+      "herbs": [
+        {"name": "Ashwagandha", "dose": "300 mg root extract, once daily"}
+      ],
+      "patient": {
+        "age": 28, "sex": "F", "egfr": 100, "cyp2c9_genotype": "*1/*1", "cyp3a4_status": "normal"
+      },
+      "pk_params": {"dose_mg": 10, "ka_per_hr": 1.5, "ke_baseline_per_hr": 0.0835, "v_l": 70},
+      "mechanism": "Cetirizine is primarily renally excreted with minimal CYP metabolism; Withaferin A from Ashwagandha shows negligible activity at cetirizine's clearance pathways. No published pharmacokinetic or pharmacodynamic interaction has been identified for this combination. (Tier calc: delta_g below threshold -> ccf=0; evidence all 'low' -> GREEN)",
+      "expected_tier": "GREEN",
+      "sample_message": "@Intake @PatientProfile New case: 28F with allergic rhinitis on Cetirizine 10mg once daily (CYP2C9 *1/*1, CYP3A4 normal, eGFR 100) has started taking Ashwagandha root extract 300mg daily for stress management. Please assess for interactions."
     }
   ]
 }

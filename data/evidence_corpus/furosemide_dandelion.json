@@ -1,0 +1,16 @@
+{
+  "drug": "Furosemide",
+  "herb": "Dandelion",
+  "findings": [
+    {
+      "summary": "Dandelion leaf (Taraxacum officinale) produces a measurable natriuretic and diuretic effect in healthy volunteers at doses of 8 mL fresh leaf extract TID; however, furosemide is a high-ceiling loop diuretic with a diuretic potency orders of magnitude greater than dandelion, and the additive contribution of dandelion to net fluid and electrolyte loss in patients already on furosemide is expected to be clinically negligible at typical supplemental doses.",
+      "citation": "Clare et al., J Altern Complement Med 2009",
+      "severity": "low"
+    },
+    {
+      "summary": "No published case reports of clinically significant electrolyte disturbance or volume depletion attributable to furosemide-dandelion co-administration were identified; current drug-herb interaction databases classify this combination as a minor, theoretical interaction requiring no specific clinical action in the absence of other risk factors.",
+      "citation": "Natural Medicines Database (accessed 2024); Drugs.com interaction profile",
+      "severity": "low"
+    }
+  ]
+}

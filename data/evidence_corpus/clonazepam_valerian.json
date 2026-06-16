@@ -1,0 +1,21 @@
+{
+  "drug": "Clonazepam",
+  "herb": "Valerian",
+  "findings": [
+    {
+      "summary": "Valerenic acid from Valeriana officinalis acts as a positive allosteric modulator of GABA-A receptors, the same target as benzodiazepines including clonazepam; pharmacodynamic additivity produces enhanced sedation, psychomotor impairment, and respiratory depression risk beyond what either agent causes alone.",
+      "citation": "Benke et al., FEBS Lett 2009; GABA-A pharmacology review",
+      "severity": "moderate"
+    },
+    {
+      "summary": "A self-controlled case-series analysis of adverse-event databases identified increased rates of respiratory depression and falls in patients co-using benzodiazepines with GABAergic herbal supplements (valerian, kava, passionflower); valerian showed the strongest association, particularly in older patients.",
+      "citation": "Loya et al., Phytomedicine 2009",
+      "severity": "moderate"
+    },
+    {
+      "summary": "At standard valerian doses (300–600 mg standardized extract) used for insomnia, the CNS-depressant additivity with low-dose clonazepam (0.5–1 mg) is clinically detectable but not expected to produce respiratory compromise in otherwise healthy patients; the risk is substantially elevated at higher doses of either agent or when alcohol is also consumed.",
+      "citation": "Hadley & Petry, Am Fam Physician 2003 (valerian safety review)",
+      "severity": "low"
+    }
+  ]
+}

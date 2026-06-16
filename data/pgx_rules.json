@@ -13,6 +13,21 @@
     "reduced": {"clearance_modifier": 0.75, "label": "Reduced CYP3A4 activity (e.g. *22 carrier)", "flag": "reduced_cyp3a4_activity"},
     "increased": {"clearance_modifier": 1.3, "label": "Increased/induced CYP3A4 activity", "flag": "increased_cyp3a4_activity"}
   },
+  "cyp2c19_genotypes": {
+    "*1/*1": {"clearance_modifier": 1.0, "label": "Normal metabolizer", "flag": null},
+    "*1/*2": {"clearance_modifier": 0.75, "label": "Intermediate metabolizer", "flag": "intermediate_cyp2c19_metabolizer"},
+    "*1/*3": {"clearance_modifier": 0.75, "label": "Intermediate metabolizer", "flag": "intermediate_cyp2c19_metabolizer"},
+    "*2/*2": {"clearance_modifier": 0.25, "label": "Poor metabolizer", "flag": "poor_cyp2c19_metabolizer"},
+    "*2/*3": {"clearance_modifier": 0.2, "label": "Poor metabolizer", "flag": "poor_cyp2c19_metabolizer"},
+    "*3/*3": {"clearance_modifier": 0.15, "label": "Poor metabolizer", "flag": "poor_cyp2c19_metabolizer"},
+    "*17/*17": {"clearance_modifier": 1.5, "label": "Ultrarapid metabolizer", "flag": "ultrarapid_cyp2c19_metabolizer"},
+    "*1/*17": {"clearance_modifier": 1.25, "label": "Rapid metabolizer", "flag": "rapid_cyp2c19_metabolizer"}
+  },
+  "cyp1a2_status": {
+    "normal": {"clearance_modifier": 1.0, "label": "Normal CYP1A2 activity", "flag": null},
+    "induced": {"clearance_modifier": 1.5, "label": "Induced CYP1A2 activity (e.g. heavy smoker)", "flag": "induced_cyp1a2_activity"},
+    "reduced": {"clearance_modifier": 0.6, "label": "Reduced CYP1A2 activity (*1F/*1F or inhibitor exposure)", "flag": "reduced_cyp1a2_activity"}
+  },
   "egfr_bands": [
     {"min": 90, "max": null, "label": "normal", "clearance_modifier": 1.0, "flag": null},
     {"min": 60, "max": 89, "label": "mild_impairment", "clearance_modifier": 0.9, "flag": "mild_renal_impairment"},

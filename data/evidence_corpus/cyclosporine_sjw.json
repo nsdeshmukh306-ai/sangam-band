@@ -1,0 +1,21 @@
+{
+  "drug": "Cyclosporine",
+  "herb": "St. John's Wort",
+  "findings": [
+    {
+      "summary": "Multiple published case series and pharmacokinetic studies document 40–60% reductions in cyclosporine trough concentrations within 2–3 weeks of initiating St. John's Wort therapy in solid-organ transplant recipients, precipitating acute rejection episodes in several cases; this interaction is rated among the most clinically dangerous drug-herb interactions known.",
+      "citation": "Ruschitzka et al., Lancet 2000; Barone et al., Ann Pharmacother 2000",
+      "severity": "high"
+    },
+    {
+      "summary": "The FDA and EMA have both issued contraindication advisories for St. John's Wort in immunosuppressant-dependent transplant patients; hyperforin-driven PXR/CYP3A4/P-gp induction reduces cyclosporine bioavailability and accelerates its systemic clearance simultaneously, making the interaction difficult to manage even with dose adjustment.",
+      "citation": "FDA Safety Alert 2000 (St. John's Wort/cyclosporine); EMA CHMP assessment 2000",
+      "severity": "high"
+    },
+    {
+      "summary": "Even low-hyperforin-content St. John's Wort preparations (designed to preserve antidepressant activity with minimal CYP induction) retain some induction potential and are not safe substitutes in transplant patients; the safest approach is complete avoidance in any patient on cyclosporine.",
+      "citation": "Mueller et al., Drug Metab Dispos 2006",
+      "severity": "high"
+    }
+  ]
+}

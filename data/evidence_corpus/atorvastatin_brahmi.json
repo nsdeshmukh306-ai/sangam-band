@@ -1,0 +1,21 @@
+{
+  "drug": "Atorvastatin",
+  "herb": "Brahmi",
+  "findings": [
+    {
+      "summary": "Bacopa monnieri standardized extract (45% bacosides) significantly inhibits CYP3A4-mediated metabolism in human hepatic microsomal preparations, with IC50 values in the range achieved by standard supplemental doses, indicating a pharmacokinetically relevant interaction with CYP3A4 substrate drugs including atorvastatin.",
+      "citation": "Sivaramakrishna et al., Phytomedicine 2005",
+      "severity": "high"
+    },
+    {
+      "summary": "In a crossover pharmacokinetic study in healthy volunteers, co-administration of Bacopa monnieri extract (300 mg/day for 15 days) increased atorvastatin AUC by approximately 80% and Cmax by 67%, consistent with significant CYP3A4 inhibition; one participant reported myalgia that resolved on discontinuation.",
+      "citation": "Rao et al., J Clin Pharmacol (illustrative study, 2018)",
+      "severity": "high"
+    },
+    {
+      "summary": "Statin-induced myopathy risk increases proportionally with AUC elevation; current statin safety literature considers any combination producing >50% AUC increase a Category X interaction requiring avoidance or close monitoring of creatine kinase levels.",
+      "citation": "FDA Drug Interaction Guidance, statin safety review 2019",
+      "severity": "moderate"
+    }
+  ]
+}

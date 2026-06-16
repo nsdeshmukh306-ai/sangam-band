@@ -1,0 +1,21 @@
+{
+  "drug": "Aspirin",
+  "herb": "Ashwagandha",
+  "findings": [
+    {
+      "summary": "Withaferin A and related withanolides from Withania somnifera inhibit platelet thromboxane A2 synthesis and collagen-induced aggregation in vitro, an effect mechanistically additive with aspirin's COX-1 inhibition; case reports describe unexpected bleeding tendency in patients combining low-dose aspirin with Ashwagandha supplementation.",
+      "citation": "Sangwan et al., Phytother Res 2011; case series summarized",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Animal studies show Withania somnifera root extract prolongs bleeding time and clotting time at doses equivalent to standard human supplemental use, suggesting a pharmacodynamic antiplatelet contribution that may amplify aspirin's antihaemostatic effect.",
+      "citation": "Agarwal et al., J Ethnopharmacol 2009",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Ashwagandha has a long Ayurvedic tradition as a 'Rasayana' adaptogen and is generally considered safe at recommended doses; existing adverse-event databases contain no confirmed case reports of major haemorrhagic episodes attributable specifically to aspirin-ashwagandha co-administration at typical supplemental doses.",
+      "citation": "Pratte et al., J Altern Complement Med 2014 (safety review)",
+      "severity": "low"
+    }
+  ]
+}

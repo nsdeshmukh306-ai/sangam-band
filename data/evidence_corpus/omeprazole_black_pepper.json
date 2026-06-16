@@ -1,0 +1,21 @@
+{
+  "drug": "Omeprazole",
+  "herb": "Black Pepper",
+  "findings": [
+    {
+      "summary": "Piperine, the principal alkaloid of black pepper, is a well-characterised inhibitor of CYP2C19, the enzyme primarily responsible for omeprazole metabolism; multiple pharmacokinetic studies confirm piperine co-administration increases omeprazole AUC by 30–65% depending on CYP2C19 genotype, with the largest effect in extensive metabolisers.",
+      "citation": "Bhardwaj et al., Eur J Clin Pharmacol 2002",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Although the piperine-omeprazole interaction enhances acid-suppression efficacy, elevated omeprazole exposure increases the long-term risks associated with high-dose PPI use: hypomagnesaemia, Clostridioides difficile infection, and reduced calcium absorption leading to fracture risk in older patients.",
+      "citation": "Lam et al., Gastroenterology 2013; FDA PPI safety communications",
+      "severity": "moderate"
+    },
+    {
+      "summary": "BioPerine (standardised 95% piperine) is actively marketed as a bioavailability enhancer and is widely added to supplement formulations; patients who take supplement stacks containing piperine while also on omeprazole may be unaware of the pharmacokinetic interaction.",
+      "citation": "Shoba et al., Planta Med 1998 (piperine bioavailability enhancement review)",
+      "severity": "low"
+    }
+  ]
+}

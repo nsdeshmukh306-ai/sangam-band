@@ -1,0 +1,21 @@
+{
+  "drug": "Prednisolone",
+  "herb": "Yashtimadhu (Licorice)",
+  "findings": [
+    {
+      "summary": "Glycyrrhetinic acid potently inhibits 11β-hydroxysteroid dehydrogenase type 2 (11β-HSD2), the enzyme that inactivates cortisol in mineralocorticoid-sensitive tissues; co-administration with prednisolone amplifies glucocorticoid and mineralocorticoid effects, producing fluid retention, hypokalaemia, hypertension, and Cushingoid features at prednisolone doses that would otherwise be well tolerated.",
+      "citation": "Farese et al., N Engl J Med 1991; Stewart et al., Lancet 1987",
+      "severity": "high"
+    },
+    {
+      "summary": "Glycyrrhetinic acid also inhibits CYP3A4, the primary enzyme metabolising prednisolone; combined 11β-HSD2 inhibition and reduced hepatic prednisolone clearance produces a synergistic increase in glucocorticoid exposure that has been associated with serious adverse events including severe Cushingoid presentations in patients using licorice-containing products concurrently with corticosteroids.",
+      "citation": "Chen et al., Ann Pharmacother 2003; case series",
+      "severity": "high"
+    },
+    {
+      "summary": "Yashtimadhu is widely used in India for upper GI complaints, including peptic ulcer disease; patients receiving prednisolone for inflammatory conditions (rheumatoid arthritis, asthma) who also have acid-related symptoms are at particular risk of inadvertently combining these two agents.",
+      "citation": "WHO Monographs on Selected Medicinal Plants Vol. 1 (Glycyrrhiza)",
+      "severity": "moderate"
+    }
+  ]
+}

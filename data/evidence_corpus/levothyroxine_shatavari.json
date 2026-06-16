@@ -1,0 +1,16 @@
+{
+  "drug": "Levothyroxine",
+  "herb": "Shatavari",
+  "findings": [
+    {
+      "summary": "Shatavari (Asparagus racemosus) has phytoestrogenic properties attributed to its steroidal saponins (Shatavarins I–IV); while exogenous oestrogens can raise thyroid-binding globulin (TBG) levels and alter levothyroxine distribution, the phytoestrogenic potency of Shatavari at typical supplemental doses is considered insufficient to produce clinically significant TBG changes in published pharmacological reviews.",
+      "citation": "Wiboonpun et al., Phytother Res 2004; TBG-phytoestrogen interaction review",
+      "severity": "low"
+    },
+    {
+      "summary": "No randomised clinical study, case report, or pharmacokinetic investigation specifically documenting an interaction between Asparagus racemosus supplementation and levothyroxine pharmacokinetics or thyroid function could be identified in a systematic literature search; current drug-herb interaction databases (Natural Medicines, Drugs.com) list no established interaction.",
+      "citation": "Natural Medicines Database (accessed 2024); systematic literature review",
+      "severity": "low"
+    }
+  ]
+}

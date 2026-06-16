@@ -34,5 +34,103 @@
     "latin_binomial": "Ocimum sanctum",
     "active_compounds": ["Eugenol", "Ursolic acid", "Rosmarinic acid"],
     "traditional_use": "Widely consumed adaptogen/rasayana herb for respiratory and immune support, often taken as tea."
+  },
+  "ashwagandha": {
+    "common_name": "Ashwagandha (Indian Ginseng)",
+    "aliases": ["Ashwagandha", "Indian Ginseng", "Winter Cherry", "Withania"],
+    "latin_binomial": "Withania somnifera",
+    "active_compounds": ["Withaferin A", "Withanolide D", "Withasomnine"],
+    "traditional_use": "Widely used Ayurvedic rasayana adaptogen taken for stress, fatigue, and general vitality enhancement."
+  },
+  "brahmi": {
+    "common_name": "Brahmi (Bacopa)",
+    "aliases": ["Brahmi", "Bacopa", "Water Hyssop", "Herb of Grace"],
+    "latin_binomial": "Bacopa monnieri",
+    "active_compounds": ["Bacoside A", "Bacoside B", "Bacosine"],
+    "traditional_use": "Classical Ayurvedic medhya (cognitive-enhancing) herb used for memory improvement and anxiety reduction."
+  },
+  "arjuna": {
+    "common_name": "Arjuna",
+    "aliases": ["Arjuna", "Terminalia", "Arjun Tree"],
+    "latin_binomial": "Terminalia arjuna",
+    "active_compounds": ["Arjunolic acid", "Arjunetin", "Tannin-arjuna"],
+    "traditional_use": "Bark of Terminalia arjuna used in Ayurveda as a cardioprotective tonic for heart failure, angina, and dyslipidemia."
+  },
+  "neem": {
+    "common_name": "Neem",
+    "aliases": ["Neem", "Indian Lilac", "Nimba", "Azadirachta"],
+    "latin_binomial": "Azadirachta indica",
+    "active_compounds": ["Nimbolide", "Azadirachtin", "Nimbin"],
+    "traditional_use": "Pan-Indian medicinal tree; leaves and bark used for skin conditions, blood purification, antimicrobial effects, and diabetes management."
+  },
+  "black_pepper": {
+    "common_name": "Black Pepper (Piperine)",
+    "aliases": ["Black Pepper", "Kali Mirch", "Piperine", "BioPerine"],
+    "latin_binomial": "Piper nigrum",
+    "active_compounds": ["Piperine", "Piperlongumine"],
+    "traditional_use": "Culinary spice and Ayurvedic bioavailability enhancer; piperine is used in supplement formulations (BioPerine) to enhance absorption of other compounds."
+  },
+  "fenugreek": {
+    "common_name": "Fenugreek (Methi)",
+    "aliases": ["Fenugreek", "Methi", "Greek Hay", "Trigonella"],
+    "latin_binomial": "Trigonella foenum-graecum",
+    "active_compounds": ["4-Hydroxyisoleucine", "Trigonelline", "Galactomannan"],
+    "traditional_use": "Widely consumed Ayurvedic anti-diabetic and galactagogue; seeds are taken as powder, soaked, or in cooking."
+  },
+  "shankhpushpi": {
+    "common_name": "Shankhpushpi",
+    "aliases": ["Shankhpushpi", "Convolvulus", "Aloe Weed", "Speedwheel"],
+    "latin_binomial": "Convolvulus pluricaulis",
+    "active_compounds": ["Scopoletin", "Kaempferol-shankhpushpi", "Convoline"],
+    "traditional_use": "Ayurvedic medhya herb used for cognitive enhancement, insomnia, and anxiety; often prepared as a syrup or powder."
+  },
+  "garlic": {
+    "common_name": "Garlic",
+    "aliases": ["Garlic", "Lahsun", "Allium", "Garlic Extract"],
+    "latin_binomial": "Allium sativum",
+    "active_compounds": ["Allicin", "Ajoene", "Diallyl disulfide"],
+    "traditional_use": "Universal culinary and medicinal plant used for cardiovascular health, antimicrobial effects, and immune support."
+  },
+  "shatavari": {
+    "common_name": "Shatavari",
+    "aliases": ["Shatavari", "Asparagus racemosus", "Wild Asparagus", "Satavari"],
+    "latin_binomial": "Asparagus racemosus",
+    "active_compounds": ["Shatavarin I", "Racemosol", "Asparanin A"],
+    "traditional_use": "Female health tonic in Ayurveda; used for hormonal balance, fertility support, and as a galactagogue."
+  },
+  "dandelion": {
+    "common_name": "Dandelion",
+    "aliases": ["Dandelion", "Taraxacum", "Dandelion Leaf", "Dandelion Root"],
+    "latin_binomial": "Taraxacum officinale",
+    "active_compounds": ["Taraxasterol", "Chicoric acid", "Inulin-dandelion"],
+    "traditional_use": "Traditional diuretic and 'liver tonic' herb; dandelion leaf has natriuretic properties, root is used as a prebiotic."
+  },
+  "turmeric": {
+    "common_name": "Turmeric (Curcumin)",
+    "aliases": ["Turmeric", "Haldi", "Curcumin", "Curcuma"],
+    "latin_binomial": "Curcuma longa",
+    "active_compounds": ["Curcumin", "Bisdemethoxycurcumin", "Demethoxycurcumin"],
+    "traditional_use": "Ubiquitous Indian spice and Ayurvedic anti-inflammatory agent; taken as cooking spice, milk (haldi doodh), and curcumin extract supplements."
+  },
+  "ginger": {
+    "common_name": "Ginger",
+    "aliases": ["Ginger", "Adrak", "Zingiber", "Ginger Root"],
+    "latin_binomial": "Zingiber officinale",
+    "active_compounds": ["6-Gingerol", "Shogaol", "Zingerone"],
+    "traditional_use": "Widely used Ayurvedic and culinary herb for nausea, inflammation, and joint pain; consumed as fresh root, dried powder, or supplement capsules."
+  },
+  "ginkgo_biloba": {
+    "common_name": "Ginkgo biloba",
+    "aliases": ["Ginkgo", "Ginkgo biloba", "Maidenhair Tree", "Ginkgo Extract"],
+    "latin_binomial": "Ginkgo biloba",
+    "active_compounds": ["Ginkgolide B", "Bilobalide", "Quercetin-ginkgo"],
+    "traditional_use": "Western and TCM supplement for cognitive enhancement, circulation, and tinnitus; standardized extracts (EGb 761) are widely imported and used in India."
+  },
+  "valerian": {
+    "common_name": "Valerian",
+    "aliases": ["Valerian", "Valerian Root", "Valeriana", "Garden Heliotrope"],
+    "latin_binomial": "Valeriana officinalis",
+    "active_compounds": ["Valerenic acid", "Isovaleric acid", "Valepotriates"],
+    "traditional_use": "Western herbal sedative used for insomnia and anxiety; popular as a 'natural sleep aid' supplement increasingly imported and used in India."
   }
 }

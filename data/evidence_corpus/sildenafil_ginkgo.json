@@ -1,0 +1,21 @@
+{
+  "drug": "Sildenafil",
+  "herb": "Ginkgo biloba",
+  "findings": [
+    {
+      "summary": "Ginkgo biloba extract enhances nitric oxide production in vascular endothelium and relaxes smooth muscle through a mechanism independent of PDE5 inhibition; combined with sildenafil's PDE5-mediated vasodilation, additive hypotension has been reported in case reports and small pharmacodynamic studies, manifesting as dizziness, lightheadedness, and syncope.",
+      "citation": "Cohen & Ernst, Br J Clin Pharmacol 2010; case reports",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Ginkgolide B is a platelet-activating factor (PAF) antagonist that independently inhibits platelet aggregation; erections achieved through PDE5 inhibition already result in modest local haemostatic changes, and the combination could potentiate bleeding risk in patients taking sildenafil for pulmonary hypertension at higher doses.",
+      "citation": "Braquet et al., Adv Prostaglandin Thromboxane Leukot Res 1989",
+      "severity": "moderate"
+    },
+    {
+      "summary": "At standard supplemental doses of Ginkgo biloba (120 mg standardized extract/day), the vasodilatory effect is modest and the interaction with sildenafil used 'as-needed' for erectile dysfunction at 50 mg is unlikely to produce haemodynamically significant hypotension in otherwise healthy men; the risk is greater in elderly patients or those with existing cardiovascular disease.",
+      "citation": "Natural Medicines Database interaction profile (accessed 2024)",
+      "severity": "low"
+    }
+  ]
+}

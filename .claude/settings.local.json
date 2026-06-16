@@ -62,7 +62,10 @@
       "PowerShell(wsl -d Ubuntu -- bash -lc 'sleep 5 && cd ~/sangam-band && uv run python3 -m orchestrator.run_case --case case_1_warfarin_guggulu 2>&1')",
       "PowerShell(wsl -d Ubuntu -- bash -lc 'tail -40 ~/sangam-band/logs/agent_intake.log')",
       "PowerShell(wsl -d Ubuntu -- bash -lc 'cd ~/sangam-band && uv run python3 diag.py')",
-      "Bash(awk '{print $11, $12, $13}')"
+      "Bash(awk '{print $11, $12, $13}')",
+      "Bash(~/.local/bin/uv run *)",
+      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run pytest tests/ -v 2>&1\")",
+      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && git add -A && git status 2>&1\")"
     ]
   }
 }

@@ -1,0 +1,21 @@
+{
+  "drug": "Ciprofloxacin",
+  "herb": "Yashtimadhu (Licorice)",
+  "findings": [
+    {
+      "summary": "Glycyrrhetinic acid from licorice root inhibits CYP1A2 in hepatic microsomal assays with an IC50 consistent with exposures achieved at moderate supplemental doses; ciprofloxacin is partially cleared via CYP1A2-mediated oxidation, suggesting increased fluoroquinolone exposure with chronic licorice use.",
+      "citation": "Hajirahimkhan et al., Phytomedicine 2013",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Licorice-induced pseudoaldosteronism causes hypokalemia, which independently potentiates QT prolongation; fluoroquinolone antibiotics including ciprofloxacin carry a known QT-prolonging risk, and electrolyte imbalance synergistically amplifies this cardiac adverse effect.",
+      "citation": "Omar et al., CMAJ 2012; EMA fluoroquinolone cardiac safety review 2019",
+      "severity": "moderate"
+    },
+    {
+      "summary": "At culinary licorice exposures (confectionery), the CYP1A2 inhibitory effect is sub-threshold and the QT risk is minimal; the interaction becomes clinically relevant only with habitual medicinal licorice use (>100 mg glycyrrhizinic acid per day) sustained for more than 2 weeks.",
+      "citation": "Isbrucker & Burdock, Regul Toxicol Pharmacol 2006",
+      "severity": "low"
+    }
+  ]
+}

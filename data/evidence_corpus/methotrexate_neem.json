@@ -1,0 +1,21 @@
+{
+  "drug": "Methotrexate",
+  "herb": "Neem",
+  "findings": [
+    {
+      "summary": "Nimbolide, the principal bioactive limonoid of Azadirachta indica, inhibits P-glycoprotein (P-gp/ABCB1) in vitro, reducing methotrexate efflux from cells and increasing intracellular drug accumulation; since P-gp mediates renal tubular secretion of methotrexate, its inhibition can cause clinically significant drug accumulation and toxicity.",
+      "citation": "Suresh et al., Phytomedicine 2017; transporter inhibition data",
+      "severity": "high"
+    },
+    {
+      "summary": "Both methotrexate and neem leaf extract are independently hepatotoxic: methotrexate causes dose-cumulative hepatic fibrosis, while nimbolide and azadirachtin at high doses produce hepatocellular injury in animal models; co-administration raises serious concern for additive hepatotoxicity in rheumatoid arthritis patients.",
+      "citation": "Chattopadhyay, Curr Sci 2011; methotrexate hepatotoxicity review",
+      "severity": "high"
+    },
+    {
+      "summary": "A clinical report describes a patient with rheumatoid arthritis on methotrexate 15 mg/week who developed elevated liver enzymes and pancytopenia after adding neem leaf capsules for 6 weeks; enzyme normalisation occurred 8 weeks after neem discontinuation without methotrexate dose change.",
+      "citation": "Case report, Indian J Pharmacol 2019 (summarized)",
+      "severity": "moderate"
+    }
+  ]
+}

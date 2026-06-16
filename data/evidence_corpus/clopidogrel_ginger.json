@@ -1,0 +1,21 @@
+{
+  "drug": "Clopidogrel",
+  "herb": "Ginger",
+  "findings": [
+    {
+      "summary": "6-Gingerol and related gingerols inhibit thromboxane synthase and platelet TXA2 synthesis, producing antiplatelet effects additive with clopidogrel's ADP-receptor blockade; multiple case reports describe prolonged bleeding time and epistaxis in patients combining clopidogrel with ginger supplements, and perioperative bleeding risk is flagged in anaesthetic guidelines.",
+      "citation": "Bordia et al., Thromb Res 1997; case reports summarized; ESAIC guidelines 2022",
+      "severity": "moderate"
+    },
+    {
+      "summary": "6-Shogaol, a dehydration product of 6-gingerol present in dried ginger, inhibits CYP2C9 in vitro; clopidogrel requires CYP2C19 and CYP2C9 for bioactivation to its active thiol metabolite; inhibition of bioactivation could paradoxically reduce antiplatelet efficacy while the pharmacodynamic antiplatelet effect of gingerols persists, creating an unpredictable net interaction.",
+      "citation": "Usia et al., J Nat Prod 2006",
+      "severity": "moderate"
+    },
+    {
+      "summary": "Ginger at culinary intake doses (0.5–2 g/day) has a long safety record and the interaction risk is primarily relevant at higher supplemental doses (>4 g/day dried ginger equivalent); patients on dual antiplatelet therapy should be counselled to limit ginger supplement use to culinary levels.",
+      "citation": "Borrelli et al., Obstet Gynecol 2005 (ginger safety review)",
+      "severity": "low"
+    }
+  ]
+}
