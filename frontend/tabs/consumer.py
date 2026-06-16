@@ -5,11 +5,16 @@ and a traffic-light result card (RED/YELLOW/GREEN) once the verdict arrives.
 """
 from __future__ import annotations
 
-import asyncio
 import json
+import os
 from pathlib import Path
 
 import streamlit as st
+from dotenv import load_dotenv
+
+from orchestrator.band_client import run_async
+
+load_dotenv(override=True)
 
 DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "case_studies.json"
 
@@ -32,14 +37,15 @@ def _run_analysis(case_id: str) -> dict | None:
     from orchestrator.band_client import ROOM_ID, poll_for_verdict, post_case_message
 
     async def _inner():
-        posted_at = await post_case_message(
+        posted_at, run_id = await post_case_message(
             _load_case_by_id(case_id)["sample_message"], room_id=ROOM_ID
         )
         return await poll_for_verdict(
-            room_id=ROOM_ID, posted_at=posted_at, timeout_s=120.0, poll_interval_s=3.0
+            room_id=ROOM_ID, posted_at=posted_at, timeout_s=180.0,
+            poll_interval_s=3.0, expected_run_id=run_id,
         )
 
-    return asyncio.run(_inner())
+    return run_async(_inner())
 
 
 def _load_case_by_id(case_id: str) -> dict:
@@ -128,20 +134,23 @@ def render_consumer_tab() -> None:
             height=120,
         )
 
-    # Check room connectivity once
-    if "room_ok" not in st.session_state:
-        try:
-            from orchestrator.band_client import check_room_accessible, ROOM_ID
-            st.session_state["room_ok"] = asyncio.run(check_room_accessible(ROOM_ID))
-        except Exception:
-            st.session_state["room_ok"] = False
+    # Check room connectivity — always re-check, no caching
+    from orchestrator.band_client import check_room_accessible, ROOM_ID, run_async
+    try:
+        result = run_async(check_room_accessible(ROOM_ID))
+        st.session_state["room_ok"] = result
+    except Exception:
+        st.session_state["room_ok"] = False
 
     if not st.session_state.get("room_ok"):
         st.error(
-            "⚠️ **Cannot reach Band room.** Check that `BAND_USER_API_KEY` is set "
-            "in `.env` and you are connected to the internet.",
+            "⚠️ **Cannot reach Band room.** Check that `agent_config.yaml` has valid "
+            "agent keys and you are connected to the internet.",
             icon="🔌",
         )
+
+    if st.session_state.get("room_err"):
+        st.code(st.session_state["room_err"], language="text")
 
     run_disabled = not message_to_post or not st.session_state.get("room_ok", True)
     if st.button("▶ Run Analysis", type="primary", disabled=run_disabled):
@@ -152,7 +161,7 @@ def render_consumer_tab() -> None:
         if case_id:
             with st.spinner(
                 f"Agents are analysing **{case_labels[case_id]}**… "
-                "(up to 120 s — watch the Agent Workspace tab for live updates)"
+                "(up to 180 s — watch the Agent Workspace tab for live updates)"
             ):
                 try:
                     verdict = _run_analysis(case_id)
@@ -168,12 +177,12 @@ def render_consumer_tab() -> None:
             from orchestrator.band_client import ROOM_ID, poll_for_verdict, post_case_message
 
             async def _post_free():
-                posted_at = await post_case_message(message_to_post, room_id=ROOM_ID)
-                return await poll_for_verdict(ROOM_ID, posted_at=posted_at)
+                posted_at, run_id = await post_case_message(message_to_post, room_id=ROOM_ID)
+                return await poll_for_verdict(ROOM_ID, posted_at=posted_at, expected_run_id=run_id)
 
             with st.spinner("Posting case to Band room…"):
                 try:
-                    verdict = asyncio.run(_post_free())
+                    verdict = run_async(_post_free())
                 except Exception as exc:
                     st.session_state["analysis_error"] = str(exc)
                     verdict = None
@@ -182,7 +191,7 @@ def render_consumer_tab() -> None:
             st.session_state["verdict"] = verdict
         elif not st.session_state.get("analysis_error"):
             st.session_state["analysis_error"] = (
-                "No verdict received within 120 s. "
+                "No verdict received within 180 s. "
                 "Are all 6 agent processes running? Run: bash scripts/start_agents.sh"
             )
 

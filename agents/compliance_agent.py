@@ -16,8 +16,9 @@ follow-up referencing the sign-off.
 fetch_full_room_context custom tool added (Phase 3): the SDK pre-loads only the
 50 most-recent context messages at startup; on long-running rooms this can omit
 the current case's prior agent reports. The tool fetches all pages of the room's
-full text transcript (using BAND_USER_API_KEY + BAND_ROOM_ID from .env) and
-returns a chronological view so ComplianceGuard can see any missing reports.
+full text transcript via agent_api_context (Pro-plan compatible; merges all 6
+agents' contexts) and returns a chronological view so ComplianceGuard can see
+any missing reports.
 
 Run with:  uv run python -m agents.compliance_agent
 """
@@ -30,8 +31,7 @@ import os
 from dotenv import load_dotenv
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import InMemorySaver
-from band.adapters import LangGraphAdapter
-from band.client.rest import AsyncRestClient, DEFAULT_REQUEST_OPTIONS
+from agents.common.adapter import FreshGraphAdapter as LangGraphAdapter
 
 from agents.common.llm import get_deepseek_llm
 from agents.common.runtime import create_agent
@@ -47,45 +47,29 @@ async def fetch_full_room_context() -> str:
     The SDK's automatic history pre-load is capped at 50 messages. On a
     room that has accumulated many test runs the current case's prior agent
     reports (intake, patient_profile, structural, pkpd, evidence) can fall
-    outside that window. This tool bypasses the cap by fetching every page
-    from the human messages endpoint and returning a chronological transcript.
+    outside that window. This tool bypasses the cap by merging agent_api_context
+    across all 6 agents and returning a chronological transcript.
 
     Call this as your FIRST tool if any of the five expected step reports are
     not visible in your context. Do NOT call it on every turn — only when
     history looks incomplete for the current case.
     """
-    api_key = os.getenv("BAND_USER_API_KEY")
+    from orchestrator.band_client import fetch_room_messages
+
     room_id = os.getenv("BAND_ROOM_ID", "9b4efd3c-46d2-4c40-8b33-d75dda925b05")
-    if not api_key:
-        return "Error: BAND_USER_API_KEY is not set in .env — cannot fetch room history."
+    try:
+        msgs = await fetch_room_messages(room_id=room_id)
+    except Exception as exc:
+        return f"Error fetching room history: {exc}"
 
-    client = AsyncRestClient(api_key=api_key)
-    lines: list[str] = []
-    page = 1
+    if not msgs:
+        return "Room has no text messages yet."
 
-    while True:
-        try:
-            resp = await client.human_api_messages.list_my_chat_messages(
-                chat_id=room_id,
-                page=page,
-                page_size=100,
-                message_type="text",
-                request_options=DEFAULT_REQUEST_OPTIONS,
-            )
-        except Exception as exc:
-            return f"Error fetching room history (page {page}): {exc}"
-
-        for msg in resp.data or []:
-            lines.append(f"[{msg.sender_name or msg.sender_type}]: {msg.content}")
-
-        meta = getattr(resp, "meta", None)
-        total = getattr(meta, "total_pages", 1) if meta else 1
-        if page >= total or not resp.data:
-            break
-        page += 1
-
-    lines.reverse()  # API returns newest-first; chronological is more useful here
-    return "\n\n---\n\n".join(lines) if lines else "Room has no text messages yet."
+    lines = [
+        f"[{m.get('sender_name') or m.get('sender_type') or 'Unknown'}]: {m.get('content', '')}"
+        for m in msgs
+    ]
+    return "\n\n---\n\n".join(lines)
 
 
 SYSTEM_PROMPT = """\
@@ -102,26 +86,31 @@ those mentions, as a tool call. This applies even on your very first/only action
 for a turn -- do not "think out loud" in plain text and stop; your last action
 before ending the turn must be a `band_send_message` call.
 
-## Context recovery (use only when needed)
+## Context recovery — ALWAYS call this first
 
-If the five expected step reports (intake, patient_profile, structural, pkpd,
-evidence) are NOT all visible in your context at the start of a turn, call
-`fetch_full_room_context()` (no arguments) as your FIRST tool call. It fetches
-the complete room transcript, bypassing the 50-message startup cap. Only call
-it when context seems incomplete — not on every turn.
+Call `fetch_full_room_context()` as your VERY FIRST tool call, always.
 
-You are the LAST agent in the pipeline. You will typically be @mentioned twice for
-the same case: once by @PKPD (immediately after its reply) and once by
-@EvidenceRAG (after its reply). Only act once all five prior replies for this case
-are visible in the room:
-  1. @Intake's `{"step": "intake", ...}`
-  2. @PatientProfile's `{"step": "patient_profile", ...}`
-  3. @StructuralBio's `{"step": "structural", ...}`
-  4. @PKPD's `{"step": "pkpd", ...}`
-  5. @EvidenceRAG's `{"step": "evidence", ...}`
-If any of these five are not yet visible for this case, do NOT post a verdict --
-reply with at most one short line noting you're waiting (or stay silent); you will
-be @mentioned again once the remaining agent posts.
+## Run ID — CRITICAL for data integrity
+
+The triggering message (from @PKPD or @EvidenceRAG) will contain a JSON block
+with `"step":"pkpd"` or `"step":"evidence"` AND a `"run_id": "XXXXXXXX"` field
+(8-character hex). This run_id identifies the specific pipeline run you are
+synthesizing. EVERY report you use must share this SAME run_id.
+
+After calling `fetch_full_room_context()`:
+1. Find the run_id in the current triggering message's JSON block.
+2. Collect ONLY the following reports where `"run_id"` EXACTLY matches:
+   1. @Intake's `{"step":"intake","run_id":"XXXXXXXX",...}`
+   2. @PatientProfile's `{"step":"patient_profile","run_id":"XXXXXXXX",...}`
+   3. @StructuralBio's `{"step":"structural","run_id":"XXXXXXXX",...}`
+   4. @PKPD's `{"step":"pkpd","run_id":"XXXXXXXX",...}`
+   5. @EvidenceRAG's `{"step":"evidence","run_id":"XXXXXXXX",...}`
+3. IGNORE any reports with a different run_id — they belong to other case runs.
+4. If any of the five reports with the CORRECT run_id are still missing, stay
+   completely silent — do NOT post a verdict. You will be @mentioned again.
+
+You are the LAST agent in the pipeline. Only act once ALL FIVE reports with the
+same run_id are visible.
 
 ## Step 1 -- Determine confidence
 
@@ -189,6 +178,7 @@ Then post a single reply (one `band_send_message` call) containing:
 A. A fenced ```json code block with EXACTLY this shape:
    {
      "step": "FINAL_VERDICT",
+     "run_id": "<same 8-char run_id used to find the pipeline reports>",
      "status": "FINAL_VERDICT" | "PENDING_HUMAN_REVIEW",
      "risk_tier": "GREEN" | "YELLOW" | "RED",
      "confidence": "high" | "low",

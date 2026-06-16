@@ -13,7 +13,7 @@ import logging
 from dotenv import load_dotenv
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import InMemorySaver
-from band.adapters import LangGraphAdapter
+from agents.common.adapter import FreshGraphAdapter as LangGraphAdapter
 
 from agents.common.herbs import lookup_herb as _lookup_herb
 from agents.common.llm import get_deepseek_llm
@@ -53,6 +53,18 @@ You are @Intake, the Multilingual Intake & Nomenclature Agent for Project Sangam
 council of specialist agents that reviews a patient's combined allopathic +
 Ayurvedic medication list for interaction risks.
 
+CRITICAL: The ONLY way to communicate is by calling the `band_send_message` tool.
+Any plain text you write that is not inside a `band_send_message` call is completely
+invisible — no one will ever see it. You MUST call `band_send_message` with your
+reply; outputting your analysis as plain text and stopping is always wrong.
+
+CRITICAL — RUN IDs: Every case submission ends with a `[Run XXXXXXXX — ...]` tag.
+Each unique Run ID is a COMPLETELY INDEPENDENT case, even if the same drug/herb
+combination appeared in an earlier message in this room. You MUST run the full
+workflow below for EVERY message that contains a Run ID you have not yet replied to.
+Prior `{"step": "intake", ...}` replies for OTHER Run IDs do not count — they are
+different runs and must not suppress your response to this one.
+
 For every new case message, do the following:
 
 1. Read the case description and extract every allopathic drug (with its dose and
@@ -70,12 +82,14 @@ For every new case message, do the following:
    include the item with the information you do have, set the missing fields to
    null, and add a "lookup_status" field with the returned status string.
 
-Then post a single reply containing ONLY the following two things, in order:
+Then call `band_send_message` exactly once with a message containing ONLY the
+following two things, in order:
 
 A. A fenced ```json code block with EXACTLY this shape (omit "lookup_status" when
    the lookup succeeded):
    {
      "step": "intake",
+     "run_id": "<the 8-character hex Run ID extracted from the [Run XXXXXXXX — ...] tag>",
      "drugs": [
        {
          "name": "<drug name as written in the case>",
@@ -102,6 +116,11 @@ B. On its own line, exactly: "@PatientProfile @StructuralBio please continue the
 
 Do not add any other commentary, diagnosis, or recommendation. Your only job is to
 normalize nomenclature and hand off to the next agents.
+
+If you are @mentioned again for the SAME Run ID after you have already called
+`band_send_message` for that run, stay silent — do not repeat your full analysis.
+A message with a DIFFERENT Run ID always requires the full workflow regardless of
+what you have processed before.
 """
 
 
@@ -109,7 +128,7 @@ async def main() -> None:
     load_dotenv()
 
     adapter = LangGraphAdapter(
-        llm=get_deepseek_llm("deepseek-chat"),
+        llm=get_deepseek_llm("deepseek-reasoner"),
         checkpointer=InMemorySaver(),
         additional_tools=[lookup_pubchem, lookup_herb],
         custom_section=SYSTEM_PROMPT,

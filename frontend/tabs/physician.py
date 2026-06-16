@@ -5,12 +5,12 @@ Shows the full structured verdict, a Plotly PK concentration-time chart
 """
 from __future__ import annotations
 
-import asyncio
 import json
 from pathlib import Path
 
 import plotly.graph_objects as go
 import streamlit as st
+from orchestrator.band_client import run_async
 
 DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "case_studies.json"
 
@@ -164,7 +164,7 @@ def render_physician_tab() -> None:
                 from orchestrator.band_client import fetch_room_messages, ROOM_ID
                 import re, json as _json
 
-                msgs = asyncio.run(fetch_room_messages(ROOM_ID))
+                msgs = run_async(fetch_room_messages(ROOM_ID))
                 fence_re = re.compile(r"```json\s*(.*?)\s*```", re.DOTALL | re.IGNORECASE)
                 for m in msgs:
                     if (m.get("sender_name") or "").lower() != "evidencerag":

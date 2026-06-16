@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 
 from orchestrator.band_client import ROOM_ID, poll_for_verdict, post_case_message
 
-load_dotenv()
+load_dotenv(override=True)
 
 DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "case_studies.json"
 
@@ -52,8 +52,8 @@ async def run_case_analysis(
     print(f"[{case['id']}] {case['title']}")
     print(f"Posting to room {room_id}...")
 
-    posted_at = await post_case_message(case["sample_message"], room_id=room_id)
-    print(f"Posted at {posted_at.isoformat()}")
+    posted_at, run_id = await post_case_message(case["sample_message"], room_id=room_id)
+    print(f"Posted at {posted_at.isoformat()}  [run_id={run_id}]")
     print(f"Polling for verdict (timeout={timeout_s}s, interval={poll_interval_s}s)...")
 
     verdict = await poll_for_verdict(
@@ -61,6 +61,7 @@ async def run_case_analysis(
         posted_at=posted_at,
         timeout_s=timeout_s,
         poll_interval_s=poll_interval_s,
+        expected_run_id=run_id,
     )
     return verdict
 

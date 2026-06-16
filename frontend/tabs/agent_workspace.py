@@ -5,12 +5,12 @@ per agent, and a pipeline progress indicator.
 """
 from __future__ import annotations
 
-import asyncio
 import json
 import re
 import time
 
 import streamlit as st
+from orchestrator.band_client import run_async
 
 # Avatar colours per agent (and human fallback)
 _AGENT_COLORS: dict[str, str] = {
@@ -97,7 +97,7 @@ def _render_pipeline_progress(messages: list[dict]) -> None:
 
 def _fetch_messages() -> list[dict]:
     from orchestrator.band_client import ROOM_ID, fetch_room_messages
-    return asyncio.run(fetch_room_messages(ROOM_ID))
+    return run_async(fetch_room_messages(ROOM_ID))
 
 
 def render_workspace_tab() -> None:
@@ -124,10 +124,10 @@ def render_workspace_tab() -> None:
                 st.session_state["ws_last_fetch"] = time.monotonic()
             except Exception as exc:
                 err = str(exc)
-                if "BAND_USER_API_KEY" in err or "not set" in err.lower():
+                if "api_key" in err.lower() or "not set" in err.lower() or "config" in err.lower():
                     st.error(
-                        "⚠️ **Agents offline / API key missing.** "
-                        "Set `BAND_USER_API_KEY` in `.env` and restart Streamlit.",
+                        "⚠️ **Agents offline / config error.** "
+                        "Check that `agent_config.yaml` has valid agent keys and restart Streamlit.",
                         icon="🔌",
                     )
                 else:

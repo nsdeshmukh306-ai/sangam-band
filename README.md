@@ -13,7 +13,7 @@ Verification log / deviations from the spec: [`docs/architecture.md`](docs/archi
 
 - [x] **Phase 0** — Repo scaffold, data files (5 case studies + supporting lookups)
 - [x] **Phase 1** — Core agents (`@Intake`, `@PatientProfile`, `@StructuralBio`)
-- [ ] Phase 2 — Reasoning agents + escalation loop (`@PKPD`, `@EvidenceRAG`, `@ComplianceGuard`)
+- [x] **Phase 2** — Reasoning agents + escalation loop (`@PKPD`, `@EvidenceRAG`, `@ComplianceGuard`)
 - [ ] Phase 3 — Frontend + orchestrator
 - [ ] Phase 4 — Submission assets
 
@@ -59,11 +59,20 @@ docs/                  architecture notes, Band setup guide, submission assets
 uv run pytest
 ```
 
-18 tests cover the PGx rules, docking lookup, herb dictionary, and PubChem wrapper
-(all runnable without live Band/DeepSeek credentials). Phase 2 will add tests for
-the PK/PD model and RAG retrieval.
+33 tests cover the PGx rules, docking lookup, herb dictionary, PubChem wrapper,
+PK/PD model, and RAG retrieval (all runnable without live Band/DeepSeek
+credentials).
 
-## Running the agents (Phase 1)
+## Building the evidence index (Phase 2, do this once)
+
+`@EvidenceRAG` needs a local ChromaDB index built from `data/evidence_corpus/*.json`
+before it can answer. Rebuild it whenever that directory changes:
+
+```bash
+uv run python -m rag.build_index
+```
+
+## Running the agents
 
 Each agent is its own long-running process, started from the repo root (so
 `agents.common.*` imports resolve) with `.env` and `agent_config.yaml` already
@@ -73,11 +82,15 @@ filled in:
 uv run python -m agents.intake_agent
 uv run python -m agents.patient_profile_agent
 uv run python -m agents.structural_agent
+uv run python -m agents.pkpd_agent
+uv run python -m agents.evidence_rag_agent
+uv run python -m agents.compliance_agent
 ```
 
 To test, open the "Sangam Case Room" on Band (with all 6 registered agents as
-participants — `@PKPD`, `@EvidenceRAG`, `@ComplianceGuard` won't be running yet,
-which is fine) and post Case 1's sample message:
+participants — see Section 7.3 of `PROJECT_SPEC.md` for the manual setup,
+including optionally adding yourself as a `@Clinician` participant for the
+escalation demo) and post Case 1's sample message:
 
 ```
 @Intake @PatientProfile New case: 68F on Warfarin 5mg once daily (CYP2C9 *1/*3,
@@ -94,10 +107,33 @@ Expected behavior:
 - `@StructuralBio` replies with `{"step": "structural", "delta_g_kcal_mol": -8.4,
   "target": "CYP2C9", "mechanism": "inhibition", ...}` and `@PKPD please continue
   the assessment.`
+- `@PKPD` replies with `{"step": "pkpd", "auc_pct_change": 150.0,
+  "clearance_change_fraction": -0.6, ...}` (AUC *increases* -> toxicity risk) and
+  `@EvidenceRAG @ComplianceGuard please continue the assessment.`
+- `@EvidenceRAG` replies with `{"step": "evidence", "findings": [...]}` (citations
+  from `data/evidence_corpus/warfarin_guggulu.json`) and `@ComplianceGuard please
+  continue the assessment.`
+- `@ComplianceGuard` replies with `{"step": "FINAL_VERDICT", "status":
+  "PENDING_HUMAN_REVIEW", "risk_tier": "RED", "confidence": "high", ...}` in the
+  same message as an `@mention` to the human participant in the room (looked up
+  via `band_get_participants`/`band_lookup_peers`/`band_add_participant`) asking
+  for sign-off. Reply as that human with e.g. "approved" — `@ComplianceGuard`
+  should then post one short follow-up with `"status": "FINAL_VERDICT"` and a
+  `"human_signoff"` field referencing your reply.
 
 Try Case 4 (Tacrolimus + St. John's Wort, in `data/case_studies.json`) too — it
-should produce `"mechanism": "induction"` from `@StructuralBio` instead of
-`"inhibition"`.
+should produce `"mechanism": "induction"` from `@StructuralBio`,
+`"clearance_change_fraction": 0.7` / `"auc_pct_change": -41.2` (AUC *decreases* ->
+subtherapeutic/efficacy-loss risk) from `@PKPD`, and `"status":
+"PENDING_HUMAN_REVIEW"` / `"risk_tier": "RED"` from `@ComplianceGuard`.
+
+Case 3 (Metformin + Karela, `"basis": "none"` from `@StructuralBio`) exercises the
+two-round escalation: `@ComplianceGuard` will first re-mention `@StructuralBio`
+asking it to widen its search, then -- once `@StructuralBio` posts a second
+finding (still `"basis": "none"`, since Metformin has no relevant docking entry) --
+post `{"step": "FINAL_VERDICT", "status": "PENDING_HUMAN_REVIEW", "risk_tier":
+"YELLOW", "confidence": "low", ...}` and `@mention` the human for sign-off despite
+the YELLOW tier, because confidence remained low after the second round.
 
 ## Data files (Phase 0)
 
