@@ -16,6 +16,9 @@ dependencies = [
     "plotly",
     "python-dotenv",
     "pyyaml",
+    "fastapi",
+    "uvicorn[standard]",
+    "aiosqlite",
 ]
 
 [dependency-groups]

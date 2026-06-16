@@ -65,7 +65,18 @@
       "Bash(awk '{print $11, $12, $13}')",
       "Bash(~/.local/bin/uv run *)",
       "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run pytest tests/ -v 2>&1\")",
-      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && git add -A && git status 2>&1\")"
+      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && git add -A && git status 2>&1\")",
+      "PowerShell(wsl -e bash -c \"cat /home/nsdeshmukh306/sangam-band/pyproject.toml 2>&1\")",
+      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv sync 2>&1\")",
+      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run python3 -c 'import fastapi, aiosqlite, uvicorn; print\\(\\\\\"OK\\\\\", fastapi.__version__, uvicorn.__version__\\)' 2>&1\")",
+      "PowerShell(wsl -e bash -c 'cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run python3 -c \"import fastapi, aiosqlite, uvicorn; print\\(fastapi.__version__, uvicorn.__version__\\)\" 2>&1')",
+      "PowerShell(wsl -e python3 -c \"import sys; sys.path.insert\\(0,'/home/nsdeshmukh306/sangam-band'\\); import fastapi, aiosqlite; print\\('fastapi', fastapi.__version__\\); import importlib.util; spec = importlib.util.find_spec\\('uvicorn'\\); print\\('uvicorn', spec.origin if spec else 'not found'\\)\")",
+      "PowerShell(wsl -e bash -c '/home/nsdeshmukh306/sangam-band/.venv/bin/python3 -c \"import fastapi, aiosqlite; print\\(fastapi.__version__\\)\" 2>&1')",
+      "PowerShell(wsl -- /home/nsdeshmukh306/sangam-band/.venv/bin/python3 /home/nsdeshmukh306/sangam-band/scripts/check_imports.py 2>&1; echo exit=$?)",
+      "PowerShell(wsl -- /home/nsdeshmukh306/sangam-band/.venv/bin/python3 /home/nsdeshmukh306/sangam-band/scripts/check_imports.py)",
+      "PowerShell(wsl -- /home/nsdeshmukh306/sangam-band/.venv/bin/python3 /home/nsdeshmukh306/sangam-band/scripts/check_backend.py 2>&1)",
+      "PowerShell(wsl -e bash -c \"rm /home/nsdeshmukh306/sangam-band/scripts/check_imports.py /home/nsdeshmukh306/sangam-band/scripts/check_backend.py 2>&1\")",
+      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run pytest tests/ -q 2>&1 | tail -5\")"
     ]
   }
 }
