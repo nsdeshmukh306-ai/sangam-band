@@ -30,5 +30,15 @@ rag/chroma_db/
 .DS_Store
 Thumbs.db
 
-# Logs
+# React / Node
+frontend/react/node_modules/
+frontend/react/dist/
+frontend/react/tsconfig.tsbuildinfo
+
+# SQLite runtime DB
+data/sangam.db
+
+# Logs and runtime PID files
 *.log
+logs/*.log
+logs/*.pid

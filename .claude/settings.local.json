@@ -76,7 +76,22 @@
       "PowerShell(wsl -- /home/nsdeshmukh306/sangam-band/.venv/bin/python3 /home/nsdeshmukh306/sangam-band/scripts/check_imports.py)",
       "PowerShell(wsl -- /home/nsdeshmukh306/sangam-band/.venv/bin/python3 /home/nsdeshmukh306/sangam-band/scripts/check_backend.py 2>&1)",
       "PowerShell(wsl -e bash -c \"rm /home/nsdeshmukh306/sangam-band/scripts/check_imports.py /home/nsdeshmukh306/sangam-band/scripts/check_backend.py 2>&1\")",
-      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run pytest tests/ -q 2>&1 | tail -5\")"
+      "PowerShell(wsl -e bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run pytest tests/ -q 2>&1 | tail -5\")",
+      "PowerShell(wsl -e bash -c \"node --version && npm --version 2>&1\")",
+      "PowerShell(wsl -e bash -c \"curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt-get install -y nodejs 2>&1 | tail -20\")",
+      "PowerShell(wsl -e bash -c \"node.exe --version 2>/dev/null || npm.cmd --version 2>/dev/null || echo 'windows node not in wsl path'\" 2>&1)",
+      "PowerShell(wsl -e bash -c \"npm.cmd --version 2>&1\")",
+      "PowerShell(wsl -e bash -c \"npx.cmd --version 2>&1; /mnt/c/Program\\\\ Files/nodejs/npm --version 2>&1 || true\")",
+      "PowerShell(wsl -e bash -c \"curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash 2>&1 | tail -10\")",
+      "PowerShell(wsl -e bash -c \"export NVM_DIR=\\\\$HOME/.nvm && . \\\\$NVM_DIR/nvm.sh && nvm install 20 2>&1 | tail -10\")",
+      "PowerShell(wsl -- bash -l -c \"nvm install 20 2>&1 | tail -10\")",
+      "PowerShell(wsl -- bash -c \"ls ~/.nvm/nvm.sh 2>&1\")",
+      "PowerShell(wsl -- bash -c \"source /home/nsdeshmukh306/.nvm/nvm.sh && nvm install 20 2>&1 | tail -10\")",
+      "PowerShell(wsl -- bash -c \"source ~/.nvm/nvm.sh && cd /home/nsdeshmukh306/sangam-band/frontend/react && npm install 2>&1 | tail -10\")",
+      "PowerShell(wsl -- bash -c \"source ~/.nvm/nvm.sh && cd /home/nsdeshmukh306/sangam-band/frontend/react && npx tsc --noEmit 2>&1\")",
+      "PowerShell(wsl -- bash -c \"source ~/.nvm/nvm.sh && cd /home/nsdeshmukh306/sangam-band/frontend/react && npm run build 2>&1\")",
+      "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && git add -A && git status 2>&1\")",
+      "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && git rm --cached frontend/react/tsconfig.tsbuildinfo logs/agent_compliance.pid logs/agent_evidence_rag.pid logs/agent_intake.pid logs/agent_patient_profile.pid logs/agent_pkpd.pid logs/agent_structural.pid 2>&1 && git add -A && git status 2>&1\")"
     ]
   }
 }
