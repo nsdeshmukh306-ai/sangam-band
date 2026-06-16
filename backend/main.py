@@ -26,14 +26,19 @@ from pydantic import BaseModel
 
 from backend.db import get_job, get_transcript, init_db, list_jobs
 from backend.job_runner import enqueue_job, subscribe_ws, unsubscribe_ws
+from backend.logging_config import configure_logging
 
 logger = logging.getLogger(__name__)
+
+configure_logging()
 
 
 @asynccontextmanager
 async def _lifespan(app: FastAPI):
     await init_db()
+    logger.info("Sangam backend started — DB initialised")
     yield
+    logger.info("Sangam backend shutting down")
 
 
 app = FastAPI(
@@ -88,7 +93,14 @@ class JobStatus(BaseModel):
 
 @app.get("/health")
 async def health():
-    return {"status": "ok"}
+    """Liveness probe — also checks Band room accessibility when possible."""
+    checks: dict[str, Any] = {"status": "ok", "version": "1.0.0"}
+    try:
+        from orchestrator.band_client import check_room_accessible
+        checks["band_room"] = "ok" if await check_room_accessible() else "unreachable"
+    except Exception as exc:
+        checks["band_room"] = f"error: {exc}"
+    return checks
 
 
 @app.post("/api/cases/run", response_model=RunResponse)
@@ -106,6 +118,10 @@ async def run_case(body: RunRequest):
     room_id = body.room_id or os.getenv("BAND_ROOM_ID", "9b4efd3c-46d2-4c40-8b33-d75dda925b05")
     job_id = uuid.uuid4().hex
 
+    logger.info(
+        "Job enqueued",
+        extra={"job_id": job_id, "case_id": body.case_id},
+    )
     await enqueue_job(job_id=job_id, case_id=body.case_id, sample_message=sample_message, room_id=room_id)
     return RunResponse(job_id=job_id, case_id=body.case_id, status="queued")
 

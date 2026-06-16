@@ -1,0 +1,51 @@
+version: "3.9"
+
+# Sangam local production stack
+# Usage:
+#   docker compose up --build
+#   Open http://localhost:3000 (React SPA)
+#        http://localhost:8000/docs (FastAPI Swagger)
+#
+# Secrets: copy .env.example -> .env and fill in your keys.
+# agent_config.yaml is mounted read-only — never baked into the image.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount secrets at runtime (never in image)
+      - ./agent_config.yaml:/app/agent_config.yaml:ro
+      - ./.env:/app/.env:ro
+      # Persistent SQLite DB
+      - sangam_db:/app/data
+    env_file: .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.react
+      args:
+        # Browser-accessible backend URL (localhost because ports are published)
+        VITE_API_URL: http://localhost:8000
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  sangam_db:

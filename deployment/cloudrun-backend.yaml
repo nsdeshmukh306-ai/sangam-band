@@ -1,0 +1,58 @@
+# GCP Cloud Run — Sangam backend service
+# Deploy with:
+#   gcloud run services replace deployment/cloudrun-backend.yaml \
+#     --region=asia-south1 --project=[YOUR_GCP_PROJECT]
+#
+# Prerequisites:
+#   1. Build and push image:
+#      gcloud builds submit --tag gcr.io/[YOUR_GCP_PROJECT]/sangam-backend:latest \
+#        --dockerfile Dockerfile.backend .
+#   2. Create Secret Manager secrets:
+#      DEEPSEEK_API_KEY, BAND_ROOM_ID, AGENT_CONFIG_YAML (base64 of agent_config.yaml)
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: sangam-backend
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/launch-stage: GA
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "3"
+        run.googleapis.com/cpu-throttling: "false"
+    spec:
+      containerConcurrency: 10
+      timeoutSeconds: 300
+      containers:
+        - image: gcr.io/[YOUR_GCP_PROJECT]/sangam-backend:latest
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          env:
+            - name: BAND_ROOM_ID
+              valueFrom:
+                secretKeyRef:
+                  name: sangam-band-room-id
+                  key: latest
+            - name: DEEPSEEK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sangam-deepseek-key
+                  key: latest
+            - name: LOG_LEVEL
+              value: INFO
+          volumeMounts:
+            - name: agent-config
+              mountPath: /app/agent_config.yaml
+              subPath: agent_config.yaml
+      volumes:
+        - name: agent-config
+          secret:
+            secretName: sangam-agent-config

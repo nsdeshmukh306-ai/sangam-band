@@ -91,7 +91,11 @@
       "PowerShell(wsl -- bash -c \"source ~/.nvm/nvm.sh && cd /home/nsdeshmukh306/sangam-band/frontend/react && npx tsc --noEmit 2>&1\")",
       "PowerShell(wsl -- bash -c \"source ~/.nvm/nvm.sh && cd /home/nsdeshmukh306/sangam-band/frontend/react && npm run build 2>&1\")",
       "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && git add -A && git status 2>&1\")",
-      "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && git rm --cached frontend/react/tsconfig.tsbuildinfo logs/agent_compliance.pid logs/agent_evidence_rag.pid logs/agent_intake.pid logs/agent_patient_profile.pid logs/agent_pkpd.pid logs/agent_structural.pid 2>&1 && git add -A && git status 2>&1\")"
+      "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && git rm --cached frontend/react/tsconfig.tsbuildinfo logs/agent_compliance.pid logs/agent_evidence_rag.pid logs/agent_intake.pid logs/agent_patient_profile.pid logs/agent_pkpd.pid logs/agent_structural.pid 2>&1 && git add -A && git status 2>&1\")",
+      "Bash(ls \"\\\\\\\\wsl.localhost\\\\Ubuntu\\\\home\\\\nsdeshmukh306\\\\sangam-band\\\\.env.example\")",
+      "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && ~/.local/bin/uv run pytest tests/ -v --tb=short 2>&1\")",
+      "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && docker compose config --quiet && echo 'compose OK' 2>&1\")",
+      "PowerShell(wsl -- bash -c \"cd /home/nsdeshmukh306/sangam-band && git add -A && git status --short 2>&1\")"
     ]
   }
 }

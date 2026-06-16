@@ -27,6 +27,7 @@ load_dotenv(override=True)
 import asyncio
 import concurrent.futures
 import json
+import logging
 import os
 import re
 import time
@@ -43,6 +44,8 @@ from band.client.rest import (
 from band.config import load_agent_config
 
 ROOM_ID = os.getenv("BAND_ROOM_ID", "9b4efd3c-46d2-4c40-8b33-d75dda925b05")
+
+logger = logging.getLogger(__name__)
 
 # All 6 agent keys in agent_config.yaml
 _ALL_AGENTS = ["intake", "patient_profile", "structural", "pkpd", "evidence_rag", "compliance"]
@@ -105,21 +108,45 @@ def _msg_to_dict(msg: Any) -> dict[str, Any]:
     }
 
 
+async def _with_retry(coro_fn, max_retries: int = 3, base_delay: float = 1.0):
+    """Call an async zero-argument coroutine with exponential-backoff retry.
+
+    Retries on any exception; re-raises after max_retries exhausted.
+    This makes Band API calls resilient to transient network blips and the
+    intermittent 5xx responses observed in Phase 2 testing.
+    """
+    for attempt in range(max_retries + 1):
+        try:
+            return await coro_fn()
+        except Exception as exc:
+            if attempt == max_retries:
+                raise
+            delay = base_delay * (2 ** attempt)
+            logger.warning(
+                "Band API call failed (attempt %d/%d), retrying in %.1fs: %s",
+                attempt + 1, max_retries + 1, delay, exc,
+            )
+            await asyncio.sleep(delay)
+
+
 async def _get_agent_context_all_pages(
     client: AsyncRestClient,
     room_id: str,
     page_size: int = 100,
 ) -> list[dict[str, Any]]:
-    """Fetch all pages of get_agent_chat_context (messages sent by or @mentioning agent)."""
+    """Fetch all pages of get_agent_chat_context with per-page retry."""
     all_msgs: list[dict] = []
     page = 1
     while True:
         try:
-            resp = await client.agent_api_context.get_agent_chat_context(
-                chat_id=room_id,
-                page=page,
-                page_size=page_size,
-                request_options=DEFAULT_REQUEST_OPTIONS,
+            resp = await _with_retry(
+                lambda p=page: client.agent_api_context.get_agent_chat_context(
+                    chat_id=room_id,
+                    page=p,
+                    page_size=page_size,
+                    request_options=DEFAULT_REQUEST_OPTIONS,
+                ),
+                max_retries=2,
             )
         except Exception:
             break

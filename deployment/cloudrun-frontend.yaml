@@ -1,0 +1,34 @@
+# GCP Cloud Run — Sangam React frontend service
+# Deploy with:
+#   gcloud run services replace deployment/cloudrun-frontend.yaml \
+#     --region=asia-south1 --project=[YOUR_GCP_PROJECT]
+#
+# After deploying the backend, update VITE_API_URL below with the Cloud Run URL,
+# rebuild the frontend image, then deploy this service.
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: sangam-frontend
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "5"
+    spec:
+      containerConcurrency: 80
+      containers:
+        - image: gcr.io/[YOUR_GCP_PROJECT]/sangam-frontend:latest
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "1"
+              memory: 256Mi
+          # VITE_API_URL is baked into the image at build time (not a runtime env var).
+          # Rebuild the image with the correct backend URL:
+          #   docker build --build-arg VITE_API_URL=https://sangam-backend-xxx.run.app \
+          #     -f Dockerfile.react -t gcr.io/[YOUR_GCP_PROJECT]/sangam-frontend:latest .
