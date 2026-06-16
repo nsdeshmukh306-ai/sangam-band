@@ -168,3 +168,217 @@ tool signatures, each entry now carries a `"mechanism"` field:
 
 This is additive (one extra field + one extra branch) and does not change the
 spec's core formula or output schema.
+
+## Design note: `@ComplianceGuard` risk tier, confidence, and escalation (Phase 2)
+
+**Confidence is categorical (`"high" | "low"`), not the spec's illustrative
+`"confidence": 0.82` float.** `@StructuralBio` already reports confidence as
+`"high"|"low"` (Section 3.3), and the spec's own escalation trigger ("if
+confidence is low") is binary. Asking an LLM to produce a calibrated 0-1 score it
+then has to threshold anyway adds noise without adding information for this demo,
+so `@ComplianceGuard` reuses the categorical convention:
+
+- `confidence = "high"` if `@StructuralBio.confidence == "high"` (i.e.
+  `basis == "lookup"`) OR `@EvidenceRAG` returned at least one `"severity": "high"`
+  finding (independent confirmation even when structural data is missing).
+- `confidence = "low"` otherwise.
+
+**Risk tier rubric** (`GREEN | YELLOW | RED`), designed to be checkable against
+the 5 case studies' `expected_tier`:
+
+- **RED** if any evidence finding has `"severity": "high"`, OR `|auc_pct_change|
+  >= 30` with at least one `"moderate"+` finding, OR `@StructuralBio.confidence ==
+  "high"` with `|clearance_change_fraction| >= 0.4`.
+- **YELLOW** if not RED but there's a plausible interaction: at least one
+  `"moderate"` finding, or `10 <= |auc_pct_change| < 30`.
+- **GREEN** otherwise.
+
+Verified against `data/case_studies.json` + `data/docking_lookup.json` +
+`data/evidence_corpus/*.json`:
+- Case 1 (Warfarin+Guggulu): structural confidence high, evidence has `"high"`
+  findings -> **RED** (matches `expected_tier`).
+- Case 2 (Digoxin+Licorice): same shape -> **RED** (matches).
+- Case 3 (Metformin+Karela): structural `basis == "none"` -> confidence low in
+  round 1 -> triggers the `@StructuralBio` re-mention (genuine second round);
+  Metformin has no CYP/P-gp/albumin docking entry at all, so round 2 still
+  produces `basis == "none"` / confidence low; evidence findings are
+  `["moderate", "low", "moderate"]` -> **YELLOW** (matches `expected_tier`), but
+  confidence is *still* low after round 2 -> triggers the `band_add_participant`
+  human-escalation path even though the tier itself is only YELLOW. This is the
+  case that exercises **both** halves of the escalation design.
+- Case 4 (Tacrolimus+SJW): structural confidence high (`basis: "lookup"`),
+  `delta_g=-9.1` induction -> `clearance_change_fraction = +0.7` (clamped) ->
+  `|...| >= 0.4` -> **RED** (matches), confidence already high in round 1 so no
+  `@StructuralBio` re-mention; RED tier alone triggers human escalation. This is
+  the case that exercises the PKPD induction sign convention end-to-end
+  (`auc_pct_change < 0`, rationale must say subtherapeutic/efficacy-loss, not
+  toxicity).
+- Case 5 (Paracetamol+Tulsi): structural confidence high but `mechanism ==
+  "negligible"` (`clearance_change_fraction = 0`), evidence findings all `"low"`
+  -> **GREEN** (matches), no escalation.
+
+**Human escalation** uses the platform's built-in `band_lookup_peers` /
+`band_add_participant` tools (no `additional_tools=` needed — verified Phase 1,
+see above). For the demo, add yourself (or a second Band account) to the Sangam
+Case Room participants list with a display name containing "Clinician" so
+`band_lookup_peers` can find it (per PROJECT_SPEC.md Section 7.3 step 4). If no
+such contact is registered, `@ComplianceGuard` is instructed to note this in its
+rationale rather than failing.
+
+### Fix (live test, Case 1): the verdict must always be posted (Phase 2 follow-up)
+
+A live Band-room test of Case 1 showed `@ComplianceGuard` correctly reasoning to a
+RED tier + "needs human sign-off", then posting **nothing** — it treated sign-off
+as a precondition for output rather than part of the output. Original Step 4/5
+told it to escalate *then* post a verdict, which let the model end its turn after
+the escalation reasoning without ever calling `send_message`.
+
+Fixed by merging the old Step 4 (human escalation) and Step 5 (post verdict) into
+a single Step 4 ("ALWAYS post your assessment") with an explicit "staying silent
+is always wrong" instruction, and adding a `"status"` field to the verdict JSON:
+
+- `"status": "FINAL_VERDICT"` — GREEN/YELLOW tier with high confidence. Posted
+  directly, no escalation.
+- `"status": "PENDING_HUMAN_REVIEW"` — RED tier, or confidence still low after
+  round 2. Posted in the *same* message as the `@mention` requesting sign-off
+  (previously these were sequenced as separate steps, which is what let the model
+  stall between them).
+
+To find the human to `@mention` (`send_message` requires >=1 mention — see
+`band/runtime/tools.py::SendMessageInput`), `@ComplianceGuard` now calls
+`band_get_participants` (returns all current room participants, including humans
+already present, e.g. the room owner) first, falling back to
+`band_lookup_peers`/`band_add_participant` only if no human is already in the
+room. This replaced the original lookup-only approach, which assumed a dedicated
+`@Clinician` contact that may not exist — the room owner (e.g. `@Niraj Deshmukh`)
+is an acceptable sign-off target for the demo.
+
+A new Step 5 handles the human's reply: an affirmative reply ("approved",
+"confirmed", etc.) to a `PENDING_HUMAN_REVIEW` message produces one short
+follow-up with `"status": "FINAL_VERDICT"` and a `"human_signoff"` field, reusing
+the already-computed risk_tier/confidence/etc. (no re-analysis). This makes the
+human-in-the-loop step an explicit, visible part of the transcript — a stronger
+Track 3 demo moment than a silent internal gate.
+
+### Root cause found (live test, Case 3): plain-text replies never reach Band
+
+The previous fix above was necessary but not sufficient. A live test on Case 3
+showed `@ComplianceGuard` reach a correct conclusion in exactly 1 DeepSeek call and
+then post **nothing** — no `send_event`, no error, just `[DONE] ... processed
+successfully`. The one time it *had* posted (Case 1), the log showed 2+ DeepSeek
+calls with a `band_lookup_peers` tool call in between.
+
+Reading `band/adapters/langgraph.py::on_message`/`_handle_stream_event` confirms
+why: the adapter's `astream_events` loop only ever reacts to `on_tool_start` /
+`on_tool_end` / `on_tool_error` (and only to emit `Emit.EXECUTION` telemetry, which
+isn't even enabled here). There is **no code path that takes the graph's final
+plain-text `AIMessage` and posts it to the room**. The *only* way a message
+reaches Band is the `band_send_message` tool (`runtime/tools.py:641`,
+`SendMessageInput`) — its docstring says outright: "plain text responses won't
+reach users." Calling that tool is what performs the POST, as a side effect of
+tool execution.
+
+So every agent's "post a single reply containing ... then @mention ..." instruction
+has *always* implicitly required a `band_send_message` tool call — `@Intake`,
+`@PatientProfile`, `@StructuralBio`, `@PKPD`, and `@EvidenceRAG` all happen to call
+at least one domain tool first (`lookup_pubchem`, `compute_pgx_baseline`,
+`lookup_docking`, `lookup_pk_params`/`simulate_pk`, `query_evidence`), which forces
+a second LangGraph loop iteration -- and the model reliably uses that second
+iteration to call `band_send_message`. `@ComplianceGuard` has no required domain
+tool, so on simple cases (no `@StructuralBio` re-mention, no participant lookup
+needed) its first LLM call produces the whole analysis as plain text and the graph
+ends immediately — silently dropped.
+
+**Fix**: `agents/compliance_agent.py`'s system prompt now opens with an explicit
+"CRITICAL" paragraph stating the agent has no way to communicate except by calling
+`band_send_message`, that plain text is invisible, and that this applies even on
+the first/only tool call of a turn. Every "post"/"reply"/"@mention" instruction in
+Steps 2, 4, and 5 now explicitly says `band_send_message`. The "stay silent" option
+(case-not-ready-yet, or re-mention-with-nothing-new) is preserved but clarified:
+silence = no tool call at all, which is a legitimate choice, vs. a short
+acknowledgement = an actual `band_send_message` call with brief content.
+
+If `@ComplianceGuard` ever needs `additional_tools=` in a future iteration, this
+class of bug (single-LLM-call turns silently dropping output) would re-appear for
+any agent whose prompt doesn't force a tool call before its reply — worth keeping
+in mind for Phase 3 if any new agent is added without a required domain tool.
+
+## Phase 3 verification results — orchestrator + frontend
+
+### Band REST client for orchestrator
+
+The installed `thenvoi_rest.AsyncRestClient` (re-exported as
+`band.client.rest.AsyncRestClient`) is the correct client for human-level (account
+owner) REST operations. Verified:
+
+```python
+# Post a message as the account owner:
+await client.human_api_messages.send_my_chat_message(
+    chat_id=room_id,
+    message=ChatMessageRequest(
+        content="...",  # must include at least one @mention in the text
+        mentions=[ChatMessageRequestMentionsItem(id=agent_id, handle="...", name="...")]
+    ),
+    request_options=DEFAULT_REQUEST_OPTIONS,
+)
+
+# List all room messages (newest-first, paginated):
+resp = await client.human_api_messages.list_my_chat_messages(
+    chat_id=room_id,
+    page=1,                     # 1-based
+    page_size=100,              # max 100
+    message_type="text",        # optional filter: "text"|"tool_call"|"tool_result"|...
+    since=<datetime>,           # optional: only messages after this timestamp
+)
+# resp.data = list[ChatMessage] — fields: id, content, sender_name, sender_type,
+#             inserted_at (datetime), message_type, metadata
+# resp.meta = ListMyChatMessagesResponseMetadata
+#             — fields: page, page_size, total_count, total_pages
+```
+
+`ChatMessage.inserted_at` (not `created_at`) is the timestamp field. The API returns
+newest-first; `orchestrator/band_client.py:fetch_room_messages` reverses to
+chronological order for the frontend.
+
+`BAND_USER_API_KEY` auth confirmed as the correct env var for account-level access.
+
+### History pre-load cap (verified against SDK source)
+
+`band/runtime/oneshot.py:_fetch_history` hardcodes `page=1, page_size=50` when
+calling `agent_api_context.get_agent_chat_context`. The agent-context endpoint
+returns ONLY messages the agent sent or that @mention the agent (oldest-first).
+For a long-running demo room with many accumulated test cases, `page_size=50` can
+mean the current case's messages (which would be near page 2 or beyond) are
+missing when @ComplianceGuard processes its turn.
+
+**Fix (Phase 3)**: `agents/compliance_agent.py` now includes a custom
+`fetch_full_room_context` async tool (via `additional_tools=`) that calls the
+human-level `list_my_chat_messages` endpoint with `page_size=100` and full
+pagination, returning a complete chronological transcript. The system prompt
+instructs @ComplianceGuard to call this tool (no arguments) as its first action
+whenever any of the five expected step reports are missing from context.
+
+Note: `fetch_full_room_context` requires `BAND_USER_API_KEY` (the account-level
+key already in `.env`), which is available to all agent processes at runtime.
+
+### @mention typo status
+
+A search of all `.py` source files in `agents/` for `nsdeshmuth` returned no
+matches — only stale compiled `.pyc` files (pre-existing from an older run)
+contained the typo. The current source is clean; `.pyc` files are gitignored and
+will be regenerated cleanly on the next run.
+
+### Orchestrator files created (Phase 3)
+
+- `orchestrator/__init__.py` — package marker
+- `orchestrator/band_client.py` — async REST helpers: `post_case_message`,
+  `fetch_room_messages`, `poll_for_verdict`, `check_room_accessible`
+- `orchestrator/run_case.py` — CLI: `uv run python -m orchestrator.run_case --case <id>`
+
+### Frontend created (Phase 3)
+
+- `frontend/app.py` — Streamlit entry point (3 tabs, navy/teal design system)
+- `frontend/tabs/consumer.py` — Case Submission tab with traffic-light card
+- `frontend/tabs/physician.py` — Physician View with Plotly PK chart + evidence table
+- `frontend/tabs/agent_workspace.py` — live Band room transcript + pipeline progress
+- `scripts/start_agents.sh` — starts all 6 agent processes with nohup, logs to `logs/`
