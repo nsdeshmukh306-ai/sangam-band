@@ -20,8 +20,11 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from typing import Any
 
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from backend.db import get_job, get_transcript, init_db, list_jobs
@@ -237,3 +240,9 @@ async def websocket_job(websocket: WebSocket, job_id: str):
         pass
     finally:
         unsubscribe_ws(job_id)
+
+
+# Serve React SPA at /app — mount last so API routes take priority
+_dist = Path(__file__).parent.parent / "frontend" / "react" / "dist"
+if _dist.exists():
+    app.mount("/app", StaticFiles(directory=str(_dist), html=True), name="react")
