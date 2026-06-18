@@ -51,6 +51,22 @@ export interface WsEvent {
   error?: string;
 }
 
+export interface ParseResult {
+  matched_case_id: string | null;
+  extracted: {
+    drug?: string | null;
+    herb?: string | null;
+    age?: number | null;
+    sex?: string | null;
+    indication?: string | null;
+    cyp2c9_genotype?: string | null;
+    cyp3a4_status?: string | null;
+    egfr?: number | null;
+  };
+  confidence: number;
+  free_text_message: string | null;
+}
+
 export interface TranscriptMessage {
   id?: string;
   sender_name: string;
@@ -58,4 +74,11 @@ export interface TranscriptMessage {
   content: string;
   inserted_at?: string | null;
   message_type?: string;
+}
+
+export interface HealthStatus {
+  status: string;
+  version?: string;
+  band_room?: string;
+  agents?: Record<string, boolean | string>;
 }

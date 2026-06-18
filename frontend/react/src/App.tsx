@@ -1,38 +1,49 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { api } from "./api";
 import CasePanel from "./components/CasePanel";
-import JobHistory from "./components/JobHistory";
-import TranscriptPanel from "./components/TranscriptPanel";
-
-type Tab = "submit" | "transcript" | "history";
+import RightPanel from "./components/RightPanel";
+import Sidebar from "./components/Sidebar";
+import type { Job, Verdict } from "./types";
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>("submit");
+  const [verdict, setVerdict]       = useState<Verdict | null>(null);
+  const [recentJobs, setRecentJobs] = useState<Job[]>([]);
+  const [isRunning, setIsRunning]   = useState(false);
+
+  const refreshJobs = useCallback(async () => {
+    try {
+      const { jobs } = await api.listJobs(10);
+      setRecentJobs(jobs);
+    } catch { /* backend may be offline */ }
+  }, []);
+
+  useEffect(() => { refreshJobs(); }, [refreshJobs]);
+
+  const handleVerdictReceived = useCallback((v: Verdict) => {
+    setVerdict(v);
+    refreshJobs();
+  }, [refreshJobs]);
 
   return (
-    <div className="app">
-      <header className="header">
-        <span className="header-icon">💊</span>
-        <div>
-          <h1>Sangam — Polypharmacy Safety Council</h1>
-          <p>6-agent Band pipeline · Indian drug-herb interaction assessment · Band of Agents Hackathon</p>
-        </div>
-      </header>
+    <div className="dashboard">
+      <Sidebar
+        jobs={recentJobs}
+        isRunning={isRunning}
+        onNewAnalysis={() => setVerdict(null)}
+      />
 
-      <nav className="tabs">
-        <button className={`tab${tab === "submit" ? " active" : ""}`} onClick={() => setTab("submit")}>
-          Submit Case
-        </button>
-        <button className={`tab${tab === "transcript" ? " active" : ""}`} onClick={() => setTab("transcript")}>
-          Agent Workspace
-        </button>
-        <button className={`tab${tab === "history" ? " active" : ""}`} onClick={() => setTab("history")}>
-          Job History
-        </button>
-      </nav>
+      <main className="main-content">
+        <CasePanel
+          onVerdictReceived={handleVerdictReceived}
+          onRunningChange={setIsRunning}
+        />
+      </main>
 
-      {tab === "submit" && <CasePanel />}
-      {tab === "transcript" && <TranscriptPanel />}
-      {tab === "history" && <JobHistory />}
+      <div className={`right-panel${verdict ? "" : " hidden"}`}>
+        {verdict && (
+          <RightPanel verdict={verdict} onClose={() => setVerdict(null)} />
+        )}
+      </div>
     </div>
   );
 }

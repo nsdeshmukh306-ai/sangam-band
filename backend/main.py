@@ -35,6 +35,15 @@ logger = logging.getLogger(__name__)
 
 configure_logging()
 
+AGENT_PROCESSES = {
+    "Intake": "agents.intake_agent",
+    "PatientProfile": "agents.patient_profile_agent",
+    "StructuralBio": "agents.structural_agent",
+    "PKPD": "agents.pkpd_agent",
+    "EvidenceRAG": "agents.evidence_rag_agent",
+    "ComplianceGuard": "agents.compliance_agent",
+}
+
 
 @asynccontextmanager
 async def _lifespan(app: FastAPI):
@@ -68,11 +77,32 @@ def _load_cases() -> dict[str, Any]:
     return {c["id"]: c for c in data["cases"]}
 
 
+def _agent_process_health() -> dict[str, bool]:
+    """Best-effort local process liveness for the six Band agents."""
+    cmdlines: list[str] = []
+    proc = Path("/proc")
+    if proc.exists():
+        for cmdline in proc.glob("[0-9]*/cmdline"):
+            try:
+                cmdlines.append(cmdline.read_text(errors="ignore").replace("\x00", " "))
+            except OSError:
+                continue
+    return {
+        agent: any(module in cmdline for cmdline in cmdlines)
+        for agent, module in AGENT_PROCESSES.items()
+    }
+
+
 # ---- request / response models ----
 
 class RunRequest(BaseModel):
     case_id: str
     room_id: str | None = None
+    sample_message: str | None = None  # free-text/NLP override
+
+
+class ParseRequest(BaseModel):
+    text: str
 
 
 class RunResponse(BaseModel):
@@ -98,6 +128,7 @@ class JobStatus(BaseModel):
 async def health():
     """Liveness probe — also checks Band room accessibility when possible."""
     checks: dict[str, Any] = {"status": "ok", "version": "1.0.0"}
+    checks["agents"] = _agent_process_health()
     try:
         from orchestrator.band_client import check_room_accessible
         checks["band_room"] = "ok" if await check_room_accessible() else "unreachable"
@@ -106,27 +137,37 @@ async def health():
     return checks
 
 
+@app.post("/api/cases/parse")
+async def parse_case_endpoint(body: ParseRequest):
+    """Parse free-text case description — fuzzy-match or LLM-extract."""
+    from backend.nlp_parser import parse_case_text
+    return await parse_case_text(body.text)
+
+
 @app.post("/api/cases/run", response_model=RunResponse)
 async def run_case(body: RunRequest):
     cases = _load_cases()
-    if body.case_id not in cases:
-        raise HTTPException(status_code=404, detail=f"case_id '{body.case_id}' not found")
 
-    case = cases[body.case_id]
-    sample_message = case.get("sample_message", "")
-    if not sample_message:
-        raise HTTPException(status_code=422, detail="Case has no sample_message")
+    if body.sample_message:
+        # Free-text / NLP mode — use caller-supplied message directly
+        sample_message = body.sample_message
+        case_id = body.case_id if body.case_id else "_free_text_"
+    elif body.case_id in cases:
+        case = cases[body.case_id]
+        sample_message = case.get("sample_message", "")
+        if not sample_message:
+            raise HTTPException(status_code=422, detail="Case has no sample_message")
+        case_id = body.case_id
+    else:
+        raise HTTPException(status_code=404, detail=f"case_id '{body.case_id}' not found")
 
     import os
     room_id = body.room_id or os.getenv("BAND_ROOM_ID", "9b4efd3c-46d2-4c40-8b33-d75dda925b05")
     job_id = uuid.uuid4().hex
 
-    logger.info(
-        "Job enqueued",
-        extra={"job_id": job_id, "case_id": body.case_id},
-    )
-    await enqueue_job(job_id=job_id, case_id=body.case_id, sample_message=sample_message, room_id=room_id)
-    return RunResponse(job_id=job_id, case_id=body.case_id, status="queued")
+    logger.info("Job enqueued", extra={"job_id": job_id, "case_id": case_id})
+    await enqueue_job(job_id=job_id, case_id=case_id, sample_message=sample_message, room_id=room_id)
+    return RunResponse(job_id=job_id, case_id=case_id, status="queued")
 
 
 @app.get("/api/cases/list")

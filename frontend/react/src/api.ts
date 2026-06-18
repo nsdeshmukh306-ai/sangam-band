@@ -1,7 +1,5 @@
-import type { CaseMeta, Job, TranscriptMessage, WsEvent } from "./types";
+import type { CaseMeta, HealthStatus, Job, ParseResult, TranscriptMessage, WsEvent } from "./types";
 
-// In Vite dev mode: API_BASE="" and all /api/* calls are proxied to :8000.
-// In production: set VITE_API_URL=http://localhost:8000
 const API_BASE = import.meta.env.VITE_API_URL ?? "";
 const WS_PROTO = location.protocol === "https:" ? "wss:" : "ws:";
 export const WS_BASE = import.meta.env.VITE_API_URL
@@ -18,14 +16,24 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  health: () =>
+    req<HealthStatus>("/health"),
+
   listCases: () =>
     req<{ count: number; cases: CaseMeta[] }>("/api/cases/list"),
 
-  runCase: (case_id: string) =>
+  parseCase: (text: string) =>
+    req<ParseResult>("/api/cases/parse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    }),
+
+  runCase: (case_id: string, sample_message?: string) =>
     req<{ job_id: string; case_id: string; status: string }>("/api/cases/run", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ case_id }),
+      body: JSON.stringify({ case_id, ...(sample_message ? { sample_message } : {}) }),
     }),
 
   jobStatus: (job_id: string) =>
