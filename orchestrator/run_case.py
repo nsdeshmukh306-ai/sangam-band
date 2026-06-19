@@ -40,7 +40,7 @@ def load_case(case_id: str) -> dict:
 async def run_case_analysis(
     case_id: str,
     room_id: str = ROOM_ID,
-    timeout_s: float = 120.0,
+    timeout_s: float = 300.0,
     poll_interval_s: float = 3.0,
 ) -> dict | None:
     """Post a case to the Band room and wait for ComplianceGuard's verdict.
