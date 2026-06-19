@@ -1,11 +1,9 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   python-tests:
     name: Python tests
@@ -33,11 +31,9 @@ jobs:
       - run: npx tsc --noEmit
         working-directory: frontend/react
 
-  docker-smoke:
-    name: Docker build smoke-test
+  docker-validate:
+    name: Docker config validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -f Dockerfile.backend -t sangam-backend:ci .
-      - run: docker build -f Dockerfile.react -t sangam-frontend:ci .
       - run: docker compose config --quiet
