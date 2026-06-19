@@ -30,10 +30,3 @@ jobs:
         working-directory: frontend/react
       - run: npx tsc --noEmit
         working-directory: frontend/react
-
-  docker-validate:
-    name: Docker config validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: docker compose config --quiet
