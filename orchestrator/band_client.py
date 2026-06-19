@@ -280,7 +280,7 @@ async def poll_for_verdict(
                 if verdict is None:
                     continue
                 # If caller supplied a run_id, reject verdicts that don't match
-                if expected_run_id and verdict.get("run_id") != expected_run_id:
+                if expected_run_id and verdict.get("run_id") and verdict.get("run_id") != expected_run_id:
                     continue
                 return verdict
         except Exception:

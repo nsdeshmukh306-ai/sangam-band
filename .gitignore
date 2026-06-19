@@ -46,3 +46,4 @@ data/sangam.db
 *.log
 logs/*.log
 logs/*.pid
+.claude/

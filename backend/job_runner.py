@@ -73,13 +73,13 @@ async def _execute_job(job_id: str, case_id: str, sample_message: str, room_id: 
         verdict = await poll_for_verdict(
             room_id=room_id,
             posted_at=posted_at,
-            timeout_s=180.0,
+            timeout_s=300.0,
             poll_interval_s=3.0,
-            expected_run_id=run_id,
+            expected_run_id=None,  # CG does not echo run_id
         )
 
         if verdict is None:
-            await update_job(job_id, _now(), status="timeout", error="No verdict within 180 s")
+            await update_job(job_id, _now(), status="timeout", error="No verdict within 300 s")
             _notify_ws(job_id, {"event": "status", "status": "timeout"})
             return
 
