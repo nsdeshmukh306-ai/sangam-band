@@ -105,6 +105,10 @@ class ParseRequest(BaseModel):
     text: str
 
 
+class ScreenRequest(BaseModel):
+    text: str
+
+
 class RunResponse(BaseModel):
     job_id: str
     case_id: str
@@ -142,6 +146,13 @@ async def parse_case_endpoint(body: ParseRequest):
     """Parse free-text case description — fuzzy-match or LLM-extract."""
     from backend.nlp_parser import parse_case_text
     return await parse_case_text(body.text)
+
+
+@app.post("/api/interactions/screen")
+async def screen_interactions_endpoint(body: ScreenRequest):
+    """Fast all-pairs screen for drug-drug, drug-herb, and herb-herb combinations."""
+    from backend.interaction_screen import screen_interactions
+    return screen_interactions(body.text)
 
 
 @app.post("/api/cases/run", response_model=RunResponse)

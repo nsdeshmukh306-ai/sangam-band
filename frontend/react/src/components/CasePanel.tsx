@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../api";
 import { useReconnectingWs } from "../hooks/useReconnectingWs";
 import { useSpeechInput } from "../hooks/useSpeechInput";
-import type { CaseMeta, Verdict, WsEvent } from "../types";
+import type { CaseMeta, InteractionCombination, InteractionScreenResult, Tier, Verdict, WsEvent } from "../types";
 
 const AGENTS = ["Intake", "PatientProfile", "StructuralBio", "PKPD", "EvidenceRAG", "ComplianceGuard"];
 const AGENT_LABELS = ["Intake", "Patient\nProfile", "Structural\nBio", "PK / PD", "Evidence\nRAG", "Compliance\nGuard"];
@@ -18,6 +18,94 @@ const DEMO_CASES = [
 ];
 
 interface LogLine { ts: string; text: string; cls: string; }
+
+const TIER_ICON: Record<Tier, string> = { RED: "!", YELLOW: "?", GREEN: "✓" };
+
+function CombinationResults({ result }: { result: InteractionScreenResult }) {
+  const counts = result.combinations.reduce<Record<Tier, number>>((acc, combo) => {
+    acc[combo.tier] += 1;
+    return acc;
+  }, { RED: 0, YELLOW: 0, GREEN: 0 });
+
+  return (
+    <div className="screen-results">
+      <div className="screen-summary">
+        <div>
+          <div className="card-title">Combination Screen</div>
+          <div className="screen-substances">
+            {result.substances.map((s) => (
+              <span key={s.key} className={`substance-chip ${s.kind}`}>{s.name}</span>
+            ))}
+          </div>
+        </div>
+        <div className="screen-counts">
+          <span className="count-chip RED">{counts.RED} red</span>
+          <span className="count-chip YELLOW">{counts.YELLOW} yellow</span>
+          <span className="count-chip GREEN">{counts.GREEN} green</span>
+        </div>
+      </div>
+
+      {result.combination_count === 0 ? (
+        <div className="empty-state compact">
+          Enter at least two recognized medicines or herbs to screen pairwise interactions.
+        </div>
+      ) : (
+        <div className="combo-grid">
+          {result.combinations.map((combo) => (
+            <CombinationCard key={combo.id} combo={combo} />
+          ))}
+        </div>
+      )}
+
+      <div className="disclaimer">{result.disclaimer}</div>
+    </div>
+  );
+}
+
+function CombinationCard({ combo }: { combo: InteractionCombination }) {
+  return (
+    <details className={`combo-card ${combo.tier}`}>
+      <summary>
+        <div className="combo-tier">{TIER_ICON[combo.tier]}</div>
+        <div className="combo-main">
+          <div className="combo-title">{combo.left.name} + {combo.right.name}</div>
+          <div className="combo-meta">
+            <span className={`combo-type ${combo.type}`}>{combo.type}</span>
+            <span>{combo.confidence} confidence</span>
+            <span>{combo.source === "curated_case" ? "curated case" : "mechanism screen"}</span>
+          </div>
+        </div>
+        <span className={`vs-tier-badge ${combo.tier}`}>{combo.tier}</span>
+      </summary>
+      <div className="combo-detail">
+        <div>
+          <div className="vs-metric-label">Mechanism</div>
+          <p>{combo.mechanism}</p>
+        </div>
+        <div>
+          <div className="vs-metric-label">Clinical Action</div>
+          <p>{combo.clinical_action}</p>
+        </div>
+        {combo.evidence.length > 0 && (
+          <table className="evidence-table compact-table">
+            <thead>
+              <tr><th>Severity</th><th>Evidence</th><th>Citation</th></tr>
+            </thead>
+            <tbody>
+              {combo.evidence.map((item, index) => (
+                <tr key={index}>
+                  <td><span className={`sev-chip ${item.severity ?? "low"}`}>{item.severity ?? "low"}</span></td>
+                  <td>{item.summary}</td>
+                  <td className="evidence-citation">{item.citation ?? "Sangam corpus"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </details>
+  );
+}
 
 // ---- Pipeline stepper ----
 
@@ -123,6 +211,8 @@ export default function CasePanel({ onVerdictReceived, onRunningChange }: Props)
   const [error, setError]             = useState<string | null>(null);
   const [wsMode, setWsMode]           = useState<"ws" | "poll">("ws");
   const [parsedMatch, setParsedMatch] = useState<string | null>(null);
+  const [screenResult, setScreenResult] = useState<InteractionScreenResult | null>(null);
+  const [screening, setScreening] = useState(false);
 
   const logRef  = useRef<HTMLDivElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -258,6 +348,27 @@ export default function CasePanel({ onVerdictReceived, onRunningChange }: Props)
     }
   };
 
+  const handleScreen = async () => {
+    const text = inputText.trim();
+    if (!text || screening) return;
+
+    setScreening(true);
+    setError(null);
+    setParsedMatch(null);
+    try {
+      const result = await api.screenInteractions(text);
+      setScreenResult(result);
+      if (result.substances.length < 2) {
+        setError("I recognized fewer than two substances. Try names like Warfarin, Aspirin, Guggulu, Garlic, Brahmi, Amlodipine.");
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setError(msg);
+    } finally {
+      setScreening(false);
+    }
+  };
+
   const handleDemoCase = async (caseId: string) => {
     if (running) return;
     const c = cases.find((c) => c.id === caseId);
@@ -267,7 +378,7 @@ export default function CasePanel({ onVerdictReceived, onRunningChange }: Props)
 
   const handleReset = () => {
     setVerdict(null); setError(null); setLog([]);
-    setStepperDone(false); setInputText(""); setParsedMatch(null);
+    setStepperDone(false); setInputText(""); setParsedMatch(null); setScreenResult(null);
   };
 
   useEffect(() => () => { if (pollRef.current) clearInterval(pollRef.current); }, []);
@@ -287,9 +398,9 @@ export default function CasePanel({ onVerdictReceived, onRunningChange }: Props)
             className="nlp-textarea"
             rows={4}
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => { setInputText(e.target.value); setScreenResult(null); }}
             disabled={running}
-            placeholder={"Describe the case… e.g. My 65-year-old father takes Warfarin for his heart and started Guggulu supplements. Is this safe?"}
+            placeholder={"Describe the full medication list… e.g. My 65-year-old father takes Warfarin, Aspirin, Amlodipine and started Guggulu, Garlic, and Brahmi supplements. Screen every interaction."}
           />
           <button
             className={`mic-btn${listening ? " listening" : ""}`}
@@ -317,14 +428,25 @@ export default function CasePanel({ onVerdictReceived, onRunningChange }: Props)
               {d.label}
             </button>
           ))}
+          <button
+            className="demo-pill"
+            onClick={() => setInputText("Warfarin, Aspirin, Amlodipine, Atorvastatin, Guggulu, Garlic, Brahmi, Arjuna")}
+            disabled={running}
+          >
+            Full panel
+          </button>
         </div>
 
         <div className="nlp-actions">
-          <button className="btn-primary" onClick={handleAnalyse} disabled={running || !inputText.trim()}>
-            {running && <span className="spinner" />}
-            {running ? "Analysing…" : "Analyse"}
+          <button className="btn-primary" onClick={handleScreen} disabled={running || screening || !inputText.trim()}>
+            {screening && <span className="spinner" />}
+            {screening ? "Screening…" : "Screen all combinations"}
           </button>
-          {(verdict || error || stepperDone) && !running && (
+          <button className="btn-secondary" onClick={handleAnalyse} disabled={running || screening || !inputText.trim()}>
+            {running && <span className="spinner" />}
+            {running ? "Analysing…" : "Deep agent analysis"}
+          </button>
+          {(verdict || error || stepperDone || screenResult) && !running && (
             <button className="btn-secondary" onClick={handleReset}>New Case</button>
           )}
           {running && (
@@ -355,6 +477,8 @@ export default function CasePanel({ onVerdictReceived, onRunningChange }: Props)
       )}
 
       {error && <div className="alert-error">⚠ {error}</div>}
+
+      {screenResult && <CombinationResults result={screenResult} />}
 
       {verdict && <VerdictSummary verdict={verdict} />}
 

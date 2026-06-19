@@ -2,6 +2,10 @@
 .env
 agent_config.yaml
 
+# Claude Code local settings (may contain tokens)
+.claude/settings.local.json
+.claude/settings.local.json.tmp.*
+
 # Python
 __pycache__/
 *.py[cod]

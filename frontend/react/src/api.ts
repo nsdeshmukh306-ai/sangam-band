@@ -1,4 +1,12 @@
-import type { CaseMeta, HealthStatus, Job, ParseResult, TranscriptMessage, WsEvent } from "./types";
+import type {
+  CaseMeta,
+  HealthStatus,
+  InteractionScreenResult,
+  Job,
+  ParseResult,
+  TranscriptMessage,
+  WsEvent,
+} from "./types";
 
 const API_BASE = import.meta.env.VITE_API_URL ?? "";
 const WS_PROTO = location.protocol === "https:" ? "wss:" : "ws:";
@@ -24,6 +32,13 @@ export const api = {
 
   parseCase: (text: string) =>
     req<ParseResult>("/api/cases/parse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    }),
+
+  screenInteractions: (text: string) =>
+    req<InteractionScreenResult>("/api/interactions/screen", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),

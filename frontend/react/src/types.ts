@@ -82,3 +82,35 @@ export interface HealthStatus {
   band_room?: string;
   agents?: Record<string, boolean | string>;
 }
+
+export interface ScreenSubstance {
+  key: string;
+  name: string;
+  kind: "drug" | "herb";
+}
+
+export interface InteractionEvidence {
+  summary: string;
+  citation?: string;
+  severity?: "high" | "moderate" | "low";
+}
+
+export interface InteractionCombination {
+  id: string;
+  type: "drug-drug" | "drug-herb" | "herb-herb";
+  left: ScreenSubstance;
+  right: ScreenSubstance;
+  tier: Tier;
+  confidence: "high" | "moderate" | "low" | string;
+  source: "curated_case" | "mechanism_screen" | string;
+  mechanism: string;
+  clinical_action: string;
+  evidence: InteractionEvidence[];
+}
+
+export interface InteractionScreenResult {
+  substances: ScreenSubstance[];
+  combination_count: number;
+  combinations: InteractionCombination[];
+  disclaimer: string;
+}
