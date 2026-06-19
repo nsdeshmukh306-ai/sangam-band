@@ -1,309 +1,416 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=6366F1&center=true&vCenter=true&width=700&lines=Sangam+%E2%80%94+Polypharmacy+Safety+Council;Six+AI+Agents.+One+Verdict.+Zero+Missed+Interactions." alt="Typing SVG" />
+<!-- Animated title -->
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=32&pause=1000&color=14B8A6&center=true&vCenter=true&width=700&lines=SANGAM+%E2%80%94+Polypharmacy+Safety+Council;Six+AI+Agents.+One+Verdict.;Zero+Missed+Interactions." alt="Sangam" />
 
 <br/>
 
+<!-- Badges row 1 -->
 [![CI](https://github.com/nsdeshmukh306-ai/sangam-band/actions/workflows/ci.yml/badge.svg)](https://github.com/nsdeshmukh306-ai/sangam-band/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/Tests-75%20passing-22c55e?style=flat-square&logo=pytest&logoColor=white)](https://github.com/nsdeshmukh306-ai/sangam-band/blob/main/tests)
 [![Release](https://img.shields.io/github/v/release/nsdeshmukh306-ai/sangam-band?color=6366f1&style=flat-square&logo=github)](https://github.com/nsdeshmukh306-ai/sangam-band/releases/tag/v1.0.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
+
+<!-- Badges row 2 -->
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3b82f6?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/Tests-44%20passing-22c55e?style=flat-square&logo=pytest&logoColor=white)](tests/)
 [![DeepSeek](https://img.shields.io/badge/LLM-DeepSeek--V3-8b5cf6?style=flat-square)](https://www.deepseek.com/)
 [![Band SDK](https://img.shields.io/badge/Multi--Agent-Band%20SDK-f59e0b?style=flat-square)](https://band.ai)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/Frontend-React%2018-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Docker](https://img.shields.io/badge/Deploy-Docker%20%2B%20Cloud%20Run-2496ED?style=flat-square&logo=docker&logoColor=white)](https://hub.docker.com/)
+
+<!-- Hackathon badge -->
 [![Hackathon](https://img.shields.io/badge/lablab.ai-Band%20of%20Agents%20%7C%20Track%203-ef4444?style=flat-square)](https://lablab.ai)
 
 <br/>
 
-> **"Sangam"** (Sanskrit: *confluence*) — A council of 6 specialist AI agents that deliberate together to catch dangerous drug-herb interactions before they reach a patient.
+> **"Sangam"** *(Sanskrit: confluence)* — A council of 6 specialist AI agents that deliberate together to catch dangerous drug–herb interactions before they reach a patient.
 
-</div>
+<br/>
 
 ---
 
-## Why This Exists
+</div>
+
+## The Problem Nobody Is Solving
+
+India runs on two parallel medicine systems — and nobody is checking where they collide.
+
+**500 million Indians** regularly combine prescription drugs with Ayurvedic herbs. Up to **70% never tell their doctor**. The result is invisible: warfarin combined with Guggulu can raise drug exposure by 150%, tacrolimus combined with St. John's Wort can cause organ rejection, and phenytoin combined with Shankhpushpi can trigger breakthrough seizures.
+
+Every drug interaction checker that exists — Drugs.com, Medscape, Epocrates — screens against the Western pharmacopoeia. Not one of them includes a single Ayurvedic herb.
+
+**Sangam fixes this.**
+
+---
+
+## What Sangam Does
 
 <table>
 <tr>
 <td width="50%">
 
-### 🚨 The Hidden Crisis
-
-India has the **world's highest rate** of concurrent allopathic + Ayurvedic drug use.
-
-**Up to 70% of Indian patients** don't tell their doctor they're also taking herbal supplements.
-
-The result: interactions like **Warfarin + Guggulu** (fatal bleeding risk) or **Tacrolimus + St. John's Wort** (organ rejection) go undetected every single day.
+**Input** — any free-text patient description:
+```
+68-year-old male, warfarin 5mg daily,
+Guggulu 500mg twice daily,
+CYP2C9 *1/*3, eGFR 55 mL/min
+```
 
 </td>
 <td width="50%">
 
-### ✅ What Sangam Does
-
-A **6-agent AI council** reviews any combination of allopathic + Ayurvedic medicines and returns:
-
-- 🔴 **RED** — Contraindicated, human sign-off required
-- 🟡 **YELLOW** — Monitor closely
-- 🟢 **GREEN** — No significant interaction
-
-With mechanism, AUC change estimate, evidence citations, and confidence score — in real time.
+**Output** — a clinically grounded verdict:
+```json
+{
+  "risk_tier": "RED",
+  "confidence": "high",
+  "auc_pct_change": 150.0,
+  "delta_g_kcal_mol": -8.4,
+  "mechanism": "CYP2C9 inhibition",
+  "escalated_to_clinician": true
+}
+```
 
 </td>
 </tr>
 </table>
 
+Six Band AI agents collaborate in real time — each a specialist, each running as an independent process — to produce a **RED / YELLOW / GREEN** verdict backed by molecular docking data, pharmacokinetic modelling, patient pharmacogenomics, and peer-reviewed literature.
+
 ---
 
 ## Meet the Council
 
-*Six agents, each a specialist. They talk to each other so you don't have to guess.*
+*Six agents. Each a domain expert. None of them guess.*
 
-| Agent | Role | What It Does |
-|-------|------|--------------|
-| 🔵 **@Intake** | Drug & Herb Resolver | Normalises medicine names via PubChem + herb dictionary |
-| 🟣 **@PatientProfile** | Pharmacogenomics | Adjusts for CYP genotype, eGFR, age-based clearance |
-| 🩵 **@StructuralBio** | Molecular Docking | Looks up ΔG binding, CYP/P-gp target inhibition |
-| 🟠 **@PKPD** | PK/PD Simulator | One-compartment model → AUC % change estimate |
-| 🟢 **@EvidenceRAG** | Literature Search | Searches 70 curated findings in a ChromaDB vector index |
-| 🔴 **@ComplianceGuard** | Safety Arbiter | Issues final RED/YELLOW/GREEN verdict + escalation |
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Specialty</th>
+<th>What It Does</th>
+<th>Data Sources</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔵 <b>@Intake</b></td>
+<td>Drug &amp; Herb Resolution</td>
+<td>Parses free text → fetches PubChem CIDs, IUPAC names, molecular formulae, Ayurvedic herb profiles</td>
+<td>PubChem API, <code>herb_dictionary.json</code></td>
+</tr>
+<tr>
+<td>🟣 <b>@PatientProfile</b></td>
+<td>Pharmacogenomics</td>
+<td>Computes CYP2C9/3A4 metabolizer status, eGFR clearance modifier, age adjustment → personalized PK baseline</td>
+<td><code>pgx_rules.json</code></td>
+</tr>
+<tr>
+<td>🩵 <b>@StructuralBio</b></td>
+<td>Molecular Docking</td>
+<td>Returns ΔG (kcal/mol), target enzyme, and inhibition/induction mechanism for all drug–herb pairs</td>
+<td><code>docking_lookup.json</code> (26 pairs)</td>
+</tr>
+<tr>
+<td>🟠 <b>@PKPD</b></td>
+<td>PK/PD Simulation</td>
+<td>One-compartment model → AUC % change, 48-hour concentration curve at 1-hour resolution</td>
+<td>Docking + Patient outputs</td>
+</tr>
+<tr>
+<td>🟢 <b>@EvidenceRAG</b></td>
+<td>Literature Search</td>
+<td>Retrieves supporting evidence: case reports, in-vitro studies, Dravyaguna pharmacology texts with severity grading</td>
+<td>ChromaDB index (70 findings)</td>
+</tr>
+<tr>
+<td>🔴 <b>@ComplianceGuard</b></td>
+<td>Safety Arbiter</td>
+<td>Synthesizes all 5 upstream reports → issues RED/YELLOW/GREEN verdict, escalation flag, regulatory disclaimer</td>
+<td>All agent outputs</td>
+</tr>
+</tbody>
+</table>
 
-> Each agent runs as an independent Python process connected via the **Band multi-agent SDK**. They pass structured messages through a shared room — no monolithic prompt, no hallucinated reasoning chain.
+> Each agent is an independent Python process connected via the **Band multi-agent SDK**. They communicate through structured JSON messages in a shared Band room — no monolithic prompt chain, no single point of failure.
 
 ---
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    subgraph UI["🖥️ User Interfaces"]
-        ST["Streamlit\n:8501"]
-        RX["React SPA\n:3000"]
-    end
-
-    subgraph API["⚡ FastAPI Backend :8000"]
-        Q["Job Queue\nasyncio semaphore"]
-        DB[("SQLite\nsangam.db")]
-        WS["WebSocket\nstreaming"]
-        Q <--> DB
-        Q --> WS
-    end
-
-    subgraph Band["🤝 Band Multi-Agent Room"]
-        direction TB
-        IN["🔵 @Intake\nDrug/herb resolution\nPubChem + herb dict"]
-        PP["🟣 @PatientProfile\nPGx · eGFR · age\nclearance modifier"]
-        SB["🩵 @StructuralBio\nΔG docking lookup\nCYP/P-gp targets"]
-        PK["🟠 @PKPD\nOne-compartment PK\nAUC% simulation"]
-        ER["🟢 @EvidenceRAG\nChromaDB vector search\n70 literature findings"]
-        CG["🔴 @ComplianceGuard\nRisk tier · escalation\nHuman sign-off"]
-        IN --> PP & SB
-        PP & SB --> PK
-        PK --> ER
-        ER --> CG
-        CG -->|"RED → PENDING_HUMAN_REVIEW"| Human["👨‍⚕️ Clinician"]
-    end
-
-    subgraph Data["🗄️ Data Layer"]
-        CS["case_studies.json\n25 cases · RED×10\nYELLOW×10 · GREEN×5"]
-        HD["herb_dictionary.json\n19 herbs"]
-        DL["docking_lookup.json\n26 pairs · CYP1A2\nCYP2C19 · P-gp"]
-        PG["pgx_rules.json\nCYP2C9 · CYP3A4\nCYP2C19 · eGFR"]
-        EC["evidence_corpus/\n25 files · 70 findings"]
-        CH[("ChromaDB\nvector index")]
-        EC --> CH
-    end
-
-    UI --> API
-    API -->|"POST case message"| Band
-    Band -->|"FINAL_VERDICT JSON"| API
-    IN --> CS & HD
-    PP --> PG
-    SB --> DL
-    ER --> CH
 ```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          USER INTERFACES                                │
+│    React SPA (:8000/app)          CLI (orchestrator/run_case.py)        │
+└──────────────────────┬──────────────────────────────────────────────────┘
+                       │ POST /api/cases/run
+                       ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    FastAPI Backend (:8000)                               │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────────┐ │
+│  │  Job Queue  │  │  SQLite DB   │  │  WebSocket   │  │  NLP Parser │ │
+│  │ (asyncio)   │  │  (aiosqlite) │  │  Streaming   │  │  (0.92 acc) │ │
+│  └──────┬──────┘  └──────────────┘  └──────────────┘  └─────────────┘ │
+└─────────┼───────────────────────────────────────────────────────────────┘
+          │ Post case message + run_id
+          ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    Band AI Multi-Agent Room                              │
+│                                                                         │
+│  🔵 @Intake ──────────────────────────────────────────────────────────  │
+│       │ {step:"intake", run_id:"abc123", drugs:[...], herbs:[...]}      │
+│       ▼                                                                 │
+│  🟣 @PatientProfile ──────── 🩵 @StructuralBio                         │
+│       │ {clearance_modifier:0.41}    │ {delta_g:-8.4, target:"CYP2C9"} │
+│       └──────────────┬───────────────┘                                 │
+│                      ▼                                                  │
+│              🟠 @PKPD                                                   │
+│                      │ {auc_pct_change:150.0, concentration_curve:[...]}│
+│                      ▼                                                  │
+│              🟢 @EvidenceRAG                                            │
+│                      │ {findings:[{citation:..., severity:"high"},...]} │
+│                      ▼                                                  │
+│              🔴 @ComplianceGuard                                        │
+│                      │ {risk_tier:"RED", confidence:"high", ...}        │
+└──────────────────────┼──────────────────────────────────────────────────┘
+                       │ FINAL_VERDICT JSON
+                       ▼
+              FastAPI → WebSocket → React UI
+```
+
+**Key design decision:** every pipeline run is tagged with a unique 8-character `run_id`. ComplianceGuard only accepts reports that share the same `run_id` — making concurrent multi-patient runs safe with no cross-contamination.
 
 ---
 
 ## Quick Start
 
-<details>
-<summary><b>📋 Prerequisites</b></summary>
-
-<br/>
+### Prerequisites
 
 - Python **3.11+** with [`uv`](https://docs.astral.sh/uv/) — `pip install uv`
-- Node.js **20+** (for React frontend only)
-- A Band account with 6 registered External Agents — see `PROJECT_SPEC.md §7` for setup
+- Node.js **20+** (React frontend only)
+- A Band account with **6 registered External Agents** — see [`PROJECT_SPEC.md §7`](PROJECT_SPEC.md)
 
-</details>
-
-<details open>
-<summary><b>🚀 Run in 5 steps</b></summary>
-
-<br/>
+### 1. Clone & Install
 
 ```bash
-# 1. Install Python deps
+git clone https://github.com/nsdeshmukh306-ai/sangam-band.git
+cd sangam-band
 uv sync
+```
 
-# 2. Configure secrets
-cp .env.example .env                            # fill DEEPSEEK_API_KEY, BAND_ROOM_ID
-cp agent_config.example.yaml agent_config.yaml  # fill 6 agent IDs + keys
+### 2. Configure Secrets
 
-# 3. Build the evidence vector index (one-time)
+```bash
+cp .env.example .env                            # fill: DEEPSEEK_API_KEY, BAND_ROOM_ID
+cp agent_config.example.yaml agent_config.yaml  # fill: 6 agent UUIDs + API keys
+```
+
+### 3. Build Evidence Index (one-time)
+
+```bash
 uv run python -m rag.build_index
-
-# 4. Start all 6 agents + the API backend
-bash scripts/start_agents.sh    # agents log to logs/
-bash scripts/start_backend.sh   # FastAPI on :8000
-
-# 5. Open a UI
-uv run streamlit run frontend/app.py  # :8501 — Streamlit with PK chart
-# OR
-bash scripts/start_react.sh           # :3000 — React SPA with live WebSocket feed
 ```
 
-</details>
-
-<details>
-<summary><b>🐳 Docker (one command)</b></summary>
-
-<br/>
+### 4. Launch Everything
 
 ```bash
-cp .env.example .env      # fill in secrets
+bash scripts/start_agents.sh   # starts all 6 Band agents (logs → logs/)
+bash scripts/start_backend.sh  # FastAPI on :8000
+
+# Verify all 6 agents are live:
+curl -s http://localhost:8000/health | python3 -m json.tool
+```
+
+### 5. Open the UI
+
+```
+http://localhost:8000/app/      ← React SPA with live WebSocket feed
+http://localhost:8000/docs      ← FastAPI interactive API docs
+```
+
+### Docker (one command)
+
+```bash
+cp .env.example .env   # fill secrets
 docker compose up --build
-# React SPA  →  http://localhost:3000
-# API docs   →  http://localhost:8000/docs
 ```
 
-</details>
-
-<details>
-<summary><b>⌨️ Run a case from the CLI</b></summary>
-
-<br/>
+### CLI — Run a Case
 
 ```bash
-# By case ID
+# Named case
 uv run python -m orchestrator.run_case --case case_1_warfarin_guggulu
 
-# Via REST API
-curl -s -X POST http://localhost:8000/api/cases/run \
+# Combination screener (instant, no LLM)
+curl -s -X POST http://localhost:8000/api/interactions/screen \
   -H "Content-Type: application/json" \
-  -d '{"case_id":"case_1_warfarin_guggulu"}' | python3 -m json.tool
+  -d '{"text": "warfarin aspirin guggulu garlic"}' | python3 -m json.tool
 ```
-
-</details>
 
 ---
 
-## 25 Validated Drug-Herb Case Studies
+## Combination Screener — Instant Risk Triage
+
+Beyond the full 6-agent pipeline, Sangam includes a **deterministic pairwise screener** for point-of-care use.
+
+```bash
+POST /api/interactions/screen
+{"text": "warfarin aspirin guggulu garlic"}
+```
+
+Returns all pairwise combinations sorted by risk tier in milliseconds — no LLM call, no latency:
+
+```json
+{
+  "substances": ["warfarin", "aspirin", "guggulu", "garlic"],
+  "combination_count": 6,
+  "combinations": [
+    {
+      "pair": "warfarin + guggulu",
+      "tier": "RED",
+      "mechanism": "CYP2C9 inhibition",
+      "clinical_action": "Avoid co-administration. Monitor INR if unavoidable.",
+      "confidence": 0.95,
+      "source": "curated_case"
+    },
+    ...
+  ]
+}
+```
+
+**30+ substance profiles** covering CYP1A2, CYP2C9, CYP2C19, CYP3A4, P-gp, and OCT transporters.
+
+---
+
+## 25 Validated Drug–Herb Cases
 
 > All 25 cases have pre-computed verdicts and pass the full data integrity test suite.
 
-<details open>
-<summary><b>🔴 RED — Contraindicated · 10 cases</b></summary>
+### 🔴 RED — Contraindicated · 10 Cases
 
-<br/>
+| # | Drug | Herb | Key Mechanism | AUC Δ |
+|---|------|------|---------------|-------|
+| 1 | Warfarin 5mg | Guggulu | CYP2C9 inhibition → ↑INR, bleeding risk | **+150%** |
+| 2 | Digoxin 0.25mg | Licorice | P-gp inhibition + hypokalemia | +78% |
+| 4 | Tacrolimus 2mg | St. John's Wort | CYP3A4 induction → organ rejection | **-41.2%** |
+| 7 | Atorvastatin 40mg | Brahmi | CYP3A4 inhibition → myopathy risk | +92% |
+| 9 | Methotrexate 15mg | Neem | P-gp inhibition + hepatotoxicity | +65% |
+| 13 | Phenytoin 200mg | Shankhpushpi | CYP2C9 induction → breakthrough seizures | -38% |
+| 17 | Rifampicin 600mg | Turmeric | CYP3A4 inhibition + additive hepatotox | +45% |
+| 21 | Prednisolone 10mg | Licorice | CYP3A4 + 11β-HSD2 inhibition | +88% |
+| 22 | Cyclosporine 150mg | St. John's Wort | CYP3A4 induction (FDA/EMA contraindicated) | -55% |
+| 24 | Amiodarone 200mg | Fenugreek | QT prolongation + CYP3A4 inhibition | +71% |
 
-| # | Drug | Herb | Key Mechanism |
-|---|------|------|---------------|
-| 1 | Warfarin 5 mg | Guggulu | CYP2C9 inhibition → ↑INR → bleeding risk |
-| 2 | Digoxin 0.25 mg | Licorice | P-gp inhibition + hypokalemia |
-| 4 | Tacrolimus 2 mg | St. John's Wort | CYP3A4 induction → organ rejection risk |
-| 7 | Atorvastatin 40 mg | Brahmi | CYP3A4 inhibition → myopathy |
-| 9 | Methotrexate 15 mg | Neem | P-gp inhibition + hepatotoxicity |
-| 13 | Phenytoin 200 mg | Shankhpushpi | CYP2C9 induction → breakthrough seizures |
-| 17 | Rifampicin 600 mg | Turmeric | CYP3A4 inhibition + additive hepatotoxicity |
-| 21 | Prednisolone 10 mg | Licorice | CYP3A4 + 11β-HSD2 inhibition |
-| 22 | Cyclosporine 150 mg | St. John's Wort | CYP3A4 induction (FDA/EMA contraindicated) |
-| 24 | Amiodarone 200 mg | Fenugreek | QT prolongation + CYP3A4 inhibition |
-
-</details>
-
-<details>
-<summary><b>🟡 YELLOW — Monitor Closely · 10 cases</b></summary>
-
-<br/>
+### 🟡 YELLOW — Monitor Closely · 10 Cases
 
 | # | Drug | Herb | Key Mechanism |
 |---|------|------|---------------|
-| 3 | Metformin 500 mg | Karela | Additive glucose lowering |
-| 6 | Aspirin 75 mg | Ashwagandha | COX-1 + CYP2C9 inhibition, additive bleed |
-| 8 | Amlodipine 5 mg | Arjuna | Additive Ca²⁺-channel antagonism |
-| 10 | Ciprofloxacin 500 mg | Licorice | CYP1A2 inhibition + QT risk |
-| 11 | Omeprazole 20 mg | Black Pepper | CYP2C19 inhibition (piperine) |
-| 12 | Insulin Glargine 10 IU | Fenugreek | Additive hypoglycaemia |
-| 16 | Lithium 450 mg | Dandelion | Natriuresis → Li⁺ accumulation |
-| 18 | Clopidogrel 75 mg | Ginger | Additive antiplatelet (6-gingerol) |
-| 19 | Sildenafil 50 mg | Ginkgo biloba | CYP3A4 + additive vasodilation |
-| 20 | Clonazepam 1 mg | Valerian | GABA-A potentiation → CNS depression |
+| 3 | Metformin 500mg | Karela | Additive glucose lowering (PD) |
+| 6 | Aspirin 75mg | Ashwagandha | COX-1 + CYP2C9 inhibition, additive bleed |
+| 8 | Amlodipine 5mg | Arjuna | Additive Ca²⁺-channel antagonism |
+| 10 | Ciprofloxacin 500mg | Licorice | CYP1A2 inhibition + QT risk |
+| 11 | Omeprazole 20mg | Black Pepper | CYP2C19 inhibition (piperine) |
+| 12 | Insulin Glargine 10IU | Fenugreek | Additive hypoglycaemia |
+| 16 | Lithium 450mg | Dandelion | Natriuresis → Li⁺ accumulation |
+| 18 | Clopidogrel 75mg | Ginger | Additive antiplatelet (6-gingerol) |
+| 19 | Sildenafil 50mg | Ginkgo biloba | CYP3A4 + additive vasodilation |
+| 20 | Clonazepam 1mg | Valerian | GABA-A potentiation → CNS depression |
 
-</details>
-
-<details>
-<summary><b>🟢 GREEN — No Significant Interaction · 5 cases</b></summary>
-
-<br/>
+### 🟢 GREEN — Safe · 5 Cases
 
 | # | Drug | Herb | Reason |
 |---|------|------|--------|
-| 5 | Paracetamol 500 mg | Tulsi | No clinically significant interaction |
-| 14 | Amoxicillin 500 mg | Garlic (culinary) | No significant PK interaction |
-| 15 | Levothyroxine 100 mcg | Shatavari | Theoretical only, no published data |
-| 23 | Furosemide 40 mg | Dandelion | Negligible additive diuresis |
-| 25 | Cetirizine 10 mg | Ashwagandha | No CYP interaction (renal elimination) |
-
-</details>
+| 5 | Paracetamol 500mg | Tulsi | No clinically significant interaction |
+| 14 | Amoxicillin 500mg | Garlic (culinary) | No significant PK interaction |
+| 15 | Levothyroxine 100mcg | Shatavari | Theoretical only, no published data |
+| 23 | Furosemide 40mg | Dandelion | Negligible additive diuresis |
+| 25 | Cetirizine 10mg | Ashwagandha | No CYP interaction (renal elimination) |
 
 ---
 
 ## API Reference
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/api/cases/run` | Enqueue an analysis job |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | System liveness + all 6 agent status |
+| `GET` | `/api/cases/list` | All 25 case study metadata |
+| `POST` | `/api/cases/run` | Submit case → returns `job_id` |
 | `GET` | `/api/cases/{job_id}/status` | Poll job status + full verdict |
-| `GET` | `/api/cases/list` | List all 25 case study metadata |
-| `GET` | `/api/jobs` | Recent job history |
-| `GET` | `/api/room/transcript` | Live Band room transcript |
-| `WS` | `/api/ws/{job_id}` | Stream agent events in real time |
-| `GET` | `/health` | Liveness + Band room accessibility |
+| `WS` | `/api/ws/{job_id}` | Stream live agent events |
+| `GET` | `/api/room/transcript` | Full Band room message history |
+| `POST` | `/api/cases/parse` | NLP free-text → matched case (scored) |
+| `POST` | `/api/interactions/screen` | Instant pairwise combination screener |
+
+Interactive docs: `http://localhost:8000/docs`
 
 ---
 
-## Repository Layout
+## Repository Structure
 
 ```
 sangam-band/
 │
-├── agents/                      # One Python process per Band agent
-│   ├── common/                  # Shared tools: pkpd.py, rag.py, pubchem client
-│   ├── intake_agent.py          # 🔵 @Intake — drug/herb resolution
-│   ├── patient_profile_agent.py # 🟣 @PatientProfile — PGx + eGFR
-│   ├── structural_agent.py      # 🩵 @StructuralBio — docking lookup
-│   ├── pkpd_agent.py            # 🟠 @PKPD — AUC simulation
-│   ├── evidence_rag_agent.py    # 🟢 @EvidenceRAG — ChromaDB search
-│   └── compliance_agent.py      # 🔴 @ComplianceGuard — verdict + escalation
+├── agents/                         # One Python process per Band agent
+│   ├── common/                     # Shared tools: pubchem, pgx, docking, pkpd, rag, llm
+│   ├── intake_agent.py             # 🔵 @Intake — drug/herb resolution
+│   ├── patient_profile_agent.py    # 🟣 @PatientProfile — PGx + clearance modifier
+│   ├── structural_agent.py         # 🩵 @StructuralBio — molecular docking lookup
+│   ├── pkpd_agent.py               # 🟠 @PKPD — one-compartment PK simulation
+│   ├── evidence_rag_agent.py       # 🟢 @EvidenceRAG — ChromaDB literature search
+│   └── compliance_agent.py         # 🔴 @ComplianceGuard — verdict + escalation
 │
-├── backend/                     # FastAPI + aiosqlite + asyncio job queue
+├── backend/
+│   ├── main.py                     # FastAPI: all endpoints + WebSocket
+│   ├── job_runner.py               # Async job queue (max 3 concurrent)
+│   ├── db.py                       # SQLite via aiosqlite
+│   ├── nlp_parser.py               # NLP case matcher (0.92 confidence)
+│   └── interaction_screen.py       # Deterministic pairwise screener
+│
 ├── frontend/
-│   ├── app.py                   # Streamlit UI (3 tabs + Plotly PK chart)
-│   └── react/                   # Vite + React 18 + TypeScript + WebSocket
+│   └── react/                      # Vite + React 18 + TypeScript
+│       └── src/
+│           ├── App.tsx             # Single-page dashboard
+│           ├── components/
+│           │   ├── CasePanel.tsx   # NLP input + pipeline stepper + combo cards
+│           │   ├── RightPanel.tsx  # Chart.js PK curve + evidence table
+│           │   ├── Sidebar.tsx     # Job history + agent status dots
+│           │   └── JobHistory.tsx
+│           ├── api.ts              # REST + WebSocket client
+│           └── types.ts            # Full TypeScript type definitions
 │
 ├── data/
-│   ├── case_studies.json        # 25 cases with pre-computed verdicts
-│   ├── herb_dictionary.json     # 19 Ayurvedic herbs + CYP/P-gp flags
-│   ├── docking_lookup.json      # 26 drug-herb pairs, ΔG values
-│   ├── pgx_rules.json           # CYP2C9/3A4/2C19 + eGFR rules
-│   └── evidence_corpus/         # 25 literature files → 70 RAG findings
+│   ├── case_studies.json           # 25 validated cases (RED×10/YELLOW×10/GREEN×5)
+│   ├── herb_dictionary.json        # 19 Ayurvedic herbs + CYP/P-gp profiles
+│   ├── docking_lookup.json         # 26 drug–herb docking pairs + ΔG values
+│   ├── pgx_rules.json              # CYP2C9, CYP3A4, CYP2C19 + eGFR rules
+│   └── evidence_corpus/            # 20 JSON files → 70 RAG findings
 │
-├── deployment/                  # GCP Cloud Run + Cloud Build configs
-├── orchestrator/                # Band REST client + CLI runner
-├── rag/                         # ChromaDB index builder
-├── scripts/                     # Agent launcher, backend launcher, watchdog
-└── tests/                       # 44 tests — all run without live credentials
+├── orchestrator/
+│   ├── band_client.py              # Band REST client: post/poll/fetch
+│   └── run_case.py                 # CLI runner
+│
+├── rag/
+│   └── build_index.py              # ChromaDB index builder
+│
+├── deployment/
+│   ├── cloudrun-backend.yaml       # GCP Cloud Run (backend)
+│   └── cloudrun-frontend.yaml      # GCP Cloud Run (frontend)
+│
+├── scripts/
+│   ├── start_agents.sh             # Launch all 6 agents
+│   ├── start_backend.sh            # Launch FastAPI
+│   └── watchdog.sh                 # Monitor agent PIDs
+│
+├── tests/                          # 75 tests — zero live credentials required
+├── .github/workflows/ci.yml        # GitHub Actions CI
+├── Dockerfile.backend              # Multi-stage backend image
+├── Dockerfile.react                # Multi-stage React image
+├── docker-compose.yml              # Full stack in one command
+├── nginx.conf                      # Production reverse proxy
+├── pyproject.toml                  # Dependencies (uv)
+├── .env.example                    # Environment template
+└── agent_config.example.yaml       # Agent UUID + key template
 ```
 
 ---
@@ -311,16 +418,17 @@ sangam-band/
 ## Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
-| Agent platform | [Band](https://band.ai) multi-agent SDK (LangGraph adapter) |
-| LLM | DeepSeek-V3 (OpenAI-compatible API) |
+|-------|------------|
+| Agent Platform | [Band AI](https://band.ai) multi-agent SDK (LangGraph adapter) |
+| LLM | DeepSeek-V3 via OpenAI-compatible API |
+| Agent Orchestration | LangGraph state machine |
 | Backend | FastAPI + aiosqlite + asyncio job queue |
-| Frontend | React 18 + Vite + TypeScript (WebSocket streaming) |
-| Streamlit UI | Streamlit + Plotly (PK curve visualisation) |
-| RAG | ChromaDB vector index (70 evidence findings) |
+| Frontend | React 18 + Vite + TypeScript + Chart.js |
+| Vector Search | ChromaDB (70 curated evidence findings) |
 | Containerisation | Docker multi-stage + docker-compose |
-| CI/CD | GitHub Actions + GCP Cloud Build |
-| Testing | pytest — 44 tests, zero live credentials needed |
+| Cloud Deploy | GCP Cloud Run + Cloud Build |
+| CI/CD | GitHub Actions |
+| Testing | pytest — 75 tests, zero API keys needed |
 
 ---
 
@@ -328,10 +436,55 @@ sangam-band/
 
 ```bash
 uv run pytest tests/ -v --tb=short
-# Covers: PGx rules · docking lookup · herb dict · PubChem client
-#         PK/PD math · RAG pipeline · 25-case data integrity
-# 44 tests — all green, no API keys required
+
+# Covers:
+#   PGx rules · docking lookup · herb dictionary · PubChem client
+#   PK/PD math · RAG pipeline · 25-case data integrity
+#   API endpoints · combination screener · NLP parser
+#
+# 75 tests — all green, no Band or DeepSeek credentials required
 ```
+
+---
+
+## Deployment
+
+### Public URL (localhost tunnel)
+
+```bash
+bash scripts/start_agents.sh
+bash scripts/start_backend.sh
+ssh -R 80:localhost:8000 nokey@localhost.run
+# React app → https://<hash>.lhr.life/app/
+```
+
+### GCP Cloud Run
+
+```bash
+gcloud builds submit --config deployment/cloudrun-backend.yaml
+gcloud builds submit --config deployment/cloudrun-frontend.yaml
+```
+
+---
+
+## Key Results
+
+| Case | Combination | Verdict | Metric |
+|------|-------------|---------|--------|
+| Warfarin + Guggulu | CYP2C9 inhibition | 🔴 RED | AUC +150%, ΔG -8.4 kcal/mol |
+| Tacrolimus + St. John's Wort | CYP3A4 induction | 🔴 RED | AUC -41.2%, ΔG -7.8 kcal/mol |
+| Metformin + Karela | PD additive | 🟡 YELLOW | Glucose monitoring required |
+| Paracetamol + Tulsi | Negligible | 🟢 GREEN | No significant interaction |
+
+---
+
+## Why This Matters
+
+There are drug interaction checkers. None of them cover Ayurvedic herbs. Not one. The entire category is a blank space in clinical pharmacology tooling for Indian medicine.
+
+Sangam is not a lookup table with an LLM on top. It is a pipeline where each agent contributes a different analytical layer — structural chemistry, patient genetics, pharmacokinetic modelling, clinical evidence — and ComplianceGuard synthesizes them into a verdict that shows its work. Every number in the output is traceable to a specific agent's reasoning.
+
+That traceability is what makes it usable in a clinical context.
 
 ---
 
@@ -340,8 +493,13 @@ uv run pytest tests/ -v --tb=short
 **Built for the [lablab.ai Band of Agents Hackathon](https://lablab.ai) · Track 3: Regulated & High-Stakes Workflows**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
-[![Made for India Health](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F-for%20India%20Health-f59e0b?style=flat-square)]()
+[![Made in India](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F-for%20India%20Health-f59e0b?style=flat-square)](https://github.com/nsdeshmukh306-ai/sangam-band)
+[![Band of Agents](https://img.shields.io/badge/Track%203-Regulated%20%26%20High--Stakes-ef4444?style=flat-square)](https://lablab.ai)
 
-*"The best drug interaction checker is one that catches what humans miss."*
+<br/>
+
+*Built by [Niraj Deshmukh](https://github.com/nsdeshmukh306-ai) · MSc Biological Data Science · IISER Tirupati*
+
+*"The best drug interaction checker is the one that catches what the doctor didn't think to ask."*
 
 </div>
