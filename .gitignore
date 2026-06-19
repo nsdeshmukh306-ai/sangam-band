@@ -49,3 +49,4 @@ logs/*.pid
 .claude/
 logs/*.log
 logs/*.pid
+logs/
